@@ -128,6 +128,7 @@ _C = {
     "VPN protocols (WireGuard, IPsec/IKE)": [40],
     "Linux networking (TCP/IP, netfilter, kTLS)": [101],
     "Cellular baseband firmware": [77],
+    "IoT cameras and video recorders (Dahua, Hikvision and similar)": [172],
     "V8 JavaScript engine": [73, 86],
     "PHP interpreter": [160],
     "AI gateways and proxies (LiteLLM and similar)": [66],

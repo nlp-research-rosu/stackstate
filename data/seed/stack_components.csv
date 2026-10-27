@@ -7,7 +7,7 @@ ML compiler graph rewrites (XLA),AI stack,All TPU and many GPU workloads,8.0,som
 "ML kernel code generation (Triton, TVM, TensorRT)",AI stack,Most GPU inference,7.5,none,67,Kernel generation and numerics,"ATL verified tensor compiler is research, not deployed"
 "LLM inference servers (vLLM, TGI, llama.cpp, Ollama)",AI stack,Most open-weight deployments,7.5,none,,"Request parsing, batching, model loading",None public
 Tokenizers,AI stack,Every LLM request,7.5,none,,Encoding and decoding of untrusted text,None public
-AI gateways and proxies (LiteLLM and similar),AI stack,Many enterprise LLM deployments,6.5,none,,"Authentication, routing and API-key handling",None public
+AI gateways and proxies (LiteLLM and similar),Applications & data,Many enterprise LLM deployments,6.5,none,,"Authentication, routing and API-key handling",None public
 "Agent frameworks (LangChain, LangGraph)",AI stack,Millions of agent deployments,7.5,none,,"Tool-call parsing, permission boundaries, sandboxing",None public
 MCP servers and SDKs,AI stack,Fast-growing; most agent tooling,7.0,none,,"Tool exposure, authorization, input handling",None public
 "DeFi lending and exchange contracts (Aave, Compound, Uniswap)",Smart contracts & chains,~$100B total value locked,7.0,some,21;20,Most contracts; oracle and economic assumptions,Certora rule sets on major protocols; audits
@@ -92,7 +92,7 @@ AWS Nitro isolation engine,Kernels & hypervisors,AWS Graviton5 instances,7.0,ful
 Firecracker microVMs,Kernels & hypervisors,AWS Lambda and Fargate,7.5,some,15,Most of the VMM,Bounded model checking of VirtIO and rate limiter
 seL4-class verified kernels,Kernels & hypervisors,"Defense, automotive, modem components",6.0,full,1,Systems built on top,Full functional correctness to binary
 "Container runtimes (runc, containerd)",Kernels & hypervisors,Over 5M clusters,7.5,none,,Isolation and escape surface,None public
-Cellular baseband firmware,Firmware,About 7B phones,9.8,none,42,2G–5G protocol stacks and parsers,5G authentication proven at protocol level only
+Cellular baseband firmware,Firmware,About 7B phones,9.8,none,42,2G to 5G protocol stacks and parsers,5G authentication proven at protocol level only
 Bluetooth stacks,Firmware,Over 5B devices,9.7,none,,Protocol parsing,None public
 Wi-Fi firmware and drivers,Firmware,Over 5B devices,9.7,none,,Firmware and frame parsing,WPA3 handshake analyzed at spec level
 UEFI and BIOS firmware,Firmware,Over 2B PCs and servers,9.3,none,,"Boot chain, SMM handlers, image parsers",None public
@@ -102,6 +102,7 @@ Baseboard management controllers (BMC),Firmware,Most servers,7.5,none,,Web and I
 GPU security firmware (NVIDIA),Firmware,NVIDIA GPUs,8.5,some,38,Most GPU firmware,SPARK proofs of absence of runtime errors in security components
 "Automotive ECUs (AUTOSAR, infotainment)",Firmware,Over 1B vehicles,9.0,narrow,2;1,Most ECU software,CompCert used in some ECUs; seL4 in research vehicles
 Industrial control and PLC firmware,Firmware,Critical infrastructure,7.0,none,,PLC runtimes and engineering protocols,None public
+"IoT cameras and video recorders (Dahua, Hikvision and similar)",Firmware,Over 1B cameras and recorders,9.0,none,,"Authentication, cloud remote access and firmware updates",None public
 x86 CPU datapaths and microcode,Hardware & ISA,Over 2B CPUs,9.3,some,36;37,"Speculation, microcode, security monitors",Intel execution-engine verification; ACL2 x86 model
 Arm application cores,Hardware & ISA,Over 10B chips,10.0,some,33;34,Third-party cores and speculation,Machine-readable Arm spec used to verify Arm cores
 "Confidential computing monitors (SGX, TDX, SEV)",Hardware & ISA,Most cloud confidential VMs,8.0,none,,Security monitors end to end,None public

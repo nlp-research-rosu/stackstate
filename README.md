@@ -1,15 +1,16 @@
 # Stack State
 
-**State of the Stack**: a public view of reported security incidents across the industry, next to the published formal verification work on the software everyone depends on.
+**State of the Stack** is a public page with two halves. One tracks reported security incidents that started with a flaw in code. The other tracks published formal verification of the software most of us rely on.
 
-Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (private; shared from the artifact's Share menu)
+Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (anyone with the link can view it)
 
-The dashboard has two tabs:
+The page has two tabs.
 
-- **Incidents** (dark): publicly reported incidents from the last 13 weeks whose way in was a flaw in code (vulnerabilities, injection and bypass bugs, contract logic errors). Phishing, stolen credentials, misconfiguration and malicious packages are excluded. It opens with a component-by-day grid (111 components × 91 days, about 10,000 dots, lit where a flaw in that component led to a reported incident that day), then a treemap of the code-flaw incidents by specific component, a bug-class by layer matrix with zero-days marked, a flow from what the flawed code was doing to who was hit, and incidents by week. Smart-contract and blockchain incidents are counted but kept out of the component treemap and the ticker.
-- **Verification** (light): how many of 106 widely deployed components have full published formal verification, a stack map of how much of each is verified (with the evidence for each), and published verification efforts over time.
+**Incidents** (dark) covers publicly reported incidents from the last 13 weeks where the attackers got in through a flaw in code: exploited vulnerabilities, injection and bypass bugs, contract logic errors. Phishing, stolen credentials, misconfiguration and malicious packages are left out, and so are smart-contract and blockchain incidents with losses under $10M. The tab opens with a map of every component, grouped by layer, where each component that had an incident gets a tile with its count and a 13-week strip. Below that are a treemap of incidents by component, a grid of bug type against layer with zero-days marked, a flow from what the flawed code was doing to who got hit, and a weekly bar chart.
 
-The two tabs are deliberately separate; the page does not claim any proof would have prevented a given incident. Every chart is interactive, and filters on one chart apply to the rest of the tab.
+**Verification** (light) shows how many of 102 widely deployed components have full published formal verification, a stack map of how much of each one is verified (with the evidence behind it), and a running total of published verification work.
+
+The tabs are kept apart on purpose. The page never claims that a proof would have stopped a given incident. Every chart is interactive, and a filter set on one chart applies to the rest of its tab.
 
 ## Repository layout
 
@@ -26,7 +27,7 @@ scripts/
   build_page.py       template + fonts + site/data.json -> site/index.html
   seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot)
   classify.py         rules that assign each incident a group (`theme`) and a people count
-data/seed/            original CSV snapshot, Jul 28 - Oct 26, 2026, plus stack_components.csv (the stack map, editable)
+data/seed/            original CSV snapshot, Jul 28 to Oct 26, 2026, plus stack_components.csv (the stack map, editable)
 docs/
   data-schema.md      every field in data.json
   daily-refresh.md    how the daily update job works, including its full instructions
