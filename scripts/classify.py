@@ -184,6 +184,7 @@ COMPONENT_RULES = [
     (r"runc|containerd|docker engine", "Container runtimes (runc, containerd)"),
     (r"kubernetes|ingress-nginx", "Kubernetes controllers and operators"),
     (r"libwebp|freetype|ffmpeg|imagemagick|libtiff|libpng|coregraphics|imageio", "Image, media and font parsers (libwebp, FreeType, ffmpeg)"),
+    (r"brotli|zlib|\bxz\b|zstd|libarchive|7-zip|winrar", "Compression (zlib, xz, zstd)"),
     (r"openssl", "OpenSSL"),
     (r"openssh|sshd", "OpenSSH"),
     (r"wireguard|ipsec|ike\b", "VPN protocols (WireGuard, IPsec/IKE)"),
