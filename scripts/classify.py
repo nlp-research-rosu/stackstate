@@ -111,6 +111,42 @@ def flaw_group(r):
     return c if c.lower().startswith("cve-") else ""
 
 
+# Which stack-map component (data/seed/stack_components.csv) the flawed code belongs to, for code-flaw
+# incidents in the seed snapshot. New incidents get `component` set directly by the daily refresh.
+_C = {
+    "BI and data tools (Metabase and similar)": [17, 18, 22, 23, 24, 33, 71],
+    "Load balancers and ADCs (F5, NetScaler, Kemp)": [20, 85, 105, 116],
+    "SSL-VPN gateways (Ivanti, Fortinet, Citrix, Palo Alto)": [65, 136, 141],
+    "Firewalls and firewall management": [84, 87, 109],
+    "Router and switch operating systems (Cisco IOS, MikroTik, Zyxel)": [90, 104],
+    "Email security gateways": [94, 145],
+    "SD-WAN controllers": [119],
+    "Windows drivers": [27],
+    "Windows kernel and win32k": [79],
+    "OS services and file handlers (Windows Shell, macOS daemons)": [39, 142],
+    "Image, media and font parsers (libwebp, FreeType, ffmpeg)": [120],
+    "VPN protocols (WireGuard, IPsec/IKE)": [40],
+    "Linux networking (TCP/IP, netfilter, kTLS)": [101],
+    "Cellular baseband firmware": [77],
+    "V8 JavaScript engine": [73, 86],
+    "PHP interpreter": [160],
+    "AI gateways and proxies (LiteLLM and similar)": [66],
+    "Enterprise collaboration servers (SharePoint, Exchange, Confluence)": [38],
+    "E-commerce and CMS platforms (Magento, WordPress)": [35, 78],
+    "Remote management software (RMM, file transfer)": [80, 99],
+    "Infrastructure management consoles (vCenter)": [37],
+    "VoIP and PBX systems": [70],
+    "Custom and third-party web applications": [44, 102, 121],
+    "CI/CD pipelines and package registries": [67, 69],
+    "Web frameworks (Starlette, Django, Express)": [68],
+    "DeFi lending and exchange contracts (Aave, Compound, Uniswap)": [56, 61, 97, 128, 138, 169, 170],
+    "Chain clients and VM modules (geth, Cosmos SDK/EVM)": [43, 46, 48, 49, 52, 74, 168],
+    "Cross-chain bridges": [124, 155],
+    "Wallets and signing (hardware wallets, multisig)": [4, 93],
+}
+COMPONENT_BY_ID = {str(i): c for c, ids in _C.items() for i in ids}
+
+
 # Hand corrections where the largest number in the report is not the people count.
 PEOPLE_OVERRIDES = {"Gyazo": 23_620_000}
 
@@ -121,6 +157,7 @@ def enrich(r):
     r["bug_class"] = bug_class(r) if r["code_flaw"] else ""
     r["zero_day"] = zero_day(r) if r["code_flaw"] else False
     r["flaw_group"] = flaw_group(r) if r["code_flaw"] else ""
+    r["component"] = COMPONENT_BY_ID.get(str(r.get("id")), "") if r["code_flaw"] else ""
     text = r.get("records_or_loss", "") if r["theme"] == "crypto" else r.get("records_or_loss", "") + " ; " + r.get("impact", "")
     r["people"] = people(text)
     for prefix, n in PEOPLE_OVERRIDES.items():

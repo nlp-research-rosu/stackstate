@@ -30,6 +30,7 @@ All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `
 | people | integer; people, accounts or records exposed if reported, else 0 |
 | bug_class | for code flaws: Memory safety, Injection & code execution, Authentication & access checks, Contract & business logic, Path & request handling, Not disclosed |
 | zero_day | boolean; exploited before a fix existed |
+| component | for code flaws: the stack-map component (from `data/seed/stack_components.csv`) where the flawed code was; the Incidents tab groups by that component's layer |
 | flaw_group | key shared by incidents from the same flaw (a named campaign or the first CVE) |
 | code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these appear on the Incidents tab. |
 

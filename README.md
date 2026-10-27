@@ -6,7 +6,7 @@ Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (private; shar
 
 The dashboard has two tabs:
 
-- **Incidents** (dark): publicly reported incidents from the last 13 weeks whose way in was a flaw in code (vulnerabilities, injection and bypass bugs, contract logic errors). Phishing, stolen credentials, misconfiguration and malicious packages are excluded. One square per incident by software layer, incidents by bug class with zero-days marked, flaws that hit several organizations, a flow from what the flawed code was doing to who was hit, and incidents by week.
+- **Incidents** (dark): publicly reported incidents from the last 13 weeks whose way in was a flaw in code (vulnerabilities, injection and bypass bugs, contract logic errors). Phishing, stolen credentials, misconfiguration and malicious packages are excluded. It opens with a dot grid of every incident tracked (one dot each, coloured by how the attacker got in), then a treemap of the code-flaw incidents by specific component, a bug-class by layer matrix with zero-days marked, a flow from what the flawed code was doing to who was hit, and incidents by week. Smart-contract and blockchain incidents are counted but kept out of the component treemap and the ticker.
 - **Verification** (light): how many of 106 widely deployed components have full published formal verification, a stack map of how much of each is verified (with the evidence for each), and published verification efforts over time.
 
 The two tabs are deliberately separate; the page does not claim any proof would have prevented a given incident. Every chart is interactive, and filters on one chart apply to the rest of the tab.

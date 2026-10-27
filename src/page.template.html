@@ -15,7 +15,7 @@ __FONTS__
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
   --hit: #f08a5d; --hit-soft: #6e3a26;
   --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
-  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea;
+  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea; --grey-dot: #4a4345;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
   --f-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -27,7 +27,7 @@ __FONTS__
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
   --hit: #b5532a; --hit-soft: #f3e2d8;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
-  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e;
+  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e; --grey-dot: #c9ccd2;
   --shadow: 0 12px 32px rgba(17,21,29,.14);
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -161,6 +161,28 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 @media (max-width: 700px) { .urow { grid-template-columns: minmax(0, 1fr) 4ch; gap: 8px 12px; } .urow .sqs { grid-column: 1 / -1; grid-row: 2; } .sq { width: 14px; height: 14px; } }
 #flow { margin-top: 26px; }
 .sq.zd { background: var(--zd); }
+.dots-h { font-family: var(--f-serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 56px); line-height: 1.05; letter-spacing: -.02em; margin: 10px 0 0; }
+.pill-h { background: var(--bg-3); padding: 0 .18em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.dots-sub { font-size: 16px; color: var(--ink-2); margin: 12px 0 0; max-width: 72ch; }
+.dots { display: grid; grid-template-columns: repeat(var(--cols, 30), minmax(0, 1fr)); gap: clamp(3px, .45vw, 6px); margin-top: 22px; }
+.dot { aspect-ratio: 1; border-radius: 3px; background: var(--grey-dot); cursor: pointer; border: 0; padding: 0; transition: transform .12s, opacity .2s; }
+.dot.k { background: var(--hit); }
+.dot.z { background: var(--zd); }
+.dot:hover, .dot:focus-visible { transform: scale(1.25); outline: 2px solid var(--ink); outline-offset: 1px; position: relative; z-index: 1; }
+.dot.fresh { box-shadow: 0 0 0 2px var(--accent); }
+.dots-key { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 16px; font-size: 14px; color: var(--ink-2); }
+.dots-key button { appearance: none; border: 0; background: none; padding: 2px 0; cursor: pointer; display: inline-flex; gap: 9px; align-items: center; text-align: left; color: var(--ink-2); font-size: 14px; }
+.dots-key button:hover { color: var(--ink); }
+.dots-key button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+.dots-key i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; flex: none; }
+.dots-key b { color: var(--ink); font-weight: 600; }
+.dots-key .pc { color: var(--muted); }
+.mx-scroll { overflow-x: auto; }
+.tree-note { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; color: var(--muted); }
+.tree-note button { appearance: none; border: 1px solid var(--rule-2); background: var(--bg-2); color: var(--ink-2); font-size: 13px; padding: 4px 10px; cursor: pointer; }
+.tree-note button:hover { border-color: var(--ink); color: var(--ink); }
+#tree .cell { cursor: pointer; }
+#tree .cell:focus-visible rect.bg { stroke: var(--ink); stroke-width: 2; }
 .sub-h { font-family: var(--f-serif); font-weight: 400; font-size: 21px; margin: 34px 0 12px; }
 .chain { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 10px 24px; padding: 18px 0; border-top: 1px solid var(--rule); }
 .chain:last-child { border-bottom: 1px solid var(--rule); }
@@ -246,24 +268,22 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
 <main class="view" id="v-attacks">
   <header class="hero wrap">
     <p class="lab" id="a-eyebrow">State of the Stack · Incidents</p>
-    <h1 class="big"><span class="hit num" id="a-n">66</span> reported incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
-    <p class="sub" id="a-sub">Exploited vulnerabilities, injection and bypass bugs, and contract logic errors. One square per incident, on the layer of software where the flaw was.</p>
-    <div class="units" id="units"></div>
-    <div class="ukey"><span><i style="background:var(--hit)"></i>Confirmed</span><span><i style="background:var(--zd)"></i>Zero-day</span><span><i style="box-shadow:inset 0 0 0 2px var(--hit)"></i>Claimed, not yet confirmed</span><span id="newkey" hidden><i style="box-shadow:0 0 0 2px var(--accent);background:var(--hit)"></i><span id="newtxt"></span></span></div>
+    <h1 class="dots-h">Each dot is <span class="pill-h">1 incident</span></h1>
+    <p class="dots-sub" id="dots-sub"></p>
+    <div class="dots" id="dots" role="group" aria-label="Every reported incident, coloured by how the attacker got in"></div>
+    <div class="dots-key" id="dots-key"></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
 
-  <section class="blk wrap" id="a-bugs">
-    <div class="blk-h"><div><h2 class="h2">What kind of bug</h2><p class="dek" id="bugs-dek"></p></div></div>
-    <div class="units" id="bugs"></div>
-    <div class="ukey"><span><i style="background:var(--zd)"></i>Zero-day: exploited before a fix existed</span><span><i style="background:var(--hit)"></i>Known flaw</span></div>
+  <section class="blk wrap" id="a-where">
+    <div class="blk-h"><div><h2 class="h2"><span class="hit num" id="w-n">66</span> began with a flaw in code. This is where the flawed code was.</h2><p class="dek">Each block is a specific kind of software, sized by its number of incidents and grouped by layer. White squares are zero-days, exploited before a fix existed. Select a block to list its incidents.</p></div></div>
+    <div class="chart" id="tree"></div>
+    <div class="tree-note" id="tree-note"></div>
   </section>
 
-  <section class="blk wrap" id="a-spread">
-    <div class="blk-h"><div><h2 class="h2">One flaw, many victims</h2><p class="dek">Single flaws that led to incidents at several organizations, laid out by days since the first victim. Select a dot or name for the case.</p></div></div>
-    <div id="spread"></div>
-    <h3 class="sub-h">Products with more than one incident this period</h3>
-    <div class="repeat" id="repeat"></div>
+  <section class="blk wrap" id="a-bugs">
+    <div class="blk-h"><div><h2 class="h2">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
+    <div class="mx-scroll"><div class="chart" id="matrix"></div></div>
   </section>
 
   <section class="blk wrap" id="a-flow">
@@ -374,6 +394,8 @@ const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some:
 function ingest(data) {
   ALL = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
   ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
+  const compBand = new Map(data.stack.map((s) => [s.component, s.band]));
+  ALL.forEach((r) => { r.vband = r.band; if (r.component && compBand.has(r.component)) r.band = compBand.get(r.component); });
   INC = ALL.filter(isFlaw);
   ST.forEach((s) => { s.share = COVER[s.coverage] != null ? COVER[s.coverage] : s.status_class === 'verified' ? 1 : 0; s.evidence = Array.isArray(s.evidence) ? s.evidence : String(s.evidence || '').split(';').filter(Boolean); });
   const ts = ALL.map((r) => r.t);
@@ -399,7 +421,7 @@ async function poll(first) {
 }
 
 // ---------- state ----------
-const S = { view: 'attacks', group: null, week: null, band: null, func: null, cls: null, status: null };
+const S = { view: 'attacks', group: null, week: null, band: null, func: null, cls: null, cause: null, status: null };
 const weekOf = (r) => Math.floor((d3.utcDay.floor(new Date(r.t)) - WIN.start) / (7 * 864e5));
 const match = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'func' || !S.func || r.func === S.func) && (skip === 'cls' || !S.cls || r.bug_class === S.cls);
 const set = (p) => { Object.assign(S, p); render(); };
@@ -495,40 +517,138 @@ function renderTicker() {
   const tk = $('#tk'); tk.replaceChildren();
   const isNew = (r) => freshIds.has(String(r.id)) || (seen && seen.size && !seen.has(String(r.id)));
   const items = S.view === 'attacks'
-    ? [...INC].sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: clip(r.initial_vector || r.attack_type, 60) }), isNew(r) ? el('span', { class: 'new', text: 'NEW' }) : null))
+    ? [...INC].filter((r) => r.band !== 'Smart contracts & chains').sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: clip(r.initial_vector || r.attack_type, 60) }), isNew(r) ? el('span', { class: 'new', text: 'NEW' }) : null))
     : [...PR].sort((a, b) => Number(b.year) - Number(a.year) || Number(b.id) - Number(a.id)).slice(0, 14).map((p) => el('button', { type: 'button', class: 'tk p', onclick: () => openProof(p) }, el('i'), el('span', { class: 'when', text: p.year }), el('b', { text: p.project }), el('span', { text: STATUS[p.status] })));
   tk.append(...items, ...items.map((n) => { const c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; c.addEventListener('click', () => n.click()); return c; }));
 }
 function renderFilt() {
   const f = $('#filt');
-  const p = S.view === 'attacks' ? [S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
+  const p = S.view === 'attacks' ? [S.cause && CAUSE[S.cause], S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
   const parts = p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
-  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, cls: null, status: null }) }));
+  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, cls: null, cause: null, status: null }) }));
 }
 
 // ================= INCIDENTS =================
+const CAUSE = { other: 'Phishing, stolen credentials, misconfiguration or no stated cause', known: 'Flaw in code, already known', zero: 'Flaw in code, zero-day' };
+const causeOf = (r) => (!isFlaw(r) ? 'other' : r.zero_day === true ? 'zero' : 'known');
 function renderHero() {
   const weeks = Math.round((WIN.end - WIN.start) / (7 * 864e5));
-  $('#a-n').textContent = INC.length; $('#a-weeks').textContent = weeks;
   $('#a-eyebrow').textContent = `State of the Stack · Incidents · ${fmtDay(iso(WIN.start))} – ${fmtDayY(iso(WIN.end))}`;
-  $('#method-p').textContent = `An incident is included when its reported way in was a defect in software: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol. Of the ${ALL.length} incidents tracked in this period, ${ALL.length - INC.length} are left out: phishing and social engineering, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access, and cases with no stated cause. The rules are in scripts/classify.py in the project repository.`;
-  const box = $('#units'); box.replaceChildren();
-  const newIds = new Set(INC.filter((r) => seen && seen.size && !seen.has(String(r.id))).map((r) => String(r.id)));
-  BANDS.forEach((b) => {
-    const list = INC.filter((r) => r.band === b).sort((a, c) => a.t - c.t);
-    if (!list.length) return;
-    const on = S.band === b, sqs = el('div', { class: 'sqs' });
-    list.forEach((r) => {
-      const s = el('span', { class: 'sq' + (r.claim_status === 'reported' ? '' : ' cl') + (r.zero_day === true ? ' zd' : '') + (freshIds.has(String(r.id)) ? ' fresh' : '') + (newIds.has(String(r.id)) ? ' isnew' : ''), style: match(r, 'band') ? null : 'opacity:.16' });
-      s.addEventListener('click', () => openIncident(r));
-      hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + (r.cve && r.cve !== 'unknown' ? ' · ' + r.cve.split(';')[0] : '') }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
-      sqs.appendChild(s);
-    });
-    box.appendChild(el('div', { class: 'urow' + (S.band && !on ? ' dim' : '') },
-      el('button', { type: 'button', class: 'ul', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ band: on ? null : b }) }, bl(b), el('small', { text: BAND_SUB[b] || '' })),
-      sqs, el('span', { class: 'n num', text: list.length })));
+  $('#dots-sub').textContent = `${ALL.length} security incidents were publicly reported in ${weeks} weeks. Colour = how the attacker got in. Select a dot for the case, or a colour to highlight it.`;
+  $('#method-p').textContent = `An incident counts as a flaw in code when its reported way in was a defect in software: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol. Grey dots are everything else: phishing and social engineering, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access, and cases with no stated cause. The rules are in scripts/classify.py in the project repository.`;
+  const order = { other: 0, known: 1, zero: 2 };
+  const list = [...ALL].sort((a, b) => order[causeOf(a)] - order[causeOf(b)] || a.t - b.t);
+  const box = $('#dots'); box.replaceChildren();
+  const w = box.clientWidth || 1100, cols = w < 500 ? 15 : w < 800 ? 20 : 30;
+  box.style.setProperty('--cols', cols);
+  list.forEach((r) => {
+    const c = causeOf(r), off = S.cause && S.cause !== c;
+    const d = el('button', { type: 'button', class: 'dot' + (c === 'known' ? ' k' : c === 'zero' ? ' z' : '') + (freshIds.has(String(r.id)) ? ' fresh' : ''), 'aria-label': `${r.victim}, ${fmtDay(r.date)}`, style: off ? 'opacity:.18' : null, onclick: () => openIncident(r) });
+    hoverable(d, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + ' · ' + (c === 'other' ? r.attack_type : CAUSE[c].toLowerCase()) }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
+    box.appendChild(d);
   });
-  $('#newkey').hidden = !newIds.size; $('#newtxt').textContent = newIds.size + ' new since your last visit';
+  const key = $('#dots-key'); key.replaceChildren();
+  [['other', 'var(--grey-dot)'], ['known', 'var(--hit)'], ['zero', 'var(--zd)']].forEach(([c, col]) => {
+    const n = ALL.filter((r) => causeOf(r) === c).length, on = S.cause === c;
+    key.appendChild(el('button', { type: 'button', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ cause: on ? null : c }) }, el('i', { style: `background:${col}` }), CAUSE[c] + ' · ', el('b', { text: n }), el('span', { class: 'pc', text: ` (${Math.round((n / ALL.length) * 100)}%)` })));
+  });
+  $('#w-n').textContent = INC.length;
+}
+const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
+const MUTED_BAND = 'Smart contracts & chains';
+function renderTree() {
+  const box = $('#tree'); const cw = box.clientWidth || 1000, narrow = cw < 640;
+  const all = INC.filter((r) => match(r, 'band'));
+  const pool = all.filter((r) => r.band !== MUTED_BAND);
+  const chain = all.filter((r) => r.band === MUTED_BAND);
+  const note = $('#tree-note'); note.replaceChildren();
+  if (chain.length) {
+    note.append(el('span', { text: `Not shown: ${chain.length} incident${chain.length > 1 ? 's' : ''} in smart contracts and blockchains` }));
+    d3.groups(chain, (r) => r.component || 'Not specified').sort((a, b) => b[1].length - a[1].length).forEach(([c, v]) => note.appendChild(el('button', { type: 'button', onclick: () => openList(short(c), bl(MUTED_BAND), v) }, `${short(c)} · ${v.length}`)));
+  }
+  box.replaceChildren();
+  if (!pool.length) { box.appendChild(el('p', { class: 'help', text: 'No incidents match this filter.' })); return; }
+  const groups = d3.groups(pool, (r) => (r.component ? r.band : 'Not specified'), (r) => r.component || 'Not specified product');
+  const root = d3.hierarchy({ children: groups.map(([b, comps]) => ({ name: b, children: comps.map(([c, list]) => ({ name: c, band: b, list, value: list.length })) })) })
+    .sum((d) => d.value || 0).sort((a, b) => b.value - a.value);
+  const W = cw, H = narrow ? 720 : 470;
+  d3.treemap().size([W, H]).paddingOuter(3).paddingTop(22).paddingInner(3).round(true).tile(d3.treemapSquarify.ratio(narrow ? 1.2 : 1.6))(root);
+  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Code-flaw incidents by specific component, grouped by layer');
+  const ink = css('--ink'), muted = css('--muted'), hit = css('--hit'), zd = css('--zd'), bg = css('--bg'), bg2 = css('--bg-2'), rule = css('--rule-2'), grey = css('--grey-dot');
+  root.children.forEach((g) => {
+    const dim = S.band && S.band !== g.data.name;
+    const gg = svg.append('g').attr('opacity', dim ? 0.3 : 1);
+    gg.append('rect').attr('x', g.x0).attr('y', g.y0).attr('width', g.x1 - g.x0).attr('height', g.y1 - g.y0).attr('fill', 'none').attr('stroke', rule);
+    const lab = gg.append('text').attr('x', g.x0 + 6).attr('y', g.y0 + 15).attr('font-size', 11).attr('letter-spacing', '.08em').attr('fill', muted).style('cursor', g.data.name === 'Not specified' ? null : 'pointer').text((bl(g.data.name) + ' · ' + g.value).toUpperCase());
+    if (g.data.name !== 'Not specified') lab.on('click', () => set({ band: S.band === g.data.name ? null : g.data.name }));
+    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(short(bl(g.data.name)).split(' ')[0].toUpperCase() + ' · ' + g.value);
+    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(String(g.value));
+  });
+  root.leaves().forEach((n) => {
+    const d = n.data, w = n.x1 - n.x0, h = n.y1 - n.y0, muted_ = d.band === MUTED_BAND || d.band === 'Not specified';
+    const g = svg.append('g').attr('class', 'cell').attr('transform', `translate(${n.x0},${n.y0})`).attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${d.name}: ${d.value} incidents`).attr('opacity', S.band && S.band !== d.band ? 0.3 : 1)
+      .on('click', () => openList(short(d.name), `${bl(d.band)} · ${d.value} incident${d.value > 1 ? 's' : ''}`, [...d.list].sort((a, b) => a.t - b.t))).on('keydown', (ev) => { if (ev.key === 'Enter') openList(short(d.name), bl(d.band), d.list); })
+      .on('pointermove', (ev) => showTip(ev, [el('b', { text: d.name }), el('div', { class: 'm', text: `${d.value} incident${d.value > 1 ? 's' : ''} · ${d.list.filter((r) => r.zero_day === true).length} zero-day` }), ...d.list.slice(0, 6).map((r) => el('div', { text: '· ' + clip(r.victim, 46) }))])).on('pointerleave', hideTip);
+    g.append('rect').attr('class', 'bg').attr('width', w).attr('height', h).attr('fill', muted_ ? bg2 : css('--hit-soft')).attr('stroke', muted_ ? rule : hit).attr('stroke-width', 1);
+    const fs = Math.max(11, Math.min(16, Math.sqrt(w * h) / 9));
+    let y = 8;
+    if (w > 64 && h > 34) {
+      const words = short(d.name).split(' '), maxCh = Math.max(5, Math.floor((w - 14 - fs * 1.4) / (fs * 0.56))), lines = []; let cur = '';
+      words.forEach((wd) => { if ((cur + ' ' + wd).trim().length > maxCh && cur) { lines.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); });
+      if (cur) lines.push(cur);
+      const maxLines = Math.max(1, Math.floor((h - 30) / (fs * 1.18)));
+      lines.slice(0, maxLines).forEach((l, i) => { const tx = g.append('text').attr('x', 7).attr('y', y + fs + i * fs * 1.18).attr('font-size', fs).attr('font-weight', 600).attr('fill', muted_ ? muted : ink).text(i === maxLines - 1 && lines.length > maxLines ? clip(l, maxCh) : l); const room = w - 14 - (i === 0 ? fs * 1.5 : 0); let s = tx.text(); while (s.length > 2 && tx.node().getComputedTextLength() > room) { s = s.slice(0, -2); tx.text(s + '…'); } });
+      y += Math.min(lines.length, maxLines) * fs * 1.18 + 6;
+    }
+    // one square per incident, zero-days white
+    const s = Math.max(6, Math.min(12, (w - 14) / 6)), per = Math.max(1, Math.floor((w - 12) / (s + 3)));
+    const rows = Math.ceil(d.list.length / per), sy = Math.max(y + 2, h - 8 - rows * (s + 3));
+    if (sy + rows * (s + 3) <= h + 2) d.list.sort((a, b) => (b.zero_day === true) - (a.zero_day === true)).forEach((r, i) => g.append('rect').attr('x', 7 + (i % per) * (s + 3)).attr('y', sy + Math.floor(i / per) * (s + 3)).attr('width', s).attr('height', s).attr('rx', 1.5).attr('fill', r.zero_day === true ? zd : muted_ ? grey : hit));
+    if (w > 30 && h > 22) g.append('text').attr('x', w - 7).attr('y', fs + 7).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', fs * 1.5).attr('fill', muted_ ? muted : ink).text(d.value);
+  });
+}
+const BUG_ORDER = ['Injection & code execution', 'Authentication & access checks', 'Memory safety', 'Path & request handling', 'Contract & business logic', 'Not disclosed'];
+function renderMatrix() {
+  const box = $('#matrix'); const cw = box.parentElement.clientWidth || 1000, narrow = cw < 700;
+  const base = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.func || r.func === S.func) && (!S.group || r.theme === S.group));
+  const zdN = base.filter((r) => r.zero_day === true).length;
+  $('#bugs-dek').textContent = `Circle area = number of incidents; the white core is the share that were zero-days (${zdN} of ${base.length} overall). Select a row, a column or a circle to filter this tab.`;
+  const cols = BANDS.filter((b) => base.some((r) => r.band === b)).sort((a, b) => (a === MUTED_BAND) - (b === MUTED_BAND));
+  const rows = BUG_ORDER.filter((c) => base.some((r) => r.bug_class === c));
+  const labelW = narrow ? 150 : 230, colW = Math.max(narrow ? 64 : 84, (cw - labelW - 50) / cols.length), headH = narrow ? 110 : 96, rowH = narrow ? 56 : 64;
+  const W = labelW + cols.length * colW + 50, H = headH + rows.length * rowH + 10, padR = 90;
+  const max = d3.max(rows, (c) => d3.max(cols, (b) => base.filter((r) => r.bug_class === c && r.band === b).length)) || 1;
+  const rr = d3.scaleSqrt([0, max], [0, Math.min(colW, rowH) / 2 - 4]);
+  box.replaceChildren();
+  const svg = d3.select(box).append('svg').attr('width', W + padR).attr('height', H).attr('viewBox', `0 0 ${W + padR} ${H}`).attr('role', 'img').attr('aria-label', 'Incidents by bug class and layer');
+  const ink = css('--ink'), muted = css('--muted'), hit = css('--hit'), zd = css('--zd'), rule = css('--rule'), grey = css('--grey-dot');
+  cols.forEach((b, j) => {
+    const x = labelW + j * colW + colW / 2, on = S.band === b, n = base.filter((r) => r.band === b).length;
+    const g = svg.append('g').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${bl(b)}: ${n}`).attr('opacity', S.band && !on ? 0.4 : 1).on('click', () => set({ band: on ? null : b })).on('keydown', (ev) => { if (ev.key === 'Enter') set({ band: on ? null : b }); });
+    g.append('text').attr('transform', `translate(${x - 4},${headH - 10}) rotate(-35)`).attr('font-size', narrow ? 11 : 12.5).attr('font-weight', on ? 700 : 500).attr('fill', b === MUTED_BAND ? muted : ink).text(({ 'Cryptographic libraries & protocols': 'Crypto libraries', 'Smart contracts & chains': 'Smart contracts', 'Libraries & supply chain': 'Libraries', 'Network appliances': 'Network appliances', 'Kernels & hypervisors': 'Kernels & hypervisors' })[b] || short(bl(b)));
+    svg.append('line').attr('x1', x).attr('x2', x).attr('y1', headH).attr('y2', H - 6).attr('stroke', rule).attr('stroke-dasharray', '1 3');
+  });
+  rows.forEach((c, i) => {
+    const y = headH + i * rowH + rowH / 2, on = S.cls === c, n = base.filter((r) => r.bug_class === c).length;
+    svg.append('line').attr('x1', 0).attr('x2', W).attr('y1', headH + i * rowH).attr('y2', headH + i * rowH).attr('stroke', rule);
+    const g = svg.append('g').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${c}: ${n}`).attr('opacity', S.cls && !on ? 0.4 : 1).on('click', () => set({ cls: on ? null : c })).on('keydown', (ev) => { if (ev.key === 'Enter') set({ cls: on ? null : c }); });
+    g.append('rect').attr('x', 0).attr('y', y - rowH / 2).attr('width', labelW - 8).attr('height', rowH).attr('fill', 'transparent');
+    g.append('text').attr('x', 0).attr('y', y + 1).attr('font-size', narrow ? 12.5 : 15).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(narrow ? c.replace(' & code execution', '').replace(' & access checks', ' & access').replace(' & business logic', ' logic').replace(' & request handling', ' handling') : c);
+    g.append('text').attr('x', 0).attr('y', y + 18).attr('font-size', 12).attr('fill', muted).text(n + ' incident' + (n === 1 ? '' : 's'));
+    svg.append('text').attr('x', W - 6).attr('y', y + 6).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', 22).attr('fill', ink).text(n);
+    cols.forEach((b, j) => {
+      const list = base.filter((r) => r.bug_class === c && r.band === b); if (!list.length) return;
+      const z = list.filter((r) => r.zero_day === true).length, x = labelW + j * colW + colW / 2, active = (!S.cls || S.cls === c) && (!S.band || S.band === b);
+      const cg = svg.append('g').style('cursor', 'pointer').attr('opacity', active ? 1 : 0.2).attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${c} in ${bl(b)}: ${list.length}`)
+        .on('click', () => set(S.cls === c && S.band === b ? { cls: null, band: null } : { cls: c, band: b })).on('keydown', (ev) => { if (ev.key === 'Enter') set({ cls: c, band: b }); })
+        .on('pointermove', (ev) => showTip(ev, [el('b', { text: `${c} · ${bl(b)}` }), el('div', { class: 'm', text: `${list.length} incident${list.length > 1 ? 's' : ''}${z ? ` · ${z} zero-day` : ''}` }), ...list.slice(0, 6).map((r) => el('div', { text: '· ' + clip(r.victim, 44) }))])).on('pointerleave', hideTip);
+      const R0 = Math.max(5, rr(list.length));
+      cg.append('circle').attr('cx', x).attr('cy', y).attr('r', R0).attr('fill', b === MUTED_BAND ? grey : hit);
+      if (z) cg.append('circle').attr('cx', x).attr('cy', y).attr('r', R0 * Math.sqrt(z / list.length)).attr('fill', zd);
+      if (R0 >= 13) cg.append('text').attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle').attr('font-size', 12).attr('font-weight', 700).attr('fill', css('--bg')).text(list.length);
+      else cg.append('text').attr('x', x + R0 + 4).attr('y', y + 4).attr('font-size', 11.5).attr('fill', muted).text(list.length);
+    });
+  });
 }
 function renderFlow() {
   const box = $('#flow'); const cw = box.clientWidth || 900, narrow = cw < 640;
@@ -554,7 +674,7 @@ function renderFlow() {
   const any = !!(S.func || S.group), base = (l) => (any ? (sel(l) ? 0.8 : 0.07) : 0.36);
   const lk = svg.append('g').selectAll('path').data(links).join('path').attr('class', 'lk')
     .attr('d', (l) => `M${x0},${l.sy} C${xm},${l.sy} ${xm},${l.ty} ${x1},${l.ty} L${x1},${l.ty + l.h} C${xm},${l.ty + l.h} ${xm},${l.sy + l.h} ${x0},${l.sy + l.h} Z`)
-    .attr('fill', hit).attr('fill-opacity', base)
+    .attr('fill', (l) => (l.g.k === 'crypto' || l.m.k === 'Money & contracts' ? css('--grey-dot') : hit)).attr('fill-opacity', base)
     .on('pointermove', (ev, l) => { lk.attr('fill-opacity', (o) => (o === l ? 0.9 : 0.08)); const list = pool.filter((r) => r.func === l.m.k && r.theme === l.g.k); showTip(ev, [el('b', { text: `${l.m.label} → ${l.g.label}` }), el('div', { class: 'm', text: l.c + ' incident' + (l.c > 1 ? 's' : '') }), ...list.slice(0, 5).map((r) => el('div', { text: '· ' + clip(r.victim, 44) })), list.length > 5 ? el('div', { class: 'm', text: '+' + (list.length - 5) + ' more' }) : null]); })
     .on('pointerleave', () => { hideTip(); lk.attr('fill-opacity', base); })
     .on('click', (ev, l) => set(S.func === l.m.k && S.group === l.g.k ? { func: null, group: null } : { func: l.m.k, group: l.g.k }));
@@ -611,70 +731,6 @@ function renderWeeks() {
       }
     }
     g.on('pointermove', (ev) => showTip(ev, [el('b', { text: `${fmtDay(iso(d.s))} – ${fmtDay(iso(partial ? WIN.end : d.e))}${partial ? ' (so far)' : ''}` }), el('div', { class: 'm', text: d.all.length + ' incidents' }), ...(list ? list.map((a) => el('div', { style: 'color:var(--accent)', text: '★ ' + a.label })) : []), ...d.sel.slice(0, 6).map((q) => el('div', { text: '· ' + clip(q.victim, 44) })), d.sel.length > 6 ? el('div', { class: 'm', text: '+' + (d.sel.length - 6) + ' more' }) : null])).on('pointerleave', hideTip);
-  });
-}
-
-const BUG_ORDER = ['Injection & code execution', 'Authentication & access checks', 'Contract & business logic', 'Memory safety', 'Path & request handling', 'Not disclosed'];
-const BUG_SUB = { 'Injection & code execution': 'SQL, command and template injection; remote code execution', 'Authentication & access checks': 'Login and authorization bypasses, forged tokens', 'Contract & business logic': 'Price-oracle, minting and governance flaws', 'Memory safety': 'Overflows, use-after-free, type confusion', 'Path & request handling': 'Path traversal, request forgery', 'Not disclosed': 'Flaw confirmed, class not reported' };
-function renderBugs() {
-  const box = $('#bugs'); box.replaceChildren();
-  const base = INC.filter((r) => match(r, 'cls'));
-  const zd = base.filter((r) => r.zero_day === true).length;
-  $('#bugs-dek').textContent = `${zd} of ${base.length} were zero-days, exploited before a fix existed. The rest used flaws that were already known, often already patched. Select a class to filter this tab.`;
-  BUG_ORDER.forEach((c) => {
-    const list = base.filter((r) => r.bug_class === c).sort((a, b) => (b.zero_day === true) - (a.zero_day === true) || a.t - b.t);
-    if (!list.length) return;
-    const on = S.cls === c, z = list.filter((r) => r.zero_day === true).length, sqs = el('div', { class: 'sqs' });
-    list.forEach((r) => {
-      const s = el('span', { class: 'sq' + (r.zero_day === true ? ' zd' : '') });
-      s.addEventListener('click', () => openIncident(r));
-      hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + (r.zero_day === true ? ' · zero-day' : '') }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
-      sqs.appendChild(s);
-    });
-    box.appendChild(el('div', { class: 'urow' + (S.cls && !on ? ' dim' : '') },
-      el('button', { type: 'button', class: 'ul', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ cls: on ? null : c }) }, c, el('small', { text: BUG_SUB[c] + (z ? ` · ${z} zero-day${z > 1 ? 's' : ''}` : '') })),
-      sqs, el('span', { class: 'n num', text: list.length })));
-  });
-}
-const VENDORS = [['Cisco', /cisco/i], ['Microsoft', /windows|sharepoint|microsoft/i], ['Google Chrome', /chrome/i], ['SonicWall', /sonicwall/i], ['Citrix NetScaler', /citrix|netscaler/i], ['Fortinet', /forti/i], ['Ivanti', /ivanti/i], ['Apple', /apple|iphone|macos|ipad/i], ['Linux kernel', /^linux/i], ['F5', /\bf5\b/i]];
-function renderSpread() {
-  const box = $('#spread'); box.replaceChildren();
-  const groups = d3.groups(INC.filter((r) => r.flaw_group), (r) => r.flaw_group).filter(([, v]) => v.length > 1).sort((a, b) => b[1].length - a[1].length);
-  if (!groups.length) { box.appendChild(el('p', { class: 'help', text: 'No flaw led to more than one incident in this period.' })); }
-  const spanOf = (v) => (d3.max(v, (r) => r.t) - d3.min(v, (r) => r.t)) / 864e5;
-  const maxSpan = Math.max(7, ...groups.map(([, v]) => spanOf(v)));
-  groups.forEach(([k, v]) => {
-    v.sort((a, b) => a.t - b.t);
-    const t0 = v[0].t, span = Math.round(spanOf(v));
-    const tl = el('div', { class: 'tl' });
-    const chips = el('div', { class: 'chips' }, v.map((r) => el('button', { type: 'button', class: 'chip', onclick: () => openIncident(r) }, el('span', { class: 'd', text: '+' + Math.round((r.t - t0) / 864e5) + 'd' }), r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim())));
-    const card = el('div', { class: 'chain' + (v.some((r) => match(r)) ? '' : ' dim') },
-      el('div', {}, el('div', { class: 'big-n num', text: v.length }), el('div', { class: 'cn', text: k }), el('div', { class: 'cs', text: `${v.length} victims over ${span} day${span === 1 ? '' : 's'} · first ${fmtDay(v[0].date)} · ${bl(v[0].band)}` })),
-      el('div', {}, tl, chips));
-    box.appendChild(card);
-    requestAnimationFrame(() => {
-      const W = tl.clientWidth || 600, H = 46;
-      const x = d3.scaleLinear([0, maxSpan], [8, W - 8]);
-      const svg = d3.select(tl).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', `${k}: ${v.length} incidents over ${span} days`);
-      const rule = css('--rule'), muted = css('--muted'), hit = css('--hit'), acc = css('--accent'), bg = css('--bg');
-      svg.append('line').attr('x1', x(0)).attr('x2', x(maxSpan)).attr('y1', 22).attr('y2', 22).attr('stroke', rule);
-      svg.append('line').attr('x1', x(0)).attr('x2', x(span)).attr('y1', 22).attr('y2', 22).attr('stroke', hit).attr('stroke-width', 3);
-      d3.range(0, maxSpan + 1, maxSpan > 20 ? 7 : 2).forEach((d) => svg.append('text').attr('x', x(d)).attr('y', H - 2).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', muted).text(d === 0 ? 'day 0' : '+' + d + 'd'));
-      const byDay = d3.group(v, (r) => Math.round((r.t - t0) / 864e5));
-      v.forEach((r) => {
-        const d = Math.round((r.t - t0) / 864e5), same = byDay.get(d), i = same.indexOf(r);
-        const c = svg.append('circle').attr('cx', x(d)).attr('cy', 22 - (i - (same.length - 1) / 2) * 9).attr('r', 6).attr('fill', r.zero_day === true ? css('--zd') : hit).attr('stroke', bg).attr('stroke-width', 2).style('cursor', 'pointer')
-          .on('pointermove', (ev) => showTip(ev, [el('b', { text: r.victim }), el('div', { class: 'm', text: `${fmtDay(r.date)} · day ${d}` })])).on('pointerleave', hideTip).on('click', () => openIncident(r));
-        c.attr('tabindex', 0).attr('role', 'button').attr('aria-label', r.victim).on('keydown', (ev) => { if (ev.key === 'Enter') openIncident(r); });
-      });
-    });
-  });
-  const rbox = $('#repeat'); rbox.replaceChildren();
-  VENDORS.map(([name, re]) => [name, INC.filter((r) => re.test(r.victim + ' ' + r.product) && !r.flaw_group.startsWith('Metabase'))]).filter(([, v]) => v.length > 1).sort((a, b) => b[1].length - a[1].length).forEach(([name, v]) => {
-    const prods = [...new Set(v.map((r) => r.product.replace(/\s*\(.*?\)\s*/g, ' ').trim()))].slice(0, 4).join(' · ');
-    const zd = v.filter((r) => r.zero_day === true).length;
-    rbox.appendChild(el('button', { type: 'button', class: 'rp' + (v.some((r) => match(r)) ? '' : ' dim'), onclick: () => openList(`${name}: incidents this period`, 'Products with repeat incidents', v.sort((a, b) => a.t - b.t)) },
-      el('span', { class: 'v', text: name }), el('span', { class: 'n num', text: v.length }), el('span', { class: 'p', text: prods + (zd ? ` · ${zd} zero-day${zd > 1 ? 's' : ''}` : '') })));
   });
 }
 
@@ -749,7 +805,7 @@ function renderCum() {
 // ---------- render ----------
 function render() {
   hideTip(); renderFilt(); renderTicker(); renderLive();
-  if (S.view === 'attacks') { renderHero(); renderBugs(); renderSpread(); renderFlow(); renderWeeks(); }
+  if (S.view === 'attacks') { renderHero(); renderTree(); renderMatrix(); renderFlow(); renderWeeks(); }
   else { renderPHero(); renderStack(); renderCum(); }
 }
 let lastW = innerWidth, rt = 0;

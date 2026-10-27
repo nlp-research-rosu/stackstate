@@ -105,3 +105,8 @@ Industrial control and PLC firmware,Firmware,Critical infrastructure,7.0,none,,P
 x86 CPU datapaths and microcode,Hardware & ISA,Over 2B CPUs,9.3,some,36;37,"Speculation, microcode, security monitors",Intel execution-engine verification; ACL2 x86 model
 Arm application cores,Hardware & ISA,Over 10B chips,10.0,some,33;34,Third-party cores and speculation,Machine-readable Arm spec used to verify Arm cores
 "Confidential computing monitors (SGX, TDX, SEV)",Hardware & ISA,Most cloud confidential VMs,8.0,none,,Security monitors end to end,None public
+Custom and third-party web applications,Applications & data,Most organizations,9.0,none,,"Application code, uploads, plugins",None public
+Infrastructure management consoles (vCenter),Applications & data,Most enterprise data centers,7.5,none,,Management web services,None public
+VoIP and PBX systems,Applications & data,Most business phone systems,7.0,none,,Web interfaces and call handling,None public
+"Web frameworks (Starlette, Django, Express)",Libraries & supply chain,Most web applications,9.0,none,,"Routing, request parsing, middleware",None public
+"OS services and file handlers (Windows Shell, macOS daemons)",Kernels & hypervisors,Billions of desktops and phones,9.5,none,,Network services and file-format handling,None public
