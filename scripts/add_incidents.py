@@ -3,7 +3,7 @@
 Input: one or more JSON files, each a list of objects with these keys:
   date, victim, sector, country, attack_type, initial_vector, product, cve, threat_actor, impact,
   records_or_loss, people_exposed, code_flaw, zero_day, claim_status, source_url
-Optional: amount_lost_usd, bug_class.
+Optional: amount_lost_usd, bug_class, component (an exact stack-map name, to override the keyword rules).
 
 Each new incident gets the next id, its component and layer from the stack map, and the
 classify rules, the same way the daily refresh fills them. Entries that match an existing
@@ -58,11 +58,17 @@ def main():
                 continue
             r = {k: "" for k in refresh.INCIDENT_KEYS}
             r.update({k: str(x.get(k, "")) for k in ("date", "victim", "sector", "country", "attack_type", "initial_vector", "product", "cve", "threat_actor", "impact", "records_or_loss", "claim_status", "source_url")})
+            if x.get("component"):
+                r["product"] = r["product"] or x["component"]
             r.update(id=str(next_id + len(added)), formally_verified="none found", lang="Not disclosed",
                      amount_lost_usd=str(int(x["amount_lost_usd"])) if x.get("amount_lost_usd") else "")
             fixed = {"code_flaw": bool(x["code_flaw"]), "zero_day": bool(x.get("zero_day")), "people": int(x.get("people_exposed") or 0)}
             if x.get("bug_class"):
                 fixed["bug_class"] = x["bug_class"]
+            if x.get("component"):
+                fixed["component"] = x["component"]
+                fixed["band"] = refresh.STACK_BAND[x["component"]]
+                fixed["layer"] = refresh.LAYER_BY_BAND.get(fixed["band"], "unknown")
             added.append(refresh.finish(r, **fixed))
     for r in added:
         print(f'+ {r["id"]} {r["date"]} {r["victim"]} | people {r["people"]:,} | {"code flaw" if r["code_flaw"] else "other cause"} | {r["component"] or "-"}')

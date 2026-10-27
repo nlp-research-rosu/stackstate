@@ -117,3 +117,4 @@ Railway signalling and train control,Safety-critical systems,Billions of rail tr
 Spacecraft flight software,Safety-critical systems,Thousands of active spacecraft,3.5,narrow,83,Flight code as flown on most missions,Model checking of NASA Deep Space 1 Remote Agent found concurrency bugs before flight
 "Cardiac devices (pacemakers, ICDs)",Safety-critical systems,Over 1M implanted a year,6.0,none,84,Shipped device firmware,Pacemaker Formal Methods Challenge models of a Boston Scientific specification
 Infusion pumps,Safety-critical systems,Millions in hospitals,6.5,none,85,Shipped pump software,FDA generic PCA pump model checked against FDA safety requirements
+"Enterprise business applications (PTC Windchill, Oracle EBS, SAP)",Applications & data,Most large manufacturers and enterprises,7.0,none,,"Business logic, web interfaces and integrations",None public

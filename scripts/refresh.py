@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from classify import component_for, enrich  # noqa: E402
+from classify import bug_class, component_for, enrich, flaw_group  # noqa: E402
 import seed_data  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -363,6 +363,11 @@ def finish(r, **fixed):
         r[k] = v
     if "code_flaw" in fixed and not fixed["code_flaw"]:
         r.update(bug_class="", zero_day=False, flaw_group="", component="")
+    elif fixed.get("code_flaw"):
+        # The text rules may have judged this not a code flaw; fill what they skipped.
+        r["component"] = r.get("component") or comp
+        r["bug_class"] = r.get("bug_class") or bug_class(r)
+        r["flaw_group"] = r.get("flaw_group") or flaw_group(r)
     r["func"] = FUNC_BY_BUG.get(r.get("bug_class", ""), "Unknown")
     if "people" in fixed:
         r["people"] = int(fixed["people"] or 0)
