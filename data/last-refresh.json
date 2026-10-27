@@ -1,5 +1,5 @@
 {
- "run_at": "2026-10-27T19:50:21+00:00",
+ "run_at": "2026-10-27T20:30:59+00:00",
  "today": "2026-10-27",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -12,6 +12,7 @@
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error"
  },
  "kev_skipped": [
+  "CVE-2026-48356",
   "CVE-2026-106931",
   "CVE-2026-96656",
   "CVE-2026-96655",
@@ -22,18 +23,15 @@
   "CVE-2025-61624",
   "CVE-2026-21589",
   "CVE-2026-105134",
-  "CVE-2026-105133"
+  "CVE-2026-105133",
+  "CVE-2026-0322"
  ],
  "errors": [],
  "added_incidents": [
-  "173 2026-10-23 Arista VeloCloud Orchestrator users (code flaw)",
-  "174 2026-10-23 Collabora Online: Built-in CODE Server users (code flaw)"
+  "175 2026-10-27 Google Brotli users (code flaw)"
  ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "news_items": 102,
- "llm": false,
- "corrections": [
-  "175 Palo Alto Networks PAN-OS removed by hand: the news match was a different story. The matcher now needs the CVE, or the product named in the headline."
- ]
+ "llm": false
 }
