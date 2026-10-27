@@ -15,7 +15,7 @@ __FONTS__
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
   --hit: #f08a5d; --hit-soft: #6e3a26;
   --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
-  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d;
+  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
   --f-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -27,7 +27,7 @@ __FONTS__
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
   --hit: #b5532a; --hit-soft: #f3e2d8;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
-  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff;
+  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e;
   --shadow: 0 12px 32px rgba(17,21,29,.14);
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -160,6 +160,25 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .ukey [hidden] { display: none; }
 @media (max-width: 700px) { .urow { grid-template-columns: minmax(0, 1fr) 4ch; gap: 8px 12px; } .urow .sqs { grid-column: 1 / -1; grid-row: 2; } .sq { width: 14px; height: 14px; } }
 #flow { margin-top: 26px; }
+.sq.zd { background: var(--zd); }
+.sub-h { font-family: var(--f-serif); font-weight: 400; font-size: 21px; margin: 34px 0 12px; }
+.chain { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 10px 24px; padding: 18px 0; border-top: 1px solid var(--rule); }
+.chain:last-child { border-bottom: 1px solid var(--rule); }
+.chain .cn { font-size: 16px; font-weight: 600; line-height: 1.3; }
+.chain .cs { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.chain .big-n { font-family: var(--f-serif); font-size: 40px; line-height: 1; color: var(--hit); }
+.chain .tl svg { display: block; overflow: visible; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { appearance: none; border: 1px solid var(--rule-2); background: var(--bg-2); color: var(--ink); font-size: 13px; padding: 4px 9px; cursor: pointer; display: inline-flex; gap: 7px; align-items: baseline; }
+.chip:hover { border-color: var(--ink); }
+.chip .d { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+@media (max-width: 700px) { .chain { grid-template-columns: minmax(0, 1fr); } }
+.repeat { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 8px; }
+.rp { appearance: none; border: 1px solid var(--rule); background: var(--bg-2); color: var(--ink); text-align: left; padding: 12px 14px; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; }
+.rp:hover { border-color: var(--ink); }
+.rp .v { font-weight: 600; font-size: 15px; }
+.rp .p { grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.rp .n { font-family: var(--f-serif); font-size: 30px; line-height: 1; color: var(--hit); }
 #flow .lk { cursor: pointer; transition: fill-opacity .15s; }
 #flow .nd { cursor: pointer; }
 .method { margin-top: 22px; font-size: 13.5px; color: var(--ink-2); }
@@ -230,9 +249,22 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
     <h1 class="big"><span class="hit num" id="a-n">66</span> reported incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
     <p class="sub" id="a-sub">Exploited vulnerabilities, injection and bypass bugs, and contract logic errors. One square per incident, on the layer of software where the flaw was.</p>
     <div class="units" id="units"></div>
-    <div class="ukey"><span><i style="background:var(--hit)"></i>Confirmed</span><span><i style="box-shadow:inset 0 0 0 2px var(--hit)"></i>Claimed, not yet confirmed</span><span id="newkey" hidden><i style="box-shadow:0 0 0 2px var(--accent);background:var(--hit)"></i><span id="newtxt"></span></span></div>
+    <div class="ukey"><span><i style="background:var(--hit)"></i>Confirmed</span><span><i style="background:var(--zd)"></i>Zero-day</span><span><i style="box-shadow:inset 0 0 0 2px var(--hit)"></i>Claimed, not yet confirmed</span><span id="newkey" hidden><i style="box-shadow:0 0 0 2px var(--accent);background:var(--hit)"></i><span id="newtxt"></span></span></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
+
+  <section class="blk wrap" id="a-bugs">
+    <div class="blk-h"><div><h2 class="h2">What kind of bug</h2><p class="dek" id="bugs-dek"></p></div></div>
+    <div class="units" id="bugs"></div>
+    <div class="ukey"><span><i style="background:var(--zd)"></i>Zero-day: exploited before a fix existed</span><span><i style="background:var(--hit)"></i>Known flaw</span></div>
+  </section>
+
+  <section class="blk wrap" id="a-spread">
+    <div class="blk-h"><div><h2 class="h2">One flaw, many victims</h2><p class="dek">Single flaws that led to incidents at several organizations, laid out by days since the first victim. Select a dot or name for the case.</p></div></div>
+    <div id="spread"></div>
+    <h3 class="sub-h">Products with more than one incident this period</h3>
+    <div class="repeat" id="repeat"></div>
+  </section>
 
   <section class="blk wrap" id="a-flow">
     <div class="blk-h"><div><h2 class="h2">What the flawed code did, and who was hit</h2><p class="dek">Left: the job of the code that failed. Right: the kind of organization affected. Band thickness is the number of incidents. Hover to trace a path; select a node or band to filter this tab.</p></div></div>
@@ -261,8 +293,8 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
   <section class="blk wrap" id="p-stack">
     <figure class="fig" style="margin:0">
       <h2 class="fig-h">Formal verification across the software stack</h2>
-      <p class="fig-d">Each block is a widely deployed component, sized by estimated install base. Green shading shows the approximate share covered by published, machine-checked verification.</p>
-      <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (approx. share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span></div>
+      <p class="fig-d">Each block is a widely deployed component, sized by estimated install base. Green shading shows roughly how much of it is covered by published, machine-checked verification: all of it, major parts, some parts or a narrow part. Select a block for the evidence.</p>
+      <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (shading = rough share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span></div>
       <div class="stack" id="stack"></div>
       <figcaption class="fig-f"><span><b>Stack State</b> · State of the Stack</span><span id="stack-src">Published verification, 2004–2026 · shares are rough estimates</span></figcaption>
     </figure>
@@ -337,11 +369,13 @@ const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Micr
 let ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
 let seen = null; try { seen = new Set(JSON.parse(localStorage.getItem('pg-seen') || 'null') || []); } catch (e) { seen = null; }
 const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
+const COVER = { full: 1, major: 0.6, some: 0.3, narrow: 0.1, none: 0 };
+const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some: 'some parts verified', narrow: 'narrow parts verified', none: 'none published' };
 function ingest(data) {
   ALL = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
   ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
   INC = ALL.filter(isFlaw);
-  ST.forEach((s) => { const u = Number(s.usage_log10) || 0, b = Number(s.blank_score); s.share = s.status_class === 'verified' ? 1 : (b && u ? Math.max(0, 1 - b / u) : 0); });
+  ST.forEach((s) => { s.share = COVER[s.coverage] != null ? COVER[s.coverage] : s.status_class === 'verified' ? 1 : 0; s.evidence = Array.isArray(s.evidence) ? s.evidence : String(s.evidence || '').split(';').filter(Boolean); });
   const ts = ALL.map((r) => r.t);
   WIN = { start: d3.utcDay.floor(new Date(d3.min(ts))), end: d3.utcDay.floor(new Date(d3.max(ts))) };
 }
@@ -365,9 +399,9 @@ async function poll(first) {
 }
 
 // ---------- state ----------
-const S = { view: 'attacks', group: null, week: null, band: null, func: null, status: null };
+const S = { view: 'attacks', group: null, week: null, band: null, func: null, cls: null, status: null };
 const weekOf = (r) => Math.floor((d3.utcDay.floor(new Date(r.t)) - WIN.start) / (7 * 864e5));
-const match = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'func' || !S.func || r.func === S.func);
+const match = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'func' || !S.func || r.func === S.func) && (skip === 'cls' || !S.cls || r.bug_class === S.cls);
 const set = (p) => { Object.assign(S, p); render(); };
 
 // ---------- tooltip + drawer ----------
@@ -423,11 +457,12 @@ function openProofList(title, list) {
 function openComponent(c) {
   const prs = PR.filter((p) => p.band === c.band);
   openDrawer(bl(c.band), c.component, [
-    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Fully verified' : c.share > 0 ? `About ${Math.round(c.share * 100)}% verified` : 'No published verification' }),
-    dl([['Install base', c.usage_estimate], ['Status', c.verification_status]]),
+    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Fully verified' : c.share > 0 ? (COVER_TXT[c.coverage] || 'Partly verified').replace(/^./, (m) => m.toUpperCase()) : 'No published verification' }),
+    dl([['Install base', c.usage_estimate], ['Layer', bl(c.band)]]),
     sec('Not covered', el('p', { class: 'dr-p', text: c.what_is_unverified })),
     sec('Closest existing work', el('p', { class: 'dr-p', text: c.closest_existing_work })),
-    sec(`Verification efforts in this layer (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 12).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
+    sec(`Evidence (${c.evidence.length})`, c.evidence.length ? el('ul', { class: 'mini' }, c.evidence.map((id) => PR.find((p) => String(p.id) === String(id))).filter(Boolean).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: p.year + ' · ' + STATUS[p.status] })))) : el('p', { class: 'help', text: 'No published verification found.' })),
+    sec(`All verification efforts in this layer (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 12).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
   ]);
 }
 
@@ -466,9 +501,9 @@ function renderTicker() {
 }
 function renderFilt() {
   const f = $('#filt');
-  const p = S.view === 'attacks' ? [S.band && bl(S.band), S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
+  const p = S.view === 'attacks' ? [S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
   const parts = p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
-  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, status: null }) }));
+  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, cls: null, status: null }) }));
 }
 
 // ================= INCIDENTS =================
@@ -484,7 +519,7 @@ function renderHero() {
     if (!list.length) return;
     const on = S.band === b, sqs = el('div', { class: 'sqs' });
     list.forEach((r) => {
-      const s = el('span', { class: 'sq' + (r.claim_status === 'reported' ? '' : ' cl') + (freshIds.has(String(r.id)) ? ' fresh' : '') + (newIds.has(String(r.id)) ? ' isnew' : ''), style: match(r, 'band') ? null : 'opacity:.16' });
+      const s = el('span', { class: 'sq' + (r.claim_status === 'reported' ? '' : ' cl') + (r.zero_day === true ? ' zd' : '') + (freshIds.has(String(r.id)) ? ' fresh' : '') + (newIds.has(String(r.id)) ? ' isnew' : ''), style: match(r, 'band') ? null : 'opacity:.16' });
       s.addEventListener('click', () => openIncident(r));
       hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + (r.cve && r.cve !== 'unknown' ? ' · ' + r.cve.split(';')[0] : '') }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
       sqs.appendChild(s);
@@ -497,7 +532,7 @@ function renderHero() {
 }
 function renderFlow() {
   const box = $('#flow'); const cw = box.clientWidth || 900, narrow = cw < 640;
-  const pool = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band));
+  const pool = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band) && (!S.cls || r.bug_class === S.cls));
   const L = FUNC_ORDER.map((k) => ({ k, label: FUNC_LABEL[k], n: pool.filter((r) => r.func === k).length })).filter((n) => n.n);
   const Rn = GROUPS.map((g) => ({ ...g, n: pool.filter((r) => r.theme === g.k).length })).filter((n) => n.n);
   box.replaceChildren();
@@ -542,7 +577,7 @@ function renderWeeks() {
   const box = $('#weeks'); const cw = box.clientWidth || 900, narrow = cw < 640;
   const n = Math.floor((WIN.end - WIN.start) / (7 * 864e5)) + 1;
   const data = d3.range(n).map((i) => { const s = d3.utcDay.offset(WIN.start, i * 7), all = INC.filter((r) => weekOf(r) === i); return { i, s, e: d3.utcDay.offset(s, 6), all, sel: all.filter((r) => match(r, 'week')) }; });
-  const narrowed = !!(S.group || S.func || S.band);
+  const narrowed = !!(S.group || S.func || S.band || S.cls);
   const days = (WIN.end - WIN.start) / 864e5 + 1;
   $('#weeks-dek').textContent = `Seven-day periods from ${fmtDay(iso(WIN.start))}; about one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours. Labels mark widely covered incidents. Select a week to filter.`;
   const annH = narrow ? 0 : 64, W = cw, H = (narrow ? 220 : 280) + annH, m = { t: annH, r: 6, b: 34, l: 6 };
@@ -579,6 +614,70 @@ function renderWeeks() {
   });
 }
 
+const BUG_ORDER = ['Injection & code execution', 'Authentication & access checks', 'Contract & business logic', 'Memory safety', 'Path & request handling', 'Not disclosed'];
+const BUG_SUB = { 'Injection & code execution': 'SQL, command and template injection; remote code execution', 'Authentication & access checks': 'Login and authorization bypasses, forged tokens', 'Contract & business logic': 'Price-oracle, minting and governance flaws', 'Memory safety': 'Overflows, use-after-free, type confusion', 'Path & request handling': 'Path traversal, request forgery', 'Not disclosed': 'Flaw confirmed, class not reported' };
+function renderBugs() {
+  const box = $('#bugs'); box.replaceChildren();
+  const base = INC.filter((r) => match(r, 'cls'));
+  const zd = base.filter((r) => r.zero_day === true).length;
+  $('#bugs-dek').textContent = `${zd} of ${base.length} were zero-days, exploited before a fix existed. The rest used flaws that were already known, often already patched. Select a class to filter this tab.`;
+  BUG_ORDER.forEach((c) => {
+    const list = base.filter((r) => r.bug_class === c).sort((a, b) => (b.zero_day === true) - (a.zero_day === true) || a.t - b.t);
+    if (!list.length) return;
+    const on = S.cls === c, z = list.filter((r) => r.zero_day === true).length, sqs = el('div', { class: 'sqs' });
+    list.forEach((r) => {
+      const s = el('span', { class: 'sq' + (r.zero_day === true ? ' zd' : '') });
+      s.addEventListener('click', () => openIncident(r));
+      hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + (r.zero_day === true ? ' · zero-day' : '') }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
+      sqs.appendChild(s);
+    });
+    box.appendChild(el('div', { class: 'urow' + (S.cls && !on ? ' dim' : '') },
+      el('button', { type: 'button', class: 'ul', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ cls: on ? null : c }) }, c, el('small', { text: BUG_SUB[c] + (z ? ` · ${z} zero-day${z > 1 ? 's' : ''}` : '') })),
+      sqs, el('span', { class: 'n num', text: list.length })));
+  });
+}
+const VENDORS = [['Cisco', /cisco/i], ['Microsoft', /windows|sharepoint|microsoft/i], ['Google Chrome', /chrome/i], ['SonicWall', /sonicwall/i], ['Citrix NetScaler', /citrix|netscaler/i], ['Fortinet', /forti/i], ['Ivanti', /ivanti/i], ['Apple', /apple|iphone|macos|ipad/i], ['Linux kernel', /^linux/i], ['F5', /\bf5\b/i]];
+function renderSpread() {
+  const box = $('#spread'); box.replaceChildren();
+  const groups = d3.groups(INC.filter((r) => r.flaw_group), (r) => r.flaw_group).filter(([, v]) => v.length > 1).sort((a, b) => b[1].length - a[1].length);
+  if (!groups.length) { box.appendChild(el('p', { class: 'help', text: 'No flaw led to more than one incident in this period.' })); }
+  const spanOf = (v) => (d3.max(v, (r) => r.t) - d3.min(v, (r) => r.t)) / 864e5;
+  const maxSpan = Math.max(7, ...groups.map(([, v]) => spanOf(v)));
+  groups.forEach(([k, v]) => {
+    v.sort((a, b) => a.t - b.t);
+    const t0 = v[0].t, span = Math.round(spanOf(v));
+    const tl = el('div', { class: 'tl' });
+    const chips = el('div', { class: 'chips' }, v.map((r) => el('button', { type: 'button', class: 'chip', onclick: () => openIncident(r) }, el('span', { class: 'd', text: '+' + Math.round((r.t - t0) / 864e5) + 'd' }), r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim())));
+    const card = el('div', { class: 'chain' + (v.some((r) => match(r)) ? '' : ' dim') },
+      el('div', {}, el('div', { class: 'big-n num', text: v.length }), el('div', { class: 'cn', text: k }), el('div', { class: 'cs', text: `${v.length} victims over ${span} day${span === 1 ? '' : 's'} · first ${fmtDay(v[0].date)} · ${bl(v[0].band)}` })),
+      el('div', {}, tl, chips));
+    box.appendChild(card);
+    requestAnimationFrame(() => {
+      const W = tl.clientWidth || 600, H = 46;
+      const x = d3.scaleLinear([0, maxSpan], [8, W - 8]);
+      const svg = d3.select(tl).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', `${k}: ${v.length} incidents over ${span} days`);
+      const rule = css('--rule'), muted = css('--muted'), hit = css('--hit'), acc = css('--accent'), bg = css('--bg');
+      svg.append('line').attr('x1', x(0)).attr('x2', x(maxSpan)).attr('y1', 22).attr('y2', 22).attr('stroke', rule);
+      svg.append('line').attr('x1', x(0)).attr('x2', x(span)).attr('y1', 22).attr('y2', 22).attr('stroke', hit).attr('stroke-width', 3);
+      d3.range(0, maxSpan + 1, maxSpan > 20 ? 7 : 2).forEach((d) => svg.append('text').attr('x', x(d)).attr('y', H - 2).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', muted).text(d === 0 ? 'day 0' : '+' + d + 'd'));
+      const byDay = d3.group(v, (r) => Math.round((r.t - t0) / 864e5));
+      v.forEach((r) => {
+        const d = Math.round((r.t - t0) / 864e5), same = byDay.get(d), i = same.indexOf(r);
+        const c = svg.append('circle').attr('cx', x(d)).attr('cy', 22 - (i - (same.length - 1) / 2) * 9).attr('r', 6).attr('fill', r.zero_day === true ? css('--zd') : hit).attr('stroke', bg).attr('stroke-width', 2).style('cursor', 'pointer')
+          .on('pointermove', (ev) => showTip(ev, [el('b', { text: r.victim }), el('div', { class: 'm', text: `${fmtDay(r.date)} · day ${d}` })])).on('pointerleave', hideTip).on('click', () => openIncident(r));
+        c.attr('tabindex', 0).attr('role', 'button').attr('aria-label', r.victim).on('keydown', (ev) => { if (ev.key === 'Enter') openIncident(r); });
+      });
+    });
+  });
+  const rbox = $('#repeat'); rbox.replaceChildren();
+  VENDORS.map(([name, re]) => [name, INC.filter((r) => re.test(r.victim + ' ' + r.product) && !r.flaw_group.startsWith('Metabase'))]).filter(([, v]) => v.length > 1).sort((a, b) => b[1].length - a[1].length).forEach(([name, v]) => {
+    const prods = [...new Set(v.map((r) => r.product.replace(/\s*\(.*?\)\s*/g, ' ').trim()))].slice(0, 4).join(' · ');
+    const zd = v.filter((r) => r.zero_day === true).length;
+    rbox.appendChild(el('button', { type: 'button', class: 'rp' + (v.some((r) => match(r)) ? '' : ' dim'), onclick: () => openList(`${name}: incidents this period`, 'Products with repeat incidents', v.sort((a, b) => a.t - b.t)) },
+      el('span', { class: 'v', text: name }), el('span', { class: 'n num', text: v.length }), el('span', { class: 'p', text: prods + (zd ? ` · ${zd} zero-day${zd > 1 ? 's' : ''}` : '') })));
+  });
+}
+
 // ================= VERIFICATION =================
 function renderPHero() {
   const v = ST.filter((s) => s.status_class === 'verified'), p = ST.filter((s) => s.status_class === 'partial'), b = ST.filter((s) => s.status_class === 'blank');
@@ -602,16 +701,16 @@ function renderStack() {
     rows.forEach((r) => {
       const w = Math.pow(Math.max(0.5, Number(r.usage_log10) - 5), 1.6);
       const cls = r.share >= 1 ? 'ver' : r.share > 0 ? 'part' : '';
-      const b = el('button', { type: 'button', class: 'blk-c ' + cls, style: `flex:${w.toFixed(2)} 1 ${Math.round(110 + w * 10)}px` + (S.status && r.status_class !== S.status ? ';opacity:.22' : ''), onclick: () => openComponent(r) },
+      const b = el('button', { type: 'button', class: 'blk-c ' + cls, style: `flex:${w.toFixed(2)} 1 ${Math.round(96 + w * 8)}px` + (S.status && r.status_class !== S.status ? ';opacity:.22' : ''), onclick: () => openComponent(r) },
         el('span', { class: 'fill', style: `width:${(r.share * 100).toFixed(0)}%` }),
         el('span', { text: short(r.component) }),
-        el('span', { class: 'meta', text: r.share >= 1 ? 'fully verified' : r.share > 0 ? `~${Math.round(r.share * 100)}% verified` : 'none published' }));
-      hoverable(b, () => [el('b', { text: r.component }), el('div', { class: 'm', text: r.usage_estimate }), el('div', { text: 'Not covered: ' + r.what_is_unverified })]);
+        el('span', { class: 'meta', text: COVER_TXT[r.coverage] || (r.share >= 1 ? 'fully verified' : r.share > 0 ? 'partly verified' : 'none published') }));
+      hoverable(b, () => [el('b', { text: r.component }), el('div', { class: 'm', text: r.usage_estimate + ' · ' + (COVER_TXT[r.coverage] || '') }), r.coverage !== 'none' ? el('div', { text: 'Verified: ' + r.closest_existing_work }) : null, el('div', { text: 'Not covered: ' + r.what_is_unverified })]);
       blocks.appendChild(b);
     });
     box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', text: bl(band), 'aria-pressed': S.band === band ? 'true' : 'false', onclick: () => set({ band: S.band === band ? null : band }) }), blocks));
   });
-  $('#stack-src').textContent = `${ST.length} components · data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'} · shares are rough estimates`;
+  $('#stack-src').textContent = `${ST.length} components · coverage levels are editorial estimates · data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'}`;
 }
 function renderCum() {
   const box = $('#cum'); const cw = box.clientWidth || 800, narrow = cw < 560;
@@ -650,7 +749,7 @@ function renderCum() {
 // ---------- render ----------
 function render() {
   hideTip(); renderFilt(); renderTicker(); renderLive();
-  if (S.view === 'attacks') { renderHero(); renderFlow(); renderWeeks(); }
+  if (S.view === 'attacks') { renderHero(); renderBugs(); renderSpread(); renderFlow(); renderWeeks(); }
   else { renderPHero(); renderStack(); renderCum(); }
 }
 let lastW = innerWidth, rt = 0;

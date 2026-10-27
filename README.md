@@ -6,8 +6,8 @@ Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (private; shar
 
 The dashboard has two tabs:
 
-- **Incidents** (dark): publicly reported incidents from the last 13 weeks whose way in was a flaw in code (vulnerabilities, injection and bypass bugs, contract logic errors). Phishing, stolen credentials, misconfiguration and malicious packages are excluded. One square per incident by software layer, a flow from what the flawed code was doing to who was hit, and incidents by week.
-- **Verification** (light): how many of 40 widely deployed components have full published formal verification, a stack map of approximate verified share, and published verification efforts over time.
+- **Incidents** (dark): publicly reported incidents from the last 13 weeks whose way in was a flaw in code (vulnerabilities, injection and bypass bugs, contract logic errors). Phishing, stolen credentials, misconfiguration and malicious packages are excluded. One square per incident by software layer, incidents by bug class with zero-days marked, flaws that hit several organizations, a flow from what the flawed code was doing to who was hit, and incidents by week.
+- **Verification** (light): how many of 106 widely deployed components have full published formal verification, a stack map of how much of each is verified (with the evidence for each), and published verification efforts over time.
 
 The two tabs are deliberately separate; the page does not claim any proof would have prevented a given incident. Every chart is interactive, and filters on one chart apply to the rest of the tab.
 
@@ -26,7 +26,7 @@ scripts/
   build_page.py       template + fonts + site/data.json -> site/index.html
   seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot)
   classify.py         rules that assign each incident a group (`theme`) and a people count
-data/seed/            original CSV snapshot, Jul 28 - Oct 26, 2026
+data/seed/            original CSV snapshot, Jul 28 - Oct 26, 2026, plus stack_components.csv (the stack map, editable)
 docs/
   data-schema.md      every field in data.json
   daily-refresh.md    how the daily update job works, including its full instructions

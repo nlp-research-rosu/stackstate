@@ -28,6 +28,9 @@ All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `
 | func | Parsing & input, Auth & access, Crypto & keys, Memory & isolation, Network & remote, Data & storage, Compile & execute, Money & contracts, AI & agents, Supply chain, People, Unknown |
 | theme | dashboard group: ai, supply, cloud, gov, fin, health, edge, other, crypto (rules in `scripts/classify.py`) |
 | people | integer; people, accounts or records exposed if reported, else 0 |
+| bug_class | for code flaws: Memory safety, Injection & code execution, Authentication & access checks, Contract & business logic, Path & request handling, Not disclosed |
+| zero_day | boolean; exploited before a fix existed |
+| flaw_group | key shared by incidents from the same flaw (a named campaign or the first CVE) |
 | code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these appear on the Incidents tab. |
 
 **band values:** People, AI stack, Smart contracts & chains, Applications & data, Cloud & identity, Network appliances, Libraries & supply chain, Crypto & protocols, Compilers & runtimes, Kernels & hypervisors, Firmware, Hardware & ISA.
@@ -40,9 +43,11 @@ id, project, band, layer, language, what_verified, by_whom, method_class (`proof
 
 ## stack
 
-component, band, layer, usage_estimate, usage_log10 (log10 of estimated install base), status_class (`verified`, `partial`, `blank`), verification_status, blank_rank, blank_score, incidents_3mo, what_is_unverified, closest_existing_work.
+Built from `data/seed/stack_components.csv` (edit that file, then run `scripts/seed_data.py`).
 
-The page's "approximate share verified" is `1 - blank_score / usage_log10` (1.0 for `verified`). It is a rough editorial estimate, not a measurement.
+component, band, usage_estimate (text), usage_log10 (number, log10 of estimated install base; sets block width), coverage (`full`, `major`, `some`, `narrow`, `none`), evidence (list of proof ids from `proofs` that support the coverage level), what_is_unverified, closest_existing_work, status_class (derived: `verified` for full, `partial` for major/some/narrow, `blank` for none).
+
+Coverage levels are editorial estimates of how much of the deployed component is covered by published, machine-checked verification. Every level above `none` must cite at least one proof id.
 
 ## archive
 

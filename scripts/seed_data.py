@@ -21,6 +21,20 @@ def rows(name):
         return list(csv.DictReader(f))
 
 
+COVERAGE_STATUS = {"full": "verified", "major": "partial", "some": "partial", "narrow": "partial", "none": "blank"}
+
+
+def stack():
+    """Granular stack map. Each row cites proof ids from dashboard_proofs.csv as evidence."""
+    out = []
+    for r in rows("stack_components.csv"):
+        r["usage_log10"] = float(r["usage_log10"])
+        r["evidence"] = [e for e in r["evidence"].split(";") if e]
+        r["status_class"] = COVERAGE_STATUS[r["coverage"]]
+        out.append(r)
+    return out
+
+
 def main():
     incidents = [enrich(r) for r in rows("dashboard_incidents.csv")]
     out = {
@@ -28,7 +42,7 @@ def main():
         "generated_at": datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "incidents": incidents,
         "proofs": rows("dashboard_proofs.csv"),
-        "stack": rows("dashboard_stack.csv"),
+        "stack": stack(),
     }
     dest = ROOT / "site" / "data.json"
     dest.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

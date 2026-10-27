@@ -74,6 +74,43 @@ def code_flaw(r):
     return has_cve or bool(_CODE.search(t)) or r.get("root_cause") in ("logic_bug", "access_control", "price_manipulation", "oracle_manipulation")
 
 
+BUG_CLASSES = ["Memory safety", "Injection & code execution", "Authentication & access checks", "Contract & business logic", "Path & request handling", "Not disclosed"]
+
+
+def bug_class(r):
+    """Coarse class of the flaw, from the reported way in."""
+    t = " ".join(r.get(k, "") for k in ("initial_vector", "attack_type", "impact", "root_cause", "product", "victim")).lower()
+    if "metabase" in t:
+        return "Injection & code execution"
+    if re.search(r"overflow|underflow|double-free|use-after|out-of-b|type confusion|memory corruption|heap|race condition|link following", t):
+        return "Memory safety"
+    if re.search(r"injection|template-engine|command execution|code execution|\brce\b|deserializ", t):
+        return "Injection & code execution"
+    if re.search(r"auth|permission|bypass|jwt|access control|forge|unauthorized|signature|whitelist", t):
+        return "Authentication & access checks"
+    if re.search(r"oracle|price|governance|flash|mint|peg|logic|rounding|range-proof|precompile|interaction|created", t):
+        return "Contract & business logic"
+    if re.search(r"traversal|ssrf|host header", t):
+        return "Path & request handling"
+    return "Not disclosed"
+
+
+def zero_day(r):
+    t = " ".join(r.get(k, "") for k in ("attack_type", "initial_vector", "impact")).lower()
+    return bool(re.search(r"zero-day|0-day", t))
+
+
+def flaw_group(r):
+    """Key shared by incidents that came from the same flaw: a named campaign or the first CVE."""
+    t = " ".join(r.get(k, "") for k in ("initial_vector", "product", "victim")).lower()
+    if "metabase" in t:
+        return "Metabase SQL injection (CVE-2026-72898)"
+    if re.search(r"cosmos|evmos", t):
+        return "Cosmos EVM precompile flaw"
+    c = r.get("cve", "").split(";")[0].strip()
+    return c if c.lower().startswith("cve-") else ""
+
+
 # Hand corrections where the largest number in the report is not the people count.
 PEOPLE_OVERRIDES = {"Gyazo": 23_620_000}
 
@@ -81,6 +118,9 @@ PEOPLE_OVERRIDES = {"Gyazo": 23_620_000}
 def enrich(r):
     r["theme"] = theme(r)
     r["code_flaw"] = code_flaw(r)
+    r["bug_class"] = bug_class(r) if r["code_flaw"] else ""
+    r["zero_day"] = zero_day(r) if r["code_flaw"] else False
+    r["flaw_group"] = flaw_group(r) if r["code_flaw"] else ""
     text = r.get("records_or_loss", "") if r["theme"] == "crypto" else r.get("records_or_loss", "") + " ; " + r.get("impact", "")
     r["people"] = people(text)
     for prefix, n in PEOPLE_OVERRIDES.items():
