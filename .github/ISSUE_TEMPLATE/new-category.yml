@@ -1,0 +1,23 @@
+name: New row, column or category
+description: Suggest a component, a layer or a new field for the data.
+title: "Category: "
+labels: [category]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you suggesting?
+      options:
+        - A new component (a row on the stack map)
+        - A new layer or category of software
+        - A new column or field for the data
+        - An edge case we should decide on (math, algorithms, protocols)
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What it is, why it belongs, and any verification work or incidents you know of for it.
+    validations:
+      required: true

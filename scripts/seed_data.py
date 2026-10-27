@@ -1,7 +1,13 @@
-"""Rebuild site/data.json from the seed CSVs in data/seed/.
+"""Read the CSVs in data/seed/, and rebuild site/data.json from them.
 
-Run this only to start over from the original snapshot. Day to day, site/data.json is the
-source of truth: the daily refresh appends to it (see docs/daily-refresh.md).
+The Verification tab is edited in two CSVs, which are its source of truth:
+  data/seed/stack_components.csv  one row per software component (the stack map)
+  data/seed/dashboard_proofs.csv  one row per published verification effort
+The daily refresh (scripts/refresh.py) reloads both into site/data.json on every run.
+
+Incidents are different: site/data.json is their source of truth, and the daily refresh
+appends to it. Running this script directly rebuilds incidents from the original snapshot
+(data/seed/dashboard_incidents.csv), which drops everything the refresh has added since.
 """
 import csv
 import datetime
@@ -24,6 +30,10 @@ def rows(name):
 COVERAGE_STATUS = {"full": "verified", "major": "partial", "some": "partial", "narrow": "partial", "none": "blank"}
 
 
+def proofs():
+    return rows("dashboard_proofs.csv")
+
+
 def stack():
     """Granular stack map. Each row cites proof ids from dashboard_proofs.csv as evidence."""
     out = []
@@ -41,7 +51,7 @@ def main():
         "schema": 1,
         "generated_at": datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "incidents": incidents,
-        "proofs": rows("dashboard_proofs.csv"),
+        "proofs": proofs(),
         "stack": stack(),
     }
     dest = ROOT / "site" / "data.json"

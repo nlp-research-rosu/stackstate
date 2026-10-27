@@ -1,0 +1,32 @@
+name: Add an incident
+description: A publicly reported security incident that started with a flaw in code.
+title: "Incident: "
+labels: [incident, addition]
+body:
+  - type: markdown
+    attributes:
+      value: The Incidents tab covers the last 13 weeks and only incidents where the way in was a software defect (an exploited vulnerability, zero-day, injection, authentication bypass, memory-safety or contract logic bug).
+  - type: input
+    id: victim
+    attributes:
+      label: Who was hit
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date it was disclosed
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source link
+    validations:
+      required: true
+  - type: textarea
+    id: flaw
+    attributes:
+      label: The flaw
+      description: Product, CVE if any, and how the attackers got in.

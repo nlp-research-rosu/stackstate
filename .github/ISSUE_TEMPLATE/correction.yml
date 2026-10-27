@@ -1,0 +1,17 @@
+name: Correction
+description: Something on the page is wrong, out of date or overstated.
+title: "Correction: "
+labels: [correction]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong
+      description: The entry, what it says now, and what it should say.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source link
+      description: Where the correct information comes from.

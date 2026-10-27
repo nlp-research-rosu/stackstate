@@ -1,0 +1,52 @@
+name: Add a verification project
+description: Published, machine-checked verification of real software that is missing from the list.
+title: "Verification: "
+labels: [verification, addition]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Formal verification goes back to the 1960s, and this list misses a lot of it. Older and smaller projects are welcome too.
+        A link to a paper, report or repository is the one thing we need. The other fields help, but leave them blank if you're unsure.
+  - type: input
+    id: project
+    attributes:
+      label: Project
+      placeholder: "e.g. Paris Métro Line 14 train control (B method)"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source link
+      description: Paper, technical report, project page or repository.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What was verified, and what property
+      placeholder: "e.g. absence of run-time errors in the primary flight control software"
+  - type: input
+    id: who
+    attributes:
+      label: Who did it, and when
+  - type: input
+    id: deployed
+    attributes:
+      label: Where it runs
+      description: Product, system or users, if it shipped.
+  - type: dropdown
+    id: status
+    attributes:
+      label: How complete is it?
+      options:
+        - Full functional correctness of the deployed component
+        - Some properties, or part of the code
+        - A model or specification only
+        - Not sure
+  - type: input
+    id: component
+    attributes:
+      label: Component on the stack map it belongs to
+      description: Leave blank if none fits; we may add a row for it.

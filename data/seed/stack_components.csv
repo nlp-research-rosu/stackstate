@@ -103,7 +103,7 @@ GPU security firmware (NVIDIA),Firmware,NVIDIA GPUs,8.5,some,38,Most GPU firmwar
 "Automotive ECUs (AUTOSAR, infotainment)",Firmware,Over 1B vehicles,9.0,narrow,2;1,Most ECU software,CompCert used in some ECUs; seL4 in research vehicles
 Industrial control and PLC firmware,Firmware,Critical infrastructure,7.0,none,,PLC runtimes and engineering protocols,None public
 "IoT cameras and video recorders (Dahua, Hikvision and similar)",Firmware,Over 1B cameras and recorders,9.0,none,,"Authentication, cloud remote access and firmware updates",None public
-x86 CPU datapaths and microcode,Hardware & ISA,Over 2B CPUs,9.3,some,36;37,"Speculation, microcode, security monitors",Intel execution-engine verification; ACL2 x86 model
+x86 CPU datapaths and microcode,Hardware & ISA,Over 2B CPUs,9.3,some,36;37;82,"Speculation, microcode, security monitors",Intel execution-engine verification; ACL2 x86 model; AMD K5 division proof
 Arm application cores,Hardware & ISA,Over 10B chips,10.0,some,33;34,Third-party cores and speculation,Machine-readable Arm spec used to verify Arm cores
 "Confidential computing monitors (SGX, TDX, SEV)",Hardware & ISA,Most cloud confidential VMs,8.0,none,,Security monitors end to end,None public
 Custom and third-party web applications,Applications & data,Most organizations,9.0,none,,"Application code, uploads, plugins",None public
@@ -111,3 +111,9 @@ Infrastructure management consoles (vCenter),Applications & data,Most enterprise
 VoIP and PBX systems,Applications & data,Most business phone systems,7.0,none,,Web interfaces and call handling,None public
 "Web frameworks (Starlette, Django, Express)",Libraries & supply chain,Most web applications,9.0,none,,"Routing, request parsing, middleware",None public
 "OS services and file handlers (Windows Shell, macOS daemons)",Kernels & hypervisors,Billions of desktops and phones,9.5,none,,Network services and file-format handling,None public
+Avionics flight control software,Safety-critical systems,Most large airliners,8.0,some,78;79,Full functional correctness against flight requirements; most other avionics,Astrée proves no run-time errors in Airbus A340 and A380 flight control; Airbus replaces some unit tests with proofs
+Air traffic control systems,Safety-critical systems,Millions of flights a year,7.0,some,81,Functional behavior against requirements; most systems outside the UK,"NATS iFACTS: over 200,000 lines of SPARK proved free of run-time errors"
+Railway signalling and train control,Safety-critical systems,Billions of rail trips a year,9.0,some,80,Most signalling software worldwide; hardware and integration,Paris Métro Line 14 train control developed and proved in the B method (1998)
+Spacecraft flight software,Safety-critical systems,Thousands of active spacecraft,3.5,narrow,83,Flight code as flown on most missions,Model checking of NASA Deep Space 1 Remote Agent found concurrency bugs before flight
+"Cardiac devices (pacemakers, ICDs)",Safety-critical systems,Over 1M implanted a year,6.0,none,84,Shipped device firmware,Pacemaker Formal Methods Challenge models of a Boston Scientific specification
+Infusion pumps,Safety-critical systems,Millions in hospitals,6.5,none,85,Shipped pump software,FDA generic PCA pump model checked against FDA safety requirements

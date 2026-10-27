@@ -150,6 +150,12 @@ COMPONENT_BY_ID = {str(i): c for c, ids in _C.items() for i in ids}
 # Keyword rules for incidents added by the daily refresh (first match wins).
 # Each pattern is tested against vendor, product, victim and the way in.
 COMPONENT_RULES = [
+    (r"pacemaker|cardiac|defibrillator|\bicd\b", "Cardiac devices (pacemakers, ICDs)"),
+    (r"infusion pump|insulin pump", "Infusion pumps"),
+    (r"air traffic|\batc\b|eurocontrol|\bfaa\b", "Air traffic control systems"),
+    (r"avionics|flight control|fly-by-wire|aircraft", "Avionics flight control software"),
+    (r"railway|rail signal|interlocking|train control|\bcbtc\b|\betcs\b", "Railway signalling and train control"),
+    (r"spacecraft|satellite|flight software", "Spacecraft flight software"),
     (r"litellm|ai gateway|llm proxy", "AI gateways and proxies (LiteLLM and similar)"),
     (r"metabase|superset|tableau|power bi|looker|grafana", "BI and data tools (Metabase and similar)"),
     (r"sharepoint|exchange server|confluence|jira|collabora|onlyoffice|zimbra", "Enterprise collaboration servers (SharePoint, Exchange, Confluence)"),

@@ -1,6 +1,6 @@
 # Stack State
 
-**State of the Stack** is a public page with two halves. One tracks reported security incidents that started with a flaw in code. The other tracks published formal verification of the software most of us rely on.
+**State of the Stack** is a small community project with two incomplete lists. One tracks publicly reported security incidents that started with a flaw in code. The other tracks published formal verification of widely used software, from 1990s safety-critical systems to recent work. Formal verification goes back to the 1960s, and much of it isn't on the list yet: see [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
 
 Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (anyone with the link can view it)
 
@@ -8,7 +8,7 @@ The page has two tabs.
 
 **Incidents** (dark) covers publicly reported incidents from the last 13 weeks where the attackers got in through a flaw in code: exploited vulnerabilities, injection and bypass bugs, contract logic errors. Phishing, stolen credentials, misconfiguration and malicious packages are left out, and so are smart-contract and blockchain incidents with losses under $10M. The tab opens with a treemap of where the flawed code was, by component, that can be sized by number of incidents, people exposed or money stolen. Below that are a grid of bug type against layer with zero-days marked, a flow from what the flawed code was doing to who got hit, and a weekly bar chart.
 
-**Verification** (light) shows how many of 102 widely deployed components have full published formal verification, a stack map of how much of each one is verified (with the evidence behind it), and a running total of published verification work.
+**Verification** (light) shows how many of the 108 widely deployed components on our list (including avionics, rail, air traffic control, medical devices and spacecraft) have full published formal verification, a stack map of how much of each one is verified (with the evidence behind it), and a running total of published verification work.
 
 The tabs are kept apart on purpose. The page never claims that a proof would have stopped a given incident. Every chart is interactive, and a filter set on one chart applies to the rest of its tab.
 
@@ -26,6 +26,7 @@ src/
 scripts/
   build_page.py       template + fonts + site/data.json -> site/index.html
   seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot; drops refresh additions)
+  validate.py         checks the CSVs and data.json (runs on every pull request)
   refresh.py          daily update: CISA KEV + news feeds (+ Claude, if ANTHROPIC_API_KEY is set) -> site/data.json
   classify.py         rules that assign each incident a group (`theme`) and a people count
 data/seed/            original CSV snapshot, Jul 28 to Oct 26, 2026, plus stack_components.csv (the stack map, editable)

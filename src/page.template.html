@@ -48,6 +48,12 @@ a { color: var(--accent); }
 .bar-in { display: flex; align-items: center; gap: 16px; min-height: 56px; flex-wrap: wrap; }
 .brand { font-family: var(--f-serif); font-size: 21px; letter-spacing: -.01em; white-space: nowrap; }
 .brand i { font-style: italic; }
+.contrib { font-size: 14px; color: var(--ink-2); border: 1px solid var(--rule-2); padding: 7px 12px; text-decoration: none; white-space: nowrap; }
+.contrib:hover { color: var(--ink); border-color: var(--ink); }
+@media (max-width: 760px) { .contrib { order: 1; margin-left: auto; padding: 6px 10px; } .mode { order: 2; } }
+.lede { font-size: 16px; line-height: 1.55; color: var(--ink-2); max-width: 46rem; margin: 14px 0 0; }
+.lede a, .sug a { color: inherit; }
+.sug { margin-top: 18px; font-size: 14px; }
 .mode { display: inline-flex; border: 1px solid var(--rule-2); padding: 3px; gap: 3px; }
 .mode button { appearance: none; border: 0; background: transparent; padding: 7px 14px 7px 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .mode .sw { width: 13px; height: 13px; flex: none; border: 1px solid var(--rule-2); }
@@ -269,8 +275,9 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
       <button type="button" data-v="attacks" aria-pressed="true"><span class="sw" aria-hidden="true"></span>Incidents</button>
       <button type="button" data-v="proofs" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Verification</button>
     </div>
+    <a class="contrib" href="https://github.com/iamjustoutthere/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
-    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Live data</b> <span id="live-t"></span></span></div>
+    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Updated daily</b> <span id="live-t"></span></span></div>
   </div>
   <div class="ticker" id="ticker" aria-label="Latest entries"><div class="tk-track" id="tk"></div></div>
 </div>
@@ -302,7 +309,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>Every incident links to its public source. Layers and categories are our judgment. Updated daily.</p>
+    <p>A small community project, and an incomplete list. Every incident links to its public source; layers and categories are our judgment. Missing something? <a href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer" style="color:inherit">Suggest it on GitHub</a>.</p>
     <p>Formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. We don't claim any proof would have stopped any incident.</p>
   </footer>
 </main>
@@ -310,7 +317,8 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <!-- ================= VERIFICATION ================= -->
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
-    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used software components have full published formal verification</h1>
+    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used components on our list have full published formal verification</h1>
+    <p class="lede">Formal verification goes back to the 1960s, and this list misses a lot of it. It is a community effort: <a href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">suggest a project, a correction or a new category</a>.</p>
     <div class="cov" id="cov"></div>
   </header>
 
@@ -326,7 +334,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <section class="blk wrap" id="p-time">
     <div class="time-note">
       <figure class="fig" style="margin:0">
-        <h2 class="fig-h">Published formal verification efforts, <span id="cum-yrs"></span></h2>
+        <h2 class="fig-h">Verification efforts on our list, <span id="cum-yrs"></span></h2>
         <p class="fig-d" id="cum-d"></p>
         <div class="chart" id="cum"></div>
       </figure>
@@ -335,7 +343,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>Published, machine-checked verification. Install bases and verified shares are rough estimates. Every entry links to its source. Updated daily.</p>
+    <p>Published, machine-checked verification that we know of. Install bases and verified shares are rough estimates. Every entry links to its source. To add or fix something, open an issue or a pull request on <a href="https://github.com/iamjustoutthere/stackstate" target="_blank" rel="noopener noreferrer" style="color:inherit">GitHub</a>.</p>
   </footer>
 </main>
 
@@ -371,9 +379,9 @@ const ago = (ms) => { const m = Math.round(ms / 6e4); if (m < 1) return 'just no
 const dayAgo = (date) => { const d = Math.round((d3.utcDay.floor(new Date()) - Date.parse(date + 'T00:00:00Z')) / 864e5); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; };
 const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 
-const BANDS = ['People', 'AI stack', 'Smart contracts & chains', 'Applications & data', 'Cloud & identity', 'Network appliances', 'Libraries & supply chain', 'Crypto & protocols', 'Compilers & runtimes', 'Kernels & hypervisors', 'Firmware', 'Hardware & ISA'];
+const BANDS = ['People', 'AI stack', 'Safety-critical systems', 'Smart contracts & chains', 'Applications & data', 'Cloud & identity', 'Network appliances', 'Libraries & supply chain', 'Crypto & protocols', 'Compilers & runtimes', 'Kernels & hypervisors', 'Firmware', 'Hardware & ISA'];
 const BAND_LABEL = { 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
-const BAND_SUB = { 'AI stack': 'Model gateways, agent frameworks', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
+const BAND_SUB = { 'AI stack': 'Model gateways, agent frameworks', 'Safety-critical systems': 'Avionics, rail, medical devices, space', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
 const bl = (b) => BAND_LABEL[b] || b;
 const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
 const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
@@ -384,7 +392,7 @@ const GROUPS = [
 ];
 const GL = Object.fromEntries(GROUPS.map((g) => [g.k, g]));
 const STATUS = { VERIFIED: 'Fully verified', PARTIAL: 'Partial', SPEC_ONLY: 'Spec only', TESTING_ONLY: 'Testing only', IN_PROGRESS: 'In progress' };
-const METHOD = { proof_assistant: 'Proof assistant', 'proof_assistant+refinement': 'Proof assistant + refinement', smt_deductive: 'SMT / deductive verifier', symbolic_protocol: 'Symbolic protocol analysis', bounded_model_checking: 'Bounded model checking', model_checking: 'Model checking', testing_only: 'Testing only' };
+const METHOD = { abstract_interpretation: 'Sound static analysis (abstract interpretation)', proof_assistant: 'Proof assistant', 'proof_assistant+refinement': 'Proof assistant + refinement', smt_deductive: 'SMT / deductive verifier', symbolic_protocol: 'Symbolic protocol analysis', bounded_model_checking: 'Bounded model checking', model_checking: 'Model checking', testing_only: 'Testing only' };
 const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Microsoft SharePoint/, 'SharePoint'], [/^Google Chrome users$/, 'Chrome V8'], [/Defense Manpower/, 'Pentagon personnel data'], [/autonomous AI agent/, 'AI-agent campaign'], [/^Citrix NetScaler ADC/, 'NetScaler']];
 
 // ---------- data: embedded copy first, then data.json ----------
@@ -468,6 +476,8 @@ document.addEventListener('keydown', (e) => {
 });
 const dl = (pairs) => el('dl', { class: 'dl' }, pairs.filter(([, v]) => v != null && v !== '' && v !== 'unknown').flatMap(([k, v]) => [el('dt', { text: k }), el('dd', {}, v)]));
 const sec = (h, ...c) => el('div', { class: 'dr-sec' }, el('h4', { class: 'lab', text: h }), ...c);
+const REPO = 'https://github.com/iamjustoutthere/stackstate';
+const suggest = (text, template, title) => el('p', { class: 'sug' }, el('a', { href: `${REPO}/issues/new?template=${template}&title=${encodeURIComponent(title)}`, target: '_blank', rel: 'noopener noreferrer', text }));
 const srcLink = (u) => { const s = safeUrl(u); if (!s) return null; let host = 'Source'; try { host = new URL(s).hostname.replace(/^www\./, ''); } catch (e) { /* keep */ } return el('a', { href: s, target: '_blank', rel: 'noopener noreferrer', text: host + ' ↗' }); };
 function openIncident(r) {
   openDrawer(`${fmtDayY(r.date)} · ${r.claim_status === 'reported' ? 'reported' : 'claimed, not confirmed'}`, r.victim, [
@@ -475,6 +485,7 @@ function openIncident(r) {
     el('p', { class: 'dr-p', text: r.impact }),
     dl([['Flaw', r.initial_vector], ['CVE', r.cve], ['Product', r.product], ['Layer', bl(r.band)], ['Code was doing', FUNC_LABEL[r.func]], ['Language', r.lang], ['Attack', r.attack_type], ['Actor', r.threat_actor], ['Organization', GL[r.theme].label], ['Sector', r.sector], ['Country', r.country]]),
     safeUrl(r.source_url) ? sec('Source', el('p', {}, srcLink(r.source_url))) : null,
+    suggest('Suggest a correction', 'correction.yml', `Correction: ${r.victim}`),
   ]);
 }
 function openList(title, kicker, list) {
@@ -485,6 +496,7 @@ function openProof(p) {
     el('p', { class: 'dr-p', text: p.what_verified }),
     dl([['Status', STATUS[p.status] || p.status], ['Method', METHOD[p.method_class] || p.method_class], ['By', p.by_whom], ['Language', p.language], ['Coverage', p.coverage_of_deployed_code], ['Deployed in', p.deployed_in]]),
     safeUrl(p.source_url) ? sec('Source', el('p', {}, srcLink(p.source_url))) : null,
+    suggest('Suggest a correction', 'correction.yml', `Correction: ${p.project}`),
   ]);
 }
 function openProofList(title, list) {
@@ -499,6 +511,7 @@ function openComponent(c) {
     sec('Closest existing work', el('p', { class: 'dr-p', text: c.closest_existing_work })),
     sec(`Evidence (${c.evidence.length})`, c.evidence.length ? el('ul', { class: 'mini' }, c.evidence.map((id) => PR.find((p) => String(p.id) === String(id))).filter(Boolean).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: p.year + ' · ' + STATUS[p.status] })))) : el('p', { class: 'help', text: 'No published verification found.' })),
     sec(`All verification efforts in this layer (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 12).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
+    suggest('Know of verification work on this? Suggest it', 'add-verification.yml', `Verification: ${c.component}`),
   ]);
 }
 
@@ -522,7 +535,7 @@ function renderLive() {
   const live = $('#live'), g = gen ? Date.parse(gen) : null;
   live.classList.toggle('stale', !fetchedOk && lastCheck != null);
   const parts = [];
-  if (g) parts.push('· updated ' + ago(Date.now() - g));
+  if (g) parts.push('· last update ' + ago(Date.now() - g));
   if (S.view === 'attacks' && INC.length) parts.push('· newest entry ' + dayAgo(INC.reduce((a, b) => (b.t > a.t ? b : a)).date));
   $('#live-t').replaceChildren(document.createTextNode(parts.join(' ')), el('span', { class: 'muted', text: lastCheck ? ' · checked ' + d3.timeFormat('%H:%M')(new Date(lastCheck)) : '' }));
   live.title = fetchedOk ? 'Reading data.json, rechecked every 5 minutes' : 'Showing the copy stored in the page';

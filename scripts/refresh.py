@@ -12,6 +12,7 @@ Steps:
 Usage: python3 scripts/refresh.py [--no-llm] [--today YYYY-MM-DD] [--kev-file PATH] [--dry-run]
 """
 import argparse
+import csv
 import datetime as dt
 import email.utils
 import json
@@ -24,6 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from classify import component_for, enrich  # noqa: E402
+import seed_data  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "site" / "data.json"
@@ -61,11 +63,13 @@ PROOF_KEYS = [
     "coverage_of_deployed_code", "deployed_in", "source_url", "lang", "func",
 ]
 BANDS = [
+    "Safety-critical systems",
     "Smart contracts & chains", "Applications & data", "Cloud & identity", "Network appliances",
     "Libraries & supply chain", "Crypto & protocols", "Compilers & runtimes", "Kernels & hypervisors",
     "Firmware", "Hardware & ISA",
 ]
 LAYER_BY_BAND = {
+    "Safety-critical systems": "safety_critical",
     "Smart contracts & chains": "smart_contract", "Applications & data": "application", "Cloud & identity": "identity",
     "Network appliances": "network_device", "Libraries & supply chain": "library", "Crypto & protocols": "crypto",
     "Compilers & runtimes": "runtime", "Kernels & hypervisors": "os_kernel", "Firmware": "firmware",
@@ -230,7 +234,7 @@ PROOF_SCHEMA = {
                     "language": {"type": "string"},
                     "what_verified": {"type": "string"},
                     "by_whom": {"type": "string"},
-                    "method_class": {"type": "string", "enum": ["proof_assistant", "proof_assistant+refinement", "smt_deductive", "symbolic_protocol", "bounded_model_checking", "model_checking", "testing_only"]},
+                    "method_class": {"type": "string", "enum": ["proof_assistant", "proof_assistant+refinement", "smt_deductive", "abstract_interpretation", "symbolic_protocol", "bounded_model_checking", "model_checking", "testing_only"]},
                     "status": {"type": "string", "enum": ["VERIFIED", "PARTIAL", "SPEC_ONLY", "IN_PROGRESS"]},
                     "coverage_of_deployed_code": {"type": "string"},
                     "deployed_in": {"type": "string"},
@@ -378,6 +382,8 @@ def main():
 
     today = dt.date.fromisoformat(a.today) if a.today else dt.datetime.now(dt.timezone.utc).date()
     data = json.loads(DATA.read_text())
+    # The Verification tab comes from the CSVs, so edits merged there show up on the next run.
+    data["proofs"], data["stack"] = seed_data.proofs(), seed_data.stack()
     STACK_BAND.update({s["component"]: s["band"] for s in data["stack"]})
     log = {"run_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "today": today.isoformat(), "feeds": {}, "kev_skipped": [], "errors": [],
            "added_incidents": [], "added_proofs": [], "archived": 0}
@@ -403,6 +409,10 @@ def main():
 
     data["incidents"] += new
     data["proofs"] += new_proofs
+    if new_proofs and not a.dry_run:
+        f = seed_data.SEED / "dashboard_proofs.csv"
+        with open(f, "a", encoding="utf-8", newline="") as out:
+            csv.DictWriter(out, PROOF_KEYS).writerows(new_proofs)
     cutoff = (today - dt.timedelta(days=WINDOW_DAYS - 1)).isoformat()
     old = [r for r in data["incidents"] if r["date"] < cutoff]
     data["incidents"] = [r for r in data["incidents"] if r["date"] >= cutoff]

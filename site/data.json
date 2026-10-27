@@ -6863,6 +6863,142 @@
    "source_url": "https://publikationen.bibliothek.kit.edu/1000175582/155263011",
    "lang": "Java/.NET",
    "func": "Compile & execute"
+  },
+  {
+   "id": "78",
+   "project": "Astrée on Airbus flight control",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "C",
+   "what_verified": "Absence of run-time errors (overflows, division by zero, out-of-bounds access) proved for the A340 primary flight control software, about 132,000 lines of C, then for A380 flight control code",
+   "by_whom": "ENS (Cousot et al.) with Airbus France",
+   "method_class": "abstract_interpretation",
+   "year": "2003",
+   "status": "PARTIAL",
+   "coverage_of_deployed_code": "whole program, run-time errors only",
+   "deployed_in": "Airbus A340, A380 fly-by-wire",
+   "source_url": "https://www.astree.ens.fr/",
+   "lang": "C/C++",
+   "func": "Memory & isolation"
+  },
+  {
+   "id": "79",
+   "project": "Airbus unit proof (Caveat, Frama-C)",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "C",
+   "what_verified": "Formal unit proofs used in place of some unit tests for avionics C code under DO-178B, in use at Airbus since 2001",
+   "by_whom": "Airbus (Souyris, Wiels, Delmas, Delseny)",
+   "method_class": "smt_deductive",
+   "year": "2009",
+   "status": "PARTIAL",
+   "coverage_of_deployed_code": "selected units",
+   "deployed_in": "Airbus avionics software",
+   "source_url": "https://link.springer.com/chapter/10.1007/978-3-642-05089-3_34",
+   "lang": "C/C++",
+   "func": "Compile & execute"
+  },
+  {
+   "id": "80",
+   "project": "Paris Métro Line 14 (Météor) in B",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "Ada (generated from B)",
+   "what_verified": "Safety-critical automatic train control software developed by stepwise refinement in the B method with machine-checked proofs",
+   "by_whom": "Matra Transport International (Behm, Benoit, Faivre, Meynadier) for RATP",
+   "method_class": "proof_assistant+refinement",
+   "year": "1998",
+   "status": "VERIFIED",
+   "coverage_of_deployed_code": "safety-critical train control software",
+   "deployed_in": "Paris Métro Line 14, driverless since 1998",
+   "source_url": "https://doi.org/10.1007/3-540-48119-2_22",
+   "lang": "Specs & policy",
+   "func": "Network & remote"
+  },
+  {
+   "id": "81",
+   "project": "NATS iFACTS air traffic control (SPARK)",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "SPARK Ada",
+   "what_verified": "Over 200,000 lines of SPARK proved free of run-time exceptions, with more than 120,000 verification conditions discharged nightly",
+   "by_whom": "NATS with Altran Praxis",
+   "method_class": "smt_deductive",
+   "year": "2011",
+   "status": "PARTIAL",
+   "coverage_of_deployed_code": "whole system, run-time errors only",
+   "deployed_in": "UK en-route air traffic control",
+   "source_url": "https://sos-vo.org/system/files/sos_files/Going_Large_with_Formal_Methods_on_iFACTS.pdf",
+   "lang": "Specs & policy",
+   "func": "Network & remote"
+  },
+  {
+   "id": "82",
+   "project": "AMD K5 floating-point division (ACL2)",
+   "band": "Hardware & ISA",
+   "layer": "hardware",
+   "language": "Microcode",
+   "what_verified": "Mechanically checked proof that the AMD5K86 floating-point division microcode returns correctly rounded quotients",
+   "by_whom": "Moore, Lynch, Kaufmann (CLI, AMD)",
+   "method_class": "proof_assistant",
+   "year": "1996",
+   "status": "VERIFIED",
+   "coverage_of_deployed_code": "division microcode",
+   "deployed_in": "AMD K5 processors",
+   "source_url": "https://www.cs.utexas.edu/~moore/publications/divide_paper.pdf",
+   "lang": "Assembly & hardware",
+   "func": "Compile & execute"
+  },
+  {
+   "id": "83",
+   "project": "NASA Deep Space 1 Remote Agent (SPIN)",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "LISP, modeled in Promela",
+   "what_verified": "Model checking of the Remote Agent executive found five concurrency errors before flight; an identical bug later caused a deadlock in flight",
+   "by_whom": "NASA Ames (Havelund, Lowry, Park, Pecheur, Penix, Visser, White)",
+   "method_class": "model_checking",
+   "year": "1999",
+   "status": "SPEC_ONLY",
+   "coverage_of_deployed_code": "models of the design, not flight code",
+   "deployed_in": "Deep Space 1",
+   "source_url": "https://ntrs.nasa.gov/api/citations/20000055731/downloads/20000055731.pdf",
+   "lang": "Specs & policy",
+   "func": "Compile & execute"
+  },
+  {
+   "id": "84",
+   "project": "Pacemaker Formal Methods Challenge",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "Z, Event-B, timed automata",
+   "what_verified": "Boston Scientific released a pacemaker specification for formal modeling; research groups have built and checked models of it",
+   "by_whom": "McMaster SQRL with Boston Scientific",
+   "method_class": "model_checking",
+   "year": "2007",
+   "status": "SPEC_ONLY",
+   "coverage_of_deployed_code": "models of the specification, not shipped firmware",
+   "deployed_in": "Research only",
+   "source_url": "https://sqrl.cas.mcmaster.ca/pacemaker.htm",
+   "lang": "Specs & policy",
+   "func": "Compile & execute"
+  },
+  {
+   "id": "85",
+   "project": "FDA generic PCA infusion pump",
+   "band": "Safety-critical systems",
+   "layer": "safety_critical",
+   "language": "UPPAAL timed automata, PVS",
+   "what_verified": "FDA reference pump model checked against FDA safety requirements in UPPAAL, with code generated from the model; user interface checked in PVS",
+   "by_whom": "UPenn PRECISE with FDA CDRH",
+   "method_class": "model_checking",
+   "year": "2011",
+   "status": "SPEC_ONLY",
+   "coverage_of_deployed_code": "reference model and research code",
+   "deployed_in": "Research only",
+   "source_url": "https://repository.upenn.edu/cis_papers/475",
+   "lang": "Specs & policy",
+   "func": "Compile & execute"
   }
  ],
  "stack": [
@@ -8135,10 +8271,11 @@
    "coverage": "some",
    "evidence": [
     "36",
-    "37"
+    "37",
+    "82"
    ],
    "what_is_unverified": "Speculation, microcode, security monitors",
-   "closest_existing_work": "Intel execution-engine verification; ACL2 x86 model",
+   "closest_existing_work": "Intel execution-engine verification; ACL2 x86 model; AMD K5 division proof",
    "status_class": "partial"
   },
   {
@@ -8219,6 +8356,85 @@
    "evidence": [],
    "what_is_unverified": "Network services and file-format handling",
    "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Avionics flight control software",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Most large airliners",
+   "usage_log10": 8.0,
+   "coverage": "some",
+   "evidence": [
+    "78",
+    "79"
+   ],
+   "what_is_unverified": "Full functional correctness against flight requirements; most other avionics",
+   "closest_existing_work": "Astrée proves no run-time errors in Airbus A340 and A380 flight control; Airbus replaces some unit tests with proofs",
+   "status_class": "partial"
+  },
+  {
+   "component": "Air traffic control systems",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Millions of flights a year",
+   "usage_log10": 7.0,
+   "coverage": "some",
+   "evidence": [
+    "81"
+   ],
+   "what_is_unverified": "Functional behavior against requirements; most systems outside the UK",
+   "closest_existing_work": "NATS iFACTS: over 200,000 lines of SPARK proved free of run-time errors",
+   "status_class": "partial"
+  },
+  {
+   "component": "Railway signalling and train control",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Billions of rail trips a year",
+   "usage_log10": 9.0,
+   "coverage": "some",
+   "evidence": [
+    "80"
+   ],
+   "what_is_unverified": "Most signalling software worldwide; hardware and integration",
+   "closest_existing_work": "Paris Métro Line 14 train control developed and proved in the B method (1998)",
+   "status_class": "partial"
+  },
+  {
+   "component": "Spacecraft flight software",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Thousands of active spacecraft",
+   "usage_log10": 3.5,
+   "coverage": "narrow",
+   "evidence": [
+    "83"
+   ],
+   "what_is_unverified": "Flight code as flown on most missions",
+   "closest_existing_work": "Model checking of NASA Deep Space 1 Remote Agent found concurrency bugs before flight",
+   "status_class": "partial"
+  },
+  {
+   "component": "Cardiac devices (pacemakers, ICDs)",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Over 1M implanted a year",
+   "usage_log10": 6.0,
+   "coverage": "none",
+   "evidence": [
+    "84"
+   ],
+   "what_is_unverified": "Shipped device firmware",
+   "closest_existing_work": "Pacemaker Formal Methods Challenge models of a Boston Scientific specification",
+   "status_class": "blank"
+  },
+  {
+   "component": "Infusion pumps",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Millions in hospitals",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [
+    "85"
+   ],
+   "what_is_unverified": "Shipped pump software",
+   "closest_existing_work": "FDA generic PCA pump model checked against FDA safety requirements",
    "status_class": "blank"
   }
  ]
