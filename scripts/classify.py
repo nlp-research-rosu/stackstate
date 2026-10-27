@@ -147,6 +147,69 @@ _C = {
 }
 COMPONENT_BY_ID = {str(i): c for c, ids in _C.items() for i in ids}
 
+# Keyword rules for incidents added by the daily refresh (first match wins).
+# Each pattern is tested against vendor, product, victim and the way in.
+COMPONENT_RULES = [
+    (r"litellm|ai gateway|llm proxy", "AI gateways and proxies (LiteLLM and similar)"),
+    (r"metabase|superset|tableau|power bi|looker|grafana", "BI and data tools (Metabase and similar)"),
+    (r"sharepoint|exchange server|confluence|jira", "Enterprise collaboration servers (SharePoint, Exchange, Confluence)"),
+    (r"magento|adobe commerce|wordpress|drupal|joomla|woocommerce|craft cms|sitecore", "E-commerce and CMS platforms (Magento, WordPress)"),
+    (r"n-able|n-central|connectwise|screenconnect|kaseya|simplehelp|moveit|goanywhere|cleo|crushftp|rmm|file transfer", "Remote management software (RMM, file transfer)"),
+    (r"vcenter|vsphere|vmware aria|hpe oneview|ilo amplifier", "Infrastructure management consoles (vCenter)"),
+    (r"voip|pbx|3cx|mitel|avaya|freepbx", "VoIP and PBX systems"),
+    (r"esxi", "VMware ESXi"),
+    (r"ivanti connect|pulse secure|globalprotect|fortigate ssl|ssl-?vpn|anyconnect|sma ?1000|sma ?100|secure access", "SSL-VPN gateways (Ivanti, Fortinet, Citrix, Palo Alto)"),
+    (r"netscaler|citrix adc|big-?ip|\bf5\b|loadmaster|kemp|a10 networks", "Load balancers and ADCs (F5, NetScaler, Kemp)"),
+    (r"firewall|fortios|fortigate|pan-os|sonicos|fmc|firepower|asa\b|watchguard|sophos", "Firewalls and firewall management"),
+    (r"email (security )?gateway|asyncos|secure email|barracuda esg|proofpoint", "Email security gateways"),
+    (r"sd-?wan|vmanage|catalyst sd", "SD-WAN controllers"),
+    (r"routeros|mikrotik|\bios xe\b|ios xr|nx-os|zyxel|tp-link|d-link|router|switch", "Router and switch operating systems (Cisco IOS, MikroTik, Zyxel)"),
+    (r"camera|nvr|dvr|video recorder|hikvision|dahua|axis comm", "IoT cameras and video recorders (Dahua, Hikvision and similar)"),
+    (r"baseband|modem|exynos|qualcomm.*(modem|baseband)", "Cellular baseband firmware"),
+    (r"bmc|ipmi|idrac|ilo\b|megarac", "Baseboard management controllers (BMC)"),
+    (r"uefi|bios|secure boot", "UEFI and BIOS firmware"),
+    (r"plc|scada|ics\b|industrial|rockwell|siemens simatic|schneider", "Industrial control and PLC firmware"),
+    (r"\bv8\b|chrome|chromium", "V8 JavaScript engine"),
+    (r"webkit|safari|firefox|gecko|blink", "Browser engines (Blink, WebKit, Gecko)"),
+    (r"\bphp\b", "PHP interpreter"),
+    (r"node\.?js", "Node.js runtime"),
+    (r"win32k|windows kernel|ntoskrnl|clfs|common log file", "Windows kernel and win32k"),
+    (r"windows .*driver|afd\.sys|\.sys\b", "Windows drivers"),
+    (r"windows|smartscreen|mark of the web|explorer|shell|macos|apple .*daemon", "OS services and file handlers (Windows Shell, macOS daemons)"),
+    (r"android .*(framework|media)|pixel", "Android framework and media services"),
+    (r"binder", "Android Binder IPC"),
+    (r"ios kernel|xnu|iphone|ipados", "Apple XNU kernel"),
+    (r"linux kernel.*(net|tcp|netfilter|ktls)|netfilter|nf_tables", "Linux networking (TCP/IP, netfilter, kTLS)"),
+    (r"linux kernel", "Linux core (memory, scheduler, filesystems)"),
+    (r"runc|containerd|docker engine", "Container runtimes (runc, containerd)"),
+    (r"kubernetes|ingress-nginx", "Kubernetes controllers and operators"),
+    (r"libwebp|freetype|ffmpeg|imagemagick|libtiff|libpng|coregraphics|imageio", "Image, media and font parsers (libwebp, FreeType, ffmpeg)"),
+    (r"openssl", "OpenSSL"),
+    (r"openssh|sshd", "OpenSSH"),
+    (r"wireguard|ipsec|ike\b", "VPN protocols (WireGuard, IPsec/IKE)"),
+    (r"active directory|kerberos|netlogon|ldap", "Active Directory and Kerberos"),
+    (r"entra|azure ad|okta|google workspace|identity provider", "Cloud identity providers (Entra ID, Okta, Google)"),
+    (r"saml|xml signature", "SAML and XML-signature libraries"),
+    (r"jwt|oauth|oidc", "OAuth, OIDC and JWT token validation"),
+    (r"nginx|apache http|httpd|envoy|haproxy|iis\b|tomcat", "Web servers and reverse proxies (nginx, Apache, Envoy, HAProxy)"),
+    (r"django|express|starlette|spring|struts|rails|laravel|next\.js", "Web frameworks (Starlette, Django, Express)"),
+    (r"github actions|gitlab|jenkins|teamcity|ci/cd|package registr", "CI/CD pipelines and package registries"),
+    (r"postgres|mysql|sql server|oracle database|mariadb", "Relational databases (PostgreSQL, MySQL, SQL Server)"),
+    (r"redis|mongodb|elasticsearch", "Key-value and document stores (Redis, MongoDB)"),
+    (r"bridge", "Cross-chain bridges"),
+    (r"wallet|multisig|safe\{?wallet|hardware wallet", "Wallets and signing (hardware wallets, multisig)"),
+    (r"defi|lending|dex\b|amm|vault|exchange contract|perpetual", "DeFi lending and exchange contracts (Aave, Compound, Uniswap)"),
+    (r"chain|cosmos|evm|geth|validator|consensus client", "Chain clients and VM modules (geth, Cosmos SDK/EVM)"),
+]
+
+
+def component_for(r):
+    t = " ".join(r.get(k, "") for k in ("product", "victim", "initial_vector", "root_cause")).lower()
+    for pat, comp in COMPONENT_RULES:
+        if re.search(pat, t):
+            return comp
+    return ""
+
 
 # Hand corrections where the largest number in the report is not the people count.
 PEOPLE_OVERRIDES = {"Gyazo": 23_620_000}
@@ -161,7 +224,7 @@ def enrich(r):
     r["bug_class"] = bug_class(r) if r["code_flaw"] else ""
     r["zero_day"] = zero_day(r) if r["code_flaw"] else False
     r["flaw_group"] = flaw_group(r) if r["code_flaw"] else ""
-    r["component"] = COMPONENT_BY_ID.get(str(r.get("id")), "") if r["code_flaw"] else ""
+    r["component"] = (COMPONENT_BY_ID.get(str(r.get("id"))) or r.get("component", "")) if r["code_flaw"] else ""
     if r["code_flaw"]:
         r["zero_day"] = ZERO_DAY_OVERRIDES.get(str(r.get("id")), r["zero_day"])
         r["bug_class"] = BUG_CLASS_OVERRIDES.get(str(r.get("id")), r["bug_class"])

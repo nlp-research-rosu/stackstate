@@ -281,18 +281,18 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <section class="blk wrap" id="a-flow">
-    <div class="blk-h"><div><h2 class="h2">What the flawed code did, and who was hit</h2><p class="dek">On the left is what the failing code was for. On the right is the kind of organization that got hit. Thicker bands mean more incidents. Hover to follow a path, or select a node or band to filter this tab.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">What the flawed code did, and who was hit</h2><p class="dek">What the flawed code was for, and who got hit. Thicker bands mean more incidents.</p></div></div>
     <div class="chart" id="flow"></div>
   </section>
 
   <section class="blk wrap" id="a-time">
-    <div class="blk-h"><div><h2 class="h2">Incidents by week</h2><p class="dek" id="weeks-dek">Incidents per week. Select a week to filter.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">Incidents by week</h2><p class="dek" id="weeks-dek"></p></div></div>
     <div class="chart" id="weeks"></div>
   </section>
 
   <footer class="foot wrap">
-    <p>Every incident here comes from public reporting and links to its source. The layer, the job of the code and the type of organization are our reading of each report, so they involve some judgment. The page checks <code>data.json</code> for new entries every five minutes and tags them NEW in the ticker at the top.</p>
-    <p>Published formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. Nothing on this tab claims that any particular proof would have stopped any particular incident.</p>
+    <p>Every incident links to its public source. Layers and categories are our judgment. Updated daily.</p>
+    <p>Formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. We don't claim any proof would have stopped any incident.</p>
   </footer>
 </main>
 
@@ -306,7 +306,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <section class="blk wrap" id="p-stack">
     <figure class="fig" style="margin:0">
       <h2 class="fig-h">Formal verification across the software stack</h2>
-      <p class="fig-d">Each block is a widely deployed component, sized by estimated install base. Green shading shows roughly how much of it is covered by published, machine-checked verification: all of it, major parts, some parts or a narrow part. Select a block for the evidence.</p>
+      <p class="fig-d">Each block is a widely used component, sized by install base. Green shows how much of it is formally verified.</p>
       <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (shading = rough share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span></div>
       <div class="stack" id="stack"></div>
     </figure>
@@ -316,7 +316,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="time-note">
       <figure class="fig" style="margin:0">
         <h2 class="fig-h">Published formal verification efforts, <span id="cum-yrs"></span></h2>
-        <p class="fig-d" id="cum-d">Cumulative count by year. Darker green is fully verified. Select a year to list what was added.</p>
+        <p class="fig-d" id="cum-d"></p>
         <div class="chart" id="cum"></div>
       </figure>
       <div><p class="lab" style="margin:0 0 8px">Newest work</p><div class="recent" id="recent"></div></div>
@@ -324,7 +324,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>This tab covers published, machine-checked verification and some closely related work. Install bases and verified shares are rough estimates, not measurements. Every entry links to its source, and the page checks <code>data.json</code> for updates every five minutes.</p>
+    <p>Published, machine-checked verification. Install bases and verified shares are rough estimates. Every entry links to its source. Updated daily.</p>
   </footer>
 </main>
 
@@ -402,7 +402,7 @@ function ingest(data) {
   INC = ALL.filter((r) => isFlaw(r) && !(isChainBand(r) && (Number(r.amount_lost_usd) || 0) < CHAIN_MIN_USD));
   ST.forEach((s) => { s.share = COVER[s.coverage] != null ? COVER[s.coverage] : s.status_class === 'verified' ? 1 : 0; s.evidence = Array.isArray(s.evidence) ? s.evidence : String(s.evidence || '').split(';').filter(Boolean); });
   const ts = ALL.map((r) => r.t);
-  WIN = { start: d3.utcDay.floor(new Date(d3.min(ts))), end: d3.utcDay.floor(new Date(d3.max(ts))) };
+  WIN = { start: d3.utcDay.floor(new Date(d3.min(ts))), end: d3.utcDay.floor(new Date(Math.max(d3.max(ts), gen ? Date.parse(gen) : 0))) };
 }
 ingest(JSON.parse($('#pg-data').textContent));
 async function poll(first) {
@@ -538,11 +538,11 @@ function renderHero() {
   $('#a-n').textContent = INC.length; $('#a-weeks').textContent = Math.round(days.length / 7);
   $('#method-p').textContent = `We count an incident when the reports say the attackers got in through a defect in software: an exploited CVE, a zero-day, an injection, an authentication bypass, a memory-safety bug, or a logic bug in a contract or protocol. Of the ${ALL.length} incidents we tracked in this period, we left out ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes (phishing, stolen passwords, misconfiguration, malicious packages, or no stated cause) and ${SMALL_CHAIN.length} smart-contract and blockchain incidents with losses under $10M. Components and layers match the Verification tab. The exact rules are in scripts/classify.py in the project repository.`;
   const SIZE_TXT = {
-    n: 'Each block is one kind of software, grouped by layer and sized by how many incidents started there.',
-    people: 'Blocks are sized by people whose data was exposed. Only incidents that reported a number count here.',
-    usd: 'Blocks are sized by money stolen. Only incidents that reported a number count here.',
+    n: 'Each block is a kind of software. Bigger blocks had more incidents.',
+    people: 'Blocks sized by people exposed, where a number was reported.',
+    usd: 'Blocks sized by money stolen, where a number was reported.',
   };
-  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]}${S.size === 'n' ? ' The figure under a name is the biggest reported loss there.' : ' The corner number is the total.'} White squares are zero-days, flaws attackers used before any fix was out. Select a block to see its incidents.`;
+  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]} White squares are zero-days.`;
   $('#tree-size').replaceChildren(...[['n', 'Number of incidents'], ['people', 'People exposed'], ['usd', 'Money stolen']].map(([k, label]) =>
     el('button', { type: 'button', 'aria-pressed': S.size === k ? 'true' : 'false', onclick: () => { S.size = k; render(); } }, label)));
 }
@@ -607,7 +607,7 @@ function renderMatrix() {
   const box = $('#matrix'); const cw = box.parentElement.clientWidth || 1000, narrow = cw < 700;
   const base = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.func || r.func === S.func) && (!S.group || r.theme === S.group));
   const zdN = base.filter((r) => r.zero_day === true).length;
-  $('#bugs-dek').textContent = `Bigger circles mean more incidents. The white center is the share that were zero-days (${zdN} of ${base.length} overall). Select a row, a column or a circle to filter this tab.`;
+  $('#bugs-dek').textContent = `Bigger circles mean more incidents. White centers are zero-days (${zdN} of ${base.length}).`;
   const cols = BANDS.filter((b) => base.some((r) => r.band === b)).sort((a, b) => (a === MUTED_BAND) - (b === MUTED_BAND));
   const rows = BUG_ORDER.filter((c) => base.some((r) => r.bug_class === c));
   const labelW = narrow ? 150 : 230, colW = Math.max(narrow ? 64 : 84, (cw - labelW - 50) / cols.length), headH = narrow ? 110 : 96, rowH = narrow ? 56 : 64;
@@ -694,7 +694,7 @@ function renderWeeks() {
   const data = d3.range(n).map((i) => { const s = d3.utcDay.offset(WIN.start, i * 7), all = INC.filter((r) => weekOf(r) === i); return { i, s, e: d3.utcDay.offset(s, 6), all, sel: all.filter((r) => match(r, 'week')) }; });
   const narrowed = !!(S.group || S.func || S.band || S.cls);
   const days = (WIN.end - WIN.start) / 864e5 + 1;
-  $('#weeks-dek').textContent = `Weeks start on ${fmtDay(iso(WIN.start))}. That works out to about one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours. Labels name a few notable incidents. Select a week to filter.`;
+  $('#weeks-dek').textContent = `About one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours.`;
   const annH = narrow ? 0 : 64, W = cw, H = (narrow ? 220 : 280) + annH, m = { t: annH, r: 6, b: 34, l: 6 };
   const x = d3.scaleBand(data.map((d) => d.i), [m.l, W - m.r]).paddingInner(0.18);
   const y = d3.scaleLinear([0, d3.max(data, (d) => d.all.length) || 1], [H - m.b, m.t + 26]);
@@ -742,7 +742,7 @@ function renderPHero() {
     hoverable(d, () => [el('b', { text: list.length + ' ' + txt }), ...list.slice(0, 8).map((s) => el('div', { class: 'm', text: s.component.replace(/\s*\(.*?\)\s*/g, ' ').trim() })), list.length > 8 ? el('div', { class: 'm', text: '+' + (list.length - 8) + ' more · select to highlight below' }) : null]);
     bar.appendChild(d);
   });
-  box.append(bar, el('p', { class: 'help', text: 'Select a segment to highlight those components in the stack below.' }));
+  box.append(bar);
 }
 function renderStack() {
   const box = $('#stack'); box.replaceChildren();
@@ -770,7 +770,7 @@ function renderCum() {
   const years = d3.range(y0, y1 + 1);
   const cum = years.map((y) => ({ y, all: PR.filter((p) => Number(p.year) <= y).length, full: PR.filter((p) => Number(p.year) <= y && p.status === 'VERIFIED').length }));
   const since = PR.filter((p) => Number(p.year) >= y1 - 3).length;
-  $('#cum-d').textContent = `Running total by year: ${PR.length} efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} came out in ${y1 - 3} or later. Select a year to list what was added.`;
+  $('#cum-d').textContent = `${PR.length} published efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} came out in ${y1 - 3} or later.`;
   const W = cw, H = narrow ? 250 : 320, m = { t: 26, r: narrow ? 92 : 128, b: 30, l: 34 };
   const x = d3.scaleLinear([y0, y1], [m.l, W - m.r]), y = d3.scaleLinear([0, d3.max(cum, (d) => d.all)], [H - m.b, m.t]).nice();
   box.replaceChildren();
