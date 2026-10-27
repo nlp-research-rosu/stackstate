@@ -34,7 +34,7 @@ All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `
 | flaw_group | key shared by incidents from the same flaw (a named campaign or the first CVE) |
 | code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these appear on the Incidents tab. |
 
-**band values:** People, AI stack, Smart contracts & chains, Applications & data, Cloud & identity, Network appliances, Libraries & supply chain, Crypto & protocols, Compilers & runtimes, Kernels & hypervisors, Firmware, Hardware & ISA. The page does not show the AI stack layer: its stack rows are hidden, and incidents in it are shown under Applications & data.
+**band values:** People, AI stack, Smart contracts & chains, Applications & data, Cloud & identity, Network appliances, Libraries & supply chain, Crypto & protocols, Compilers & runtimes, Kernels & hypervisors, Firmware, Hardware & ISA. The page does not show the AI stack layer: its stack rows are hidden, and incidents in it are shown under Applications & data. The page also folds the `ai` theme into Cloud & SaaS (or Government) and the `AI & agents` function into the general functions.
 
 The page derives the incident method (ransomware, data theft, exploited vulnerability, supply chain, AI-enabled, crypto theft, other) from `attack_type`.
 

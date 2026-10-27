@@ -373,10 +373,10 @@ const BANDS = ['People', 'AI stack', 'Smart contracts & chains', 'Applications &
 const BAND_LABEL = { 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
 const BAND_SUB = { 'AI stack': 'Model gateways, agent frameworks', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
 const bl = (b) => BAND_LABEL[b] || b;
-const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'AI & agents', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
-const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'AI & agents': 'AI & agent tooling', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
+const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
+const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
 const GROUPS = [
-  { k: 'ai', label: 'AI companies & tools' }, { k: 'supply', label: 'Software ecosystems' }, { k: 'cloud', label: 'Cloud & SaaS' },
+  { k: 'supply', label: 'Software ecosystems' }, { k: 'cloud', label: 'Cloud & SaaS' },
   { k: 'gov', label: 'Government' }, { k: 'fin', label: 'Banks & finance' }, { k: 'health', label: 'Healthcare' },
   { k: 'edge', label: 'Network device operators' }, { k: 'other', label: 'Other companies' }, { k: 'crypto', label: 'Cryptocurrency & DeFi' },
 ];
@@ -395,6 +395,13 @@ const COVER = { full: 1, major: 0.6, some: 0.3, narrow: 0.1, none: 0 };
 const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some: 'some parts verified', narrow: 'narrow parts verified', none: 'none published' };
 function ingest(data) {
   ALL = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
+  // No separate AI categories: fold them into the general ones.
+  const funcByFlaw = new Map(ALL.filter((r) => r.func !== 'AI & agents' && r.flaw_group).map((r) => [r.flaw_group, r.func]));
+  const FUNC_BY_BUG = { 'Authentication & access checks': 'Auth & access', 'Injection & code execution': 'Parsing & input', 'Memory safety': 'Memory & isolation', 'Path & request handling': 'Network & remote' };
+  ALL.forEach((r) => {
+    if (r.func === 'AI & agents') r.func = funcByFlaw.get(r.flaw_group) || FUNC_BY_BUG[r.bug_class] || 'Unknown';
+    if (r.theme === 'ai') r.theme = /government/i.test(r.sector || '') ? 'gov' : 'cloud';
+  });
   ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
   const compBand = new Map(data.stack.map((s) => [s.component, s.band]));
   ALL.forEach((r) => { r.vband = r.band; if (r.component && compBand.has(r.component)) r.band = compBand.get(r.component); if (r.band === 'AI stack') r.band = 'Applications & data'; });
