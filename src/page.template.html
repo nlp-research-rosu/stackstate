@@ -15,7 +15,7 @@ __FONTS__
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
   --hit: #f08a5d; --hit-soft: #6e3a26;
   --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
-  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea; --grey-dot: #4a4345;
+  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea; --grey-dot: #4a4345; --empty-dot: #2f2a2b;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
   --f-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -27,7 +27,7 @@ __FONTS__
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
   --hit: #b5532a; --hit-soft: #f3e2d8;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
-  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e; --grey-dot: #c9ccd2;
+  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e; --grey-dot: #c9ccd2; --empty-dot: #e3e6ea;
   --shadow: 0 12px 32px rgba(17,21,29,.14);
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -178,6 +178,9 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .dots-key b { color: var(--ink); font-weight: 600; }
 .dots-key .pc { color: var(--muted); }
 .mx-scroll { overflow-x: auto; }
+.grid-wrap { position: relative; margin-top: 18px; }
+.grid-wrap canvas { display: block; width: 100%; cursor: crosshair; touch-action: pan-y; }
+.dots-key .sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; flex: none; }
 .tree-note { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; color: var(--muted); }
 .tree-note button { appearance: none; border: 1px solid var(--rule-2); background: var(--bg-2); color: var(--ink-2); font-size: 13px; padding: 4px 10px; cursor: pointer; }
 .tree-note button:hover { border-color: var(--ink); color: var(--ink); }
@@ -268,9 +271,9 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
 <main class="view" id="v-attacks">
   <header class="hero wrap">
     <p class="lab" id="a-eyebrow">State of the Stack · Incidents</p>
-    <h1 class="dots-h">Each dot is <span class="pill-h">1 incident</span></h1>
+    <h1 class="dots-h">Each dot is <span class="pill-h">1 component on 1 day</span></h1>
     <p class="dots-sub" id="dots-sub"></p>
-    <div class="dots" id="dots" role="group" aria-label="Every reported incident, coloured by how the attacker got in"></div>
+    <div class="grid-wrap" id="grid-wrap"><canvas id="grid" role="img" aria-label="Grid of software components by day; lit dots are days with a reported incident caused by a flaw in that component"></canvas></div>
     <div class="dots-key" id="dots-key"></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
@@ -523,37 +526,103 @@ function renderTicker() {
 }
 function renderFilt() {
   const f = $('#filt');
-  const p = S.view === 'attacks' ? [S.cause && CAUSE[S.cause], S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
+  const p = S.view === 'attacks' ? [S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
   const parts = p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
   if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, cls: null, cause: null, status: null }) }));
 }
 
 // ================= INCIDENTS =================
-const CAUSE = { other: 'Phishing, stolen credentials, misconfiguration or no stated cause', known: 'Flaw in code, already known', zero: 'Flaw in code, zero-day' };
-const causeOf = (r) => (!isFlaw(r) ? 'other' : r.zero_day === true ? 'zero' : 'known');
+let gridState = null;
 function renderHero() {
-  const weeks = Math.round((WIN.end - WIN.start) / (7 * 864e5));
+  const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));
+  const weeks = Math.round(days.length / 7);
   $('#a-eyebrow').textContent = `State of the Stack · Incidents · ${fmtDay(iso(WIN.start))} – ${fmtDayY(iso(WIN.end))}`;
-  $('#dots-sub').textContent = `${ALL.length} security incidents were publicly reported in ${weeks} weeks. Colour = how the attacker got in. Select a dot for the case, or a colour to highlight it.`;
-  $('#method-p').textContent = `An incident counts as a flaw in code when its reported way in was a defect in software: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol. Grey dots are everything else: phishing and social engineering, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access, and cases with no stated cause. The rules are in scripts/classify.py in the project repository.`;
-  const order = { other: 0, known: 1, zero: 2 };
-  const list = [...ALL].sort((a, b) => order[causeOf(a)] - order[causeOf(b)] || a.t - b.t);
-  const box = $('#dots'); box.replaceChildren();
-  const w = box.clientWidth || 1100, cols = w < 500 ? 15 : w < 800 ? 20 : 30;
-  box.style.setProperty('--cols', cols);
-  list.forEach((r) => {
-    const c = causeOf(r), off = S.cause && S.cause !== c;
-    const d = el('button', { type: 'button', class: 'dot' + (c === 'known' ? ' k' : c === 'zero' ? ' z' : '') + (freshIds.has(String(r.id)) ? ' fresh' : ''), 'aria-label': `${r.victim}, ${fmtDay(r.date)}`, style: off ? 'opacity:.18' : null, onclick: () => openIncident(r) });
-    hoverable(d, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + ' · ' + (c === 'other' ? r.attack_type : CAUSE[c].toLowerCase()) }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
-    box.appendChild(d);
-  });
-  const key = $('#dots-key'); key.replaceChildren();
-  [['other', 'var(--grey-dot)'], ['known', 'var(--hit)'], ['zero', 'var(--zd)']].forEach(([c, col]) => {
-    const n = ALL.filter((r) => causeOf(r) === c).length, on = S.cause === c;
-    key.appendChild(el('button', { type: 'button', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ cause: on ? null : c }) }, el('i', { style: `background:${col}` }), CAUSE[c] + ' · ', el('b', { text: n }), el('span', { class: 'pc', text: ` (${Math.round((n / ALL.length) * 100)}%)` })));
-  });
+  $('#method-p').textContent = `A dot lights up when an incident reported that day was traced to a flaw in that component's code: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a contract or protocol. The ${ALL.length - INC.length} incidents with other causes (phishing, stolen credentials, misconfiguration, malicious packages, or no stated cause) are not shown. Components and their layers are the same as on the Verification tab. The rules are in scripts/classify.py in the project repository.`;
+  const bandOrder = BANDS.filter((b) => b !== MUTED_BAND).concat([MUTED_BAND]);
+  const cols = [];
+  bandOrder.forEach((b) => ST.filter((s) => s.band === b).forEach((s) => cols.push(s)));
+  const byCell = d3.group(INC.filter((r) => r.component), (r) => r.component + '|' + r.date);
+  const lit = byCell.size, total = cols.length * days.length;
+  $('#dots-sub').textContent = `${cols.length} widely used software components × ${days.length} days = ${d3.format(',')(total)} dots. A dot lights up when a flaw in that component's code led to a reported incident that day: ${lit} of them did, across ${new Set(INC.filter((r) => r.component).map((r) => r.component)).size} components. Hover for details; select a lit dot for the case.`;
+  const cells = [...byCell.values()], isChain = (v) => v[0].band === MUTED_BAND;
+  const zdCells = cells.filter((v) => !isChain(v) && v.some((r) => r.zero_day === true)).length, chainCells = cells.filter(isChain).length, knownCells = cells.length - zdCells - chainCells;
+  const key = $('#dots-key'); key.replaceChildren(
+    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--empty-dot)' }), 'No reported incident'),
+    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--hit)' }), 'Incident from a known flaw · ', el('b', { text: knownCells })),
+    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--zd)' }), 'Zero-day · ', el('b', { text: zdCells })),
+    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--grey-dot)' }), 'Smart contracts and blockchains, in grey at right · ', el('b', { text: chainCells })));
+  gridState = { days, cols, byCell, bandOrder };
+  drawGrid();
   $('#w-n').textContent = INC.length;
 }
+function drawGrid() {
+  if (!gridState) return;
+  const { days, cols, byCell, bandOrder } = gridState;
+  const cv = $('#grid'), wrap = $('#grid-wrap');
+  const W = wrap.clientWidth || 1100, narrow = W < 640;
+  const groups = bandOrder.filter((b) => cols.some((c) => c.band === b));
+  const gap = narrow ? 3 : 6, left = narrow ? 30 : 46, top = narrow ? 18 : 30;
+  const pitch = Math.max(2.4, Math.min(11, (W - left - gap * (groups.length - 1)) / cols.length));
+  const ph = Math.max(narrow ? 3.2 : 5, Math.min(10, pitch));
+  const dot = Math.max(1.6, pitch - (pitch > 6 ? 2 : pitch > 3.5 ? 1 : 0.6)), doth = Math.max(1.8, ph - (ph > 6 ? 2 : 1));
+  const xs = []; let x = left, gi = -1, prev = null;
+  cols.forEach((c) => { if (c.band !== prev) { if (prev !== null) x += gap; prev = c.band; gi++; } xs.push(x); x += pitch; });
+  const H = top + days.length * ph + 4;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.height = H + 'px';
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const C = { empty: css('--empty-dot'), hit: css('--hit'), zd: css('--zd'), grey: css('--grey-dot'), muted: css('--muted'), ink: css('--ink') };
+  // layer labels
+  ctx.font = `${narrow ? 9 : 10.5}px ${css('--f-mono').split(',')[0]}, monospace`; ctx.fillStyle = C.muted; ctx.textBaseline = 'alphabetic';
+  groups.forEach((b) => {
+    const idx = cols.map((c, i) => (c.band === b ? i : -1)).filter((i) => i >= 0), x0 = xs[idx[0]], x1 = xs[idx[idx.length - 1]] + pitch;
+    const name = ({ 'Applications & data': 'Apps & data', 'Network appliances': 'Network', 'Libraries & supply chain': 'Libraries', 'Crypto & protocols': 'Crypto libs', 'Compilers & runtimes': 'Runtimes', 'Kernels & hypervisors': 'Kernels', 'Hardware & ISA': 'Hardware', 'Smart contracts & chains': 'Chains', 'Cloud & identity': 'Cloud & identity' })[b] || b;
+    let s = name.toUpperCase(); while (s.length > 1 && ctx.measureText(s).width > x1 - x0) s = s.slice(0, -1);
+    if (ctx.measureText(s).width <= x1 - x0 && s.length > 2) ctx.fillText(s, x0, top - 8);
+    if (S.band && S.band !== b) { ctx.globalAlpha = 1; }
+  });
+  // month labels
+  days.forEach((d, i) => { if (d.getUTCDate() === 1 || i === 0) { ctx.fillStyle = C.muted; ctx.fillText(d3.utcFormat(narrow ? '%b' : '%b %-d')(d).toUpperCase(), 0, top + i * ph + doth); } });
+  // dots
+  cols.forEach((c, ci) => {
+    const dim = S.band && S.band !== c.band, chain = c.band === MUTED_BAND;
+    days.forEach((d, di) => {
+      const list = byCell.get(c.component + '|' + iso(d));
+      let col = C.empty;
+      if (list) col = chain ? C.grey : list.some((r) => r.zero_day === true) ? C.zd : C.hit;
+      ctx.globalAlpha = dim ? (list ? 0.35 : 0.25) : 1;
+      ctx.fillStyle = col;
+      const big = list ? 1.6 : 0;
+      ctx.fillRect(xs[ci] - big / 2, top + di * ph - big / 2, dot + big, doth + big);
+    });
+  });
+  ctx.globalAlpha = 1;
+  gridState.geom = { xs, pitch, ph, top, left, H };
+}
+(() => {
+  const cv = $('#grid');
+  const hitAt = (ev) => {
+    if (!gridState || !gridState.geom) return null;
+    const { xs, pitch, ph, top } = gridState.geom, rect = cv.getBoundingClientRect();
+    const px = ev.clientX - rect.left, py = ev.clientY - rect.top;
+    let ci = -1; for (let i = 0; i < xs.length; i++) if (px >= xs[i] - 1 && px < xs[i] + pitch + 1) { ci = i; break; }
+    const di = Math.floor((py - top) / ph);
+    if (ci < 0 || di < 0 || di >= gridState.days.length) return null;
+    // snap to a lit cell within one cell, so small dots are easy to hit
+    for (const [dc, dd] of [[0, 0], [0, -1], [0, 1], [-1, 0], [1, 0]]) {
+      const c = gridState.cols[ci + dc], d = gridState.days[di + dd];
+      if (c && d && gridState.byCell.get(c.component + '|' + iso(d))) return { c, d, list: gridState.byCell.get(c.component + '|' + iso(d)) };
+    }
+    return { c: gridState.cols[ci], d: gridState.days[di], list: null };
+  };
+  cv.addEventListener('pointermove', (ev) => {
+    const h = hitAt(ev); if (!h) { hideTip(); return; }
+    cv.style.cursor = h.list ? 'pointer' : 'crosshair';
+    showTip(ev, [el('b', { text: h.c.component }), el('div', { class: 'm', text: `${fmtDayY(iso(h.d))} · ${bl(h.c.band)}` }), ...(h.list ? h.list.map((r) => el('div', { text: '· ' + clip(r.victim, 46) + (r.zero_day === true ? ' (zero-day)' : '') })) : [el('div', { class: 'm', text: 'No reported incident' })])]);
+  });
+  cv.addEventListener('pointerleave', hideTip);
+  cv.addEventListener('click', (ev) => { const h = hitAt(ev); if (h && h.list) { if (h.list.length === 1) openIncident(h.list[0]); else openList(h.c.component, fmtDayY(iso(h.d)), h.list); } });
+})();
 const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
 const MUTED_BAND = 'Smart contracts & chains';
 function renderTree() {
