@@ -177,30 +177,12 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .dots-key b { color: var(--ink); font-weight: 600; }
 .dots-key .pc { color: var(--muted); }
 .mx-scroll { overflow-x: auto; }
-.atlas { margin-top: 20px; border-top: 1px solid var(--rule); }
-.al-row { display: grid; grid-template-columns: clamp(92px, 12vw, 150px) minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
-.al-lab { appearance: none; border: 0; background: none; padding: 2px 0 0; text-align: left; cursor: pointer; color: var(--ink-2); font-size: 13px; font-weight: 600; line-height: 1.25; align-self: start; }
-.al-lab:hover { color: var(--ink); text-decoration: underline; }
-.al-lab small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
-.al-tiles { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; align-items: flex-start; }
-.ct { appearance: none; border: 1px solid var(--hit); background: var(--hit-soft); color: var(--ink); text-align: left; cursor: pointer; padding: 7px 9px 8px; width: 186px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; }
-.ct:hover, .ct:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-.ct .nm { font-size: 14px; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.4em; }
-.ct .ct-n { font-family: var(--f-serif); font-size: 24px; line-height: 1; }
-.ct .wk { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px; margin-top: 5px; }
-.ct .wk i { height: 8px; background: var(--empty-dot); border-radius: 1px; }
-.ct .wk i.k { background: var(--hit); }
-.ct .wk i.k2 { background: #ffb08c; }
-.ct .wk i.z { background: var(--zd); }
-.ct.ct-chain { border-color: var(--rule-2); background: var(--bg-2); }
-.ct.ct-chain .wk i.k { background: var(--grey-dot); }
-@media (max-width: 640px) { .ct { width: calc(50% - 3px); } .al-row { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+.sz { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 12px; }
+.sz button { appearance: none; border: 1px solid var(--rule-2); background: transparent; color: var(--ink-2); font-size: 14px; padding: 6px 12px; cursor: pointer; }
+.sz button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .grid-wrap { position: relative; margin-top: 18px; }
 .grid-wrap canvas { display: block; width: 100%; cursor: crosshair; touch-action: pan-y; }
 .dots-key .sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; flex: none; }
-.tree-note { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; color: var(--muted); }
-.tree-note button { appearance: none; border: 1px solid var(--rule-2); background: var(--bg-2); color: var(--ink-2); font-size: 13px; padding: 4px 10px; cursor: pointer; }
-.tree-note button:hover { border-color: var(--ink); color: var(--ink); }
 #tree .cell { cursor: pointer; }
 #tree .cell:focus-visible rect.bg { stroke: var(--ink); stroke-width: 2; }
 .sub-h { font-family: var(--f-serif); font-weight: 400; font-size: 21px; margin: 34px 0 12px; }
@@ -287,16 +269,11 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <header class="hero wrap">
     <h1 class="big"><span class="hit num" id="a-n"></span> incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
     <p class="dots-sub" id="dots-sub"></p>
-    <div class="atlas" id="atlas"></div>
-    <div class="dots-key" id="dots-key"></div>
+    <div class="sz" id="tree-size" role="group" aria-label="Size blocks by"></div>
+    <div class="chart" id="tree"></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
 
-  <section class="blk wrap" id="a-where">
-    <div class="blk-h"><div><h2 class="h2">Where the flawed code was</h2><p class="dek">Each block is one kind of software, grouped by layer. Bigger blocks had more incidents. A white square is a zero-day, a flaw attackers used before any fix was out. Select a block to see its incidents.</p></div></div>
-    <div class="chart" id="tree"></div>
-    <div class="tree-note" id="tree-note"></div>
-  </section>
 
   <section class="blk wrap" id="a-bugs">
     <div class="blk-h"><div><h2 class="h2">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
@@ -440,7 +417,7 @@ async function poll(first) {
 }
 
 // ---------- state ----------
-const S = { view: 'attacks', group: null, week: null, band: null, func: null, cls: null, cause: null, status: null };
+const S = { size: 'n', view: 'attacks', group: null, week: null, band: null, func: null, cls: null, cause: null, status: null };
 const weekOf = (r) => Math.floor((d3.utcDay.floor(new Date(r.t)) - WIN.start) / (7 * 864e5));
 const match = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'func' || !S.func || r.func === S.func) && (skip === 'cls' || !S.cls || r.bug_class === S.cls);
 const set = (p) => { Object.assign(S, p); render(); };
@@ -553,46 +530,34 @@ function renderHero() {
   const nW = Math.ceil(days.length / 7);
   $('#a-n').textContent = INC.length; $('#a-weeks').textContent = Math.round(days.length / 7);
   $('#method-p').textContent = `We count an incident when the reports say the attackers got in through a defect in software: an exploited CVE, a zero-day, an injection, an authentication bypass, a memory-safety bug, or a logic bug in a contract or protocol. Of the ${ALL.length} incidents we tracked in this period, we left out ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes (phishing, stolen passwords, misconfiguration, malicious packages, or no stated cause) and ${SMALL_CHAIN.length} smart-contract and blockchain incidents with losses under $10M. Components and layers match the Verification tab. The exact rules are in scripts/classify.py in the project repository.`;
-  const hitComps = new Set(INC.filter((r) => r.component).map((r) => r.component));
-  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${hitComps.size} of the ${ST.length} components on our stack map had at least one incident. Each tile shows how many, with a strip for the ${nW} weeks (white means a zero-day).${INC.some((r) => !r.component) ? (INC.filter((r) => !r.component).length === 1 ? ' One incident does not fit any component on the map.' : ` ${INC.filter((r) => !r.component).length} incidents do not fit any component on the map.`) : ''} Select a tile to see its incidents.`;
-  const box = $('#atlas'); box.replaceChildren();
-  const bandOrder = BANDS.filter((b) => b !== 'Smart contracts & chains').concat(['Smart contracts & chains']);
-  bandOrder.forEach((b) => {
-    const comps = ST.filter((s) => s.band === b); if (!comps.length) return;
-    if (!INC.some((r) => r.band === b && r.component)) return;
-    const inc = INC.filter((r) => r.band === b && r.component);
-    const hot = comps.map((s) => ({ s, list: inc.filter((r) => r.component === s.component) })).filter((x) => x.list.length).sort((a, c) => c.list.length - a.list.length);
-    const tiles = el('div', { class: 'al-tiles' });
-    hot.forEach(({ s, list }) => {
-      const wk = el('span', { class: 'wk' }, d3.range(nW).map((w) => { const l = list.filter((r) => weekOf(r) === w); return el('i', { class: !l.length ? '' : l.some((r) => r.zero_day === true) ? 'z' : l.length > 1 ? 'k k2' : 'k' }); }));
-      const tile = el('button', { type: 'button', class: 'ct' + (b === 'Smart contracts & chains' ? ' ct-chain' : '') + (list.some((r) => match(r, 'band')) ? '' : ' dim'), onclick: () => openList(short(s.component), `${bl(b)} · ${list.length} incident${list.length > 1 ? 's' : ''}`, [...list].sort((a, c) => a.t - c.t)) },
-        el('span', { class: 'nm', text: short(s.component) }), el('span', { class: 'ct-n num', text: list.length }), wk);
-      hoverable(tile, () => [el('b', { text: s.component }), el('div', { class: 'm', text: `${list.length} incident${list.length > 1 ? 's' : ''} · ${list.filter((r) => r.zero_day === true).length} zero-day` }), ...[...list].sort((a, c) => a.t - c.t).slice(0, 7).map((r) => el('div', { text: `${fmtDay(r.date)} · ${clip(r.victim, 40)}` }))]);
-      tiles.appendChild(tile);
-    });
-    const on = S.band === b;
-    box.appendChild(el('div', { class: 'al-row' + (S.band && !on ? ' dim' : '') },
-      el('button', { type: 'button', class: 'al-lab', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ band: on ? null : b }) }, bl(b), el('small', { text: `${inc.length} incident${inc.length === 1 ? '' : 's'} · ${hot.length} of ${comps.length} components` })), tiles));
-  });
-  const key = $('#dots-key'); key.replaceChildren(
-    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--hit)' }), 'Week with an incident'),
-    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:#ffb08c' }), 'Two or more'),
-    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--zd)' }), 'Includes a zero-day'),
-    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--empty-dot)' }), 'No incident that week'));
+  const SIZE_TXT = {
+    n: 'Each block is one kind of software, grouped by layer and sized by how many incidents started there.',
+    people: 'Blocks are sized by people whose data was exposed. Only incidents that reported a number count here.',
+    usd: 'Blocks are sized by money stolen. Only incidents that reported a number count here.',
+  };
+  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]}${S.size === 'n' ? ' The figure under a name is the biggest reported loss there.' : ' The corner number is the total.'} White squares are zero-days, flaws attackers used before any fix was out. Select a block to see its incidents.`;
+  $('#tree-size').replaceChildren(...[['n', 'Number of incidents'], ['people', 'People exposed'], ['usd', 'Money stolen']].map(([k, label]) =>
+    el('button', { type: 'button', 'aria-pressed': S.size === k ? 'true' : 'false', onclick: () => { S.size = k; render(); } }, label)));
 }
 const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
 const MUTED_BAND = 'Smart contracts & chains';
+function bigOf(list) {
+  const p = d3.max(list, (r) => r.people) || 0, u = d3.max(list, (r) => r.usd) || 0;
+  return u ? fmtUSD(u) + ' stolen' : p ? fmtN(p) + ' people exposed' : '';
+}
 function renderTree() {
   const box = $('#tree'); const cw = box.clientWidth || 1000, narrow = cw < 640;
   const all = INC.filter((r) => match(r, 'band'));
   const pool = all;
-  $('#tree-note').replaceChildren();
   box.replaceChildren();
   if (!pool.length) { box.appendChild(el('p', { class: 'help', text: 'No incidents match this filter.' })); return; }
+  const vOf = (list) => (S.size === 'people' ? d3.sum(list, (r) => r.people) : S.size === 'usd' ? d3.sum(list, (r) => r.usd) : list.length);
+  const fmtV = (v) => (S.size === 'people' ? fmtN(v) : S.size === 'usd' ? fmtUSD(v) : String(v));
   const groups = d3.groups(pool, (r) => (r.component ? r.band : 'Not specified'), (r) => r.component || 'Not specified product');
-  const root = d3.hierarchy({ children: groups.map(([b, comps]) => ({ name: b, children: comps.map(([c, list]) => ({ name: c, band: b, list, value: list.length })) })) })
+  const root = d3.hierarchy({ children: groups.map(([b, comps]) => ({ name: b, children: comps.map(([c, list]) => ({ name: c, band: b, list, value: vOf(list) })).filter((d) => d.value > 0) })).filter((g) => g.children.length) })
     .sum((d) => d.value || 0).sort((a, b) => b.value - a.value);
-  const W = cw, H = narrow ? 720 : 470;
+  const W = cw, H = narrow ? 720 : 540;
+  if (!root.value) { box.appendChild(el('p', { class: 'help', text: 'No incidents here reported a number.' })); return; }
   d3.treemap().size([W, H]).paddingOuter(3).paddingTop(22).paddingInner(3).round(true).tile(d3.treemapSquarify.ratio(narrow ? 1.2 : 1.6))(root);
   const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Code-flaw incidents by specific component, grouped by layer');
   const ink = css('--ink'), muted = css('--muted'), hit = css('--hit'), zd = css('--zd'), bg = css('--bg'), bg2 = css('--bg-2'), rule = css('--rule-2'), grey = css('--grey-dot');
@@ -600,32 +565,34 @@ function renderTree() {
     const dim = S.band && S.band !== g.data.name;
     const gg = svg.append('g').attr('opacity', dim ? 0.3 : 1);
     gg.append('rect').attr('x', g.x0).attr('y', g.y0).attr('width', g.x1 - g.x0).attr('height', g.y1 - g.y0).attr('fill', 'none').attr('stroke', rule);
-    const lab = gg.append('text').attr('x', g.x0 + 6).attr('y', g.y0 + 16).attr('font-size', 13).attr('letter-spacing', '.08em').attr('fill', muted).style('cursor', g.data.name === 'Not specified' ? null : 'pointer').text((bl(g.data.name) + ' · ' + g.value).toUpperCase());
+    const lab = gg.append('text').attr('x', g.x0 + 6).attr('y', g.y0 + 16).attr('font-size', 13).attr('letter-spacing', '.08em').attr('fill', muted).style('cursor', g.data.name === 'Not specified' ? null : 'pointer').text((bl(g.data.name) + ' · ' + fmtV(g.value)).toUpperCase());
     if (g.data.name !== 'Not specified') lab.on('click', () => set({ band: S.band === g.data.name ? null : g.data.name }));
-    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(short(bl(g.data.name)).split(' ')[0].toUpperCase() + ' · ' + g.value);
-    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(String(g.value));
+    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(short(bl(g.data.name)).split(' ')[0].toUpperCase() + ' · ' + fmtV(g.value));
+    if (lab.node().getComputedTextLength() > g.x1 - g.x0 - 10) lab.text(fmtV(g.value));
   });
   root.leaves().forEach((n) => {
     const d = n.data, w = n.x1 - n.x0, h = n.y1 - n.y0, muted_ = d.band === MUTED_BAND || d.band === 'Not specified';
-    const g = svg.append('g').attr('class', 'cell').attr('transform', `translate(${n.x0},${n.y0})`).attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${d.name}: ${d.value} incidents`).attr('opacity', S.band && S.band !== d.band ? 0.3 : 1)
-      .on('click', () => openList(short(d.name), `${bl(d.band)} · ${d.value} incident${d.value > 1 ? 's' : ''}`, [...d.list].sort((a, b) => a.t - b.t))).on('keydown', (ev) => { if (ev.key === 'Enter') openList(short(d.name), bl(d.band), d.list); })
-      .on('pointermove', (ev) => showTip(ev, [el('b', { text: d.name }), el('div', { class: 'm', text: `${d.value} incident${d.value > 1 ? 's' : ''} · ${d.list.filter((r) => r.zero_day === true).length} zero-day` }), ...d.list.slice(0, 6).map((r) => el('div', { text: '· ' + clip(r.victim, 46) }))])).on('pointerleave', hideTip);
+    const g = svg.append('g').attr('class', 'cell').attr('transform', `translate(${n.x0},${n.y0})`).attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${d.name}: ${d.list.length} incidents`).attr('opacity', S.band && S.band !== d.band ? 0.3 : 1)
+      .on('click', () => openList(short(d.name), `${bl(d.band)} · ${d.list.length} incident${d.list.length > 1 ? 's' : ''}`, [...d.list].sort((a, b) => a.t - b.t))).on('keydown', (ev) => { if (ev.key === 'Enter') openList(short(d.name), bl(d.band), d.list); })
+      .on('pointermove', (ev) => showTip(ev, [el('b', { text: d.name }), el('div', { class: 'm', text: `${d.list.length} incident${d.list.length > 1 ? 's' : ''}${bigOf(d.list) ? ' · biggest: ' + bigOf(d.list) : ''} · ${d.list.filter((r) => r.zero_day === true).length} zero-day` }), ...d.list.slice(0, 6).map((r) => el('div', { text: '· ' + clip(r.victim, 46) }))])).on('pointerleave', hideTip);
     g.append('rect').attr('class', 'bg').attr('width', w).attr('height', h).attr('fill', muted_ ? bg2 : css('--hit-soft')).attr('stroke', muted_ ? rule : hit).attr('stroke-width', 1);
-    const fs = Math.max(13, Math.min(16, Math.sqrt(w * h) / 9));
+    const fs = Math.max(13, Math.min(16, Math.sqrt(w * h) / 9)), numW = fmtV(d.value).length * fs * 0.8 + 4;
     let y = 8;
     if (w > 96 && h > 44) {
-      const words = short(d.name).split(' '), maxCh = Math.max(5, Math.floor((w - 14 - fs * 1.4) / (fs * 0.56))), lines = []; let cur = '';
+      const words = short(d.name).split(' '), maxCh = Math.max(5, Math.floor((w - 14 - numW) / (fs * 0.56))), lines = []; let cur = '';
       words.forEach((wd) => { if ((cur + ' ' + wd).trim().length > maxCh && cur) { lines.push(cur); cur = wd; } else cur = (cur + ' ' + wd).trim(); });
       if (cur) lines.push(cur);
       const maxLines = Math.max(1, Math.floor((h - 30) / (fs * 1.18)));
       lines.slice(0, maxLines).forEach((l, i) => { const tx = g.append('text').attr('x', 7).attr('y', y + fs + i * fs * 1.18).attr('font-size', fs).attr('font-weight', 600).attr('fill', muted_ ? muted : ink).text(i === maxLines - 1 && lines.length > maxLines ? clip(l, maxCh) : l); const room = w - 14 - (i === 0 ? fs * 1.5 : 0); let s = tx.text(); while (s.length > 2 && tx.node().getComputedTextLength() > room) { s = s.slice(0, -2); tx.text(s + '…'); } });
       y += Math.min(lines.length, maxLines) * fs * 1.18 + 6;
+      const big = S.size === 'n' ? bigOf(d.list) : '';
+      if (big && h > y + 34) { const bt = g.append('text').attr('x', 7).attr('y', y + 14).attr('font-size', 14).attr('font-weight', 700).attr('fill', css('--zd')).text(big); [big.replace(' exposed', '').replace(' stolen', ''), big.split(' ')[0]].forEach((s) => { if (bt.node().getComputedTextLength() > w - 14) bt.text(s); }); if (bt.node().getComputedTextLength() > w - 14) bt.remove(); else y += 22; }
     }
     // one square per incident, zero-days white
     const s = Math.max(6, Math.min(12, (w - 14) / 6)), per = Math.max(1, Math.floor((w - 12) / (s + 3)));
     const rows = Math.ceil(d.list.length / per), sy = Math.max(y + 2, h - 8 - rows * (s + 3));
     if (sy + rows * (s + 3) <= h + 2) d.list.sort((a, b) => (b.zero_day === true) - (a.zero_day === true)).forEach((r, i) => g.append('rect').attr('x', 7 + (i % per) * (s + 3)).attr('y', sy + Math.floor(i / per) * (s + 3)).attr('width', s).attr('height', s).attr('rx', 1.5).attr('fill', r.zero_day === true ? zd : muted_ ? grey : hit));
-    if (w > 30 && h > 22) g.append('text').attr('x', w - 7).attr('y', fs + 7).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', fs * 1.5).attr('fill', muted_ ? muted : ink).text(d.value);
+    if (w > 30 && h > 22) g.append('text').attr('x', w - 7).attr('y', fs + 7).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', S.size === 'n' ? fs * 1.5 : fs * 1.25).attr('fill', muted_ ? muted : ink).text(fmtV(d.value));
   });
 }
 const BUG_ORDER = ['Injection & code execution', 'Authentication & access checks', 'Memory safety', 'Path & request handling', 'Contract & business logic', 'Not disclosed'];

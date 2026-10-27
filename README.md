@@ -6,7 +6,7 @@ Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (anyone with t
 
 The page has two tabs.
 
-**Incidents** (dark) covers publicly reported incidents from the last 13 weeks where the attackers got in through a flaw in code: exploited vulnerabilities, injection and bypass bugs, contract logic errors. Phishing, stolen credentials, misconfiguration and malicious packages are left out, and so are smart-contract and blockchain incidents with losses under $10M. The tab opens with a map of every component, grouped by layer, where each component that had an incident gets a tile with its count and a 13-week strip. Below that are a treemap of incidents by component, a grid of bug type against layer with zero-days marked, a flow from what the flawed code was doing to who got hit, and a weekly bar chart.
+**Incidents** (dark) covers publicly reported incidents from the last 13 weeks where the attackers got in through a flaw in code: exploited vulnerabilities, injection and bypass bugs, contract logic errors. Phishing, stolen credentials, misconfiguration and malicious packages are left out, and so are smart-contract and blockchain incidents with losses under $10M. The tab opens with a treemap of where the flawed code was, by component, that can be sized by number of incidents, people exposed or money stolen. Below that are a grid of bug type against layer with zero-days marked, a flow from what the flawed code was doing to who got hit, and a weekly bar chart.
 
 **Verification** (light) shows how many of 102 widely deployed components have full published formal verification, a stack map of how much of each one is verified (with the evidence behind it), and a running total of published verification work.
 
