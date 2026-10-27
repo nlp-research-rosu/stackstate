@@ -1,14 +1,22 @@
 # Daily refresh
 
-A scheduled Claude task ("Proof Gap data refresh", runs daily at 05:37 UTC) starts a fresh session that:
+Two scheduled jobs keep the dashboard current.
 
-1. reads the published `data.json` from the artifact,
-2. searches reputable public sources for incidents disclosed since the newest entry, and for new formal verification results, confirming each by opening its source,
-3. adds them using the fields in `data-schema.md` and the grouping rules below,
-4. moves incidents older than 91 days to `archive/incidents.json`,
-5. validates the file and republishes `data.json` to the artifact.
+**1. GitHub Actions, 05:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
 
-It updates the artifact, not this repository. To bring the repo up to date, copy the artifact's current `data.json` into `site/data.json` and commit it, or change the task so it also commits here.
+1. reads CISA's Known Exploited Vulnerabilities catalog and the news feeds listed in `NEWS_FEEDS`;
+2. adds each KEV entry from the last 14 days that news coverage mentions, or that CISA marks as used by ransomware, as a code-flaw incident sourced to the news article;
+3. if the repository secret `ANTHROPIC_API_KEY` is set, asks Claude to pick incidents with a named victim out of the news items, and new machine-checked verification papers out of arXiv (cs.LO, cs.PL, cs.CR), and adds those too;
+4. moves incidents older than 91 days to `data/archive/incidents.json`;
+5. writes `site/data.json` and a run log, `data/last-refresh.json`, listing what was added, skipped and any errors.
+
+Without the API key the job still runs: it adds KEV entries and rolls the window, but no breaches or verification papers.
+
+Run it by hand from the Actions tab (Daily refresh, Run workflow), or locally with `python3 scripts/refresh.py --dry-run` to see what it would add.
+
+**2. Scheduled Claude task, 05:41 UTC** ("Proof Gap data refresh") attaches this repository, rebuilds the page from `main` and republishes the claude.ai artifact with the new `data.json`. It does not research or edit data. It reports what the morning's run added.
+
+The repository is the source of truth. To correct an entry, edit `site/data.json` (see `data-schema.md`) and commit; the next publish picks it up.
 
 ## Code flaws
 
@@ -17,7 +25,7 @@ Every new incident gets `code_flaw`: true when the reported way in was a defect 
 ## Grouping rules (first match wins)
 
 1. **crypto**: band Smart contracts & chains, or crypto/DeFi/blockchain/wallet victims
-2. **ai**: band AI stack, func AI & agents, or LLM/agent/MCP products
+2. **ai**: band AI stack, func AI & agents, or LLM/agent/MCP products (the page shows these as Cloud & SaaS, or Government)
 3. **supply**: band Libraries & supply chain, func Supply chain, or npm/PyPI/marketplace/PHP/package compromises
 4. **gov**: government, public agencies, police, councils, national registers, military
 5. **fin**: banks, financial services, payments, funds

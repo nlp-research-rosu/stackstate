@@ -385,7 +385,7 @@ const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
 const COVER = { full: 1, major: 0.6, some: 0.3, narrow: 0.1, none: 0 };
 const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some: 'some parts verified', narrow: 'narrow parts verified', none: 'none published' };
 function ingest(data) {
-  ALL = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
+  ALL = data.incidents; PR = data.proofs.filter((p) => p.status !== 'TESTING_ONLY'); ST = data.stack; gen = data.generated_at || null;
   // No separate AI categories: fold them into the general ones.
   const funcByFlaw = new Map(ALL.filter((r) => r.func !== 'AI & agents' && r.flaw_group).map((r) => [r.flaw_group, r.func]));
   const FUNC_BY_BUG = { 'Authentication & access checks': 'Auth & access', 'Injection & code execution': 'Parsing & input', 'Memory safety': 'Memory & isolation', 'Path & request handling': 'Network & remote' };
@@ -521,7 +521,7 @@ function renderTicker() {
   const isNew = (r) => freshIds.has(String(r.id)) || (seen && seen.size && !seen.has(String(r.id)));
   const items = S.view === 'attacks'
     ? [...INC].filter((r) => r.band !== 'Smart contracts & chains').sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: clip(r.initial_vector || r.attack_type, 60) }), isNew(r) ? el('span', { class: 'new', text: 'NEW' }) : null))
-    : [...PR].sort((a, b) => Number(b.year) - Number(a.year) || Number(b.id) - Number(a.id)).slice(0, 14).map((p) => el('button', { type: 'button', class: 'tk p', onclick: () => openProof(p) }, el('i'), el('span', { class: 'when', text: p.year }), el('b', { text: p.project }), el('span', { text: STATUS[p.status] })));
+    : PR.filter((p) => p.status !== 'TESTING_ONLY').sort((a, b) => Number(b.year) - Number(a.year) || Number(b.id) - Number(a.id)).slice(0, 14).map((p) => el('button', { type: 'button', class: 'tk p', onclick: () => openProof(p) }, el('i'), el('span', { class: 'when', text: p.year }), el('b', { text: p.project }), el('span', { text: STATUS[p.status] })));
   tk.append(...items, ...items.map((n) => { const c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; c.addEventListener('click', () => n.click()); return c; }));
 }
 function renderFilt() {
@@ -790,7 +790,7 @@ function renderCum() {
     .on('pointermove', (ev) => { const added = PR.filter((p) => Number(p.year) === d.y); showTip(ev, [el('b', { text: String(d.y) }), el('div', { class: 'm', text: `${d.all} efforts so far, ${d.full} fully verified` }), ...added.slice(0, 6).map((p) => el('div', { text: '+ ' + p.project })), added.length > 6 ? el('div', { class: 'm', text: '+' + (added.length - 6) + ' more' }) : null]); })
     .on('pointerleave', hideTip).on('click', () => { const added = PR.filter((p) => Number(p.year) === d.y); if (added.length) openProofList(`Added in ${d.y}`, added); }));
   const rb = $('#recent'); rb.replaceChildren();
-  [...PR].filter((p) => Number(p.year) >= y1 - 1).sort((a, b) => Number(b.year) - Number(a.year) || (a.status === 'VERIFIED' ? -1 : 1)).slice(0, 7).forEach((p) => {
+  PR.filter((p) => p.status !== 'TESTING_ONLY' && Number(p.year) >= y1 - 1).sort((a, b) => Number(b.year) - Number(a.year) || (a.status === 'VERIFIED' ? -1 : 1)).slice(0, 7).forEach((p) => {
     rb.appendChild(el('button', { type: 'button', class: 'rc', onclick: () => openProof(p) }, el('span', { class: 'y', text: p.year }), el('span', {}, el('div', { class: 't' }, p.project), el('div', { class: 's', text: STATUS[p.status] + ' · ' + clip(p.by_whom, 40) }))));
   });
 }

@@ -25,12 +25,13 @@ src/
   vendor/d3.v7.9.0.min.js  bundled so charts render offline and in link previews (ISC license)
 scripts/
   build_page.py       template + fonts + site/data.json -> site/index.html
-  seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot)
+  seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot; drops refresh additions)
+  refresh.py          daily update: CISA KEV + news feeds (+ Claude, if ANTHROPIC_API_KEY is set) -> site/data.json
   classify.py         rules that assign each incident a group (`theme`) and a people count
 data/seed/            original CSV snapshot, Jul 28 to Oct 26, 2026, plus stack_components.csv (the stack map, editable)
 docs/
   data-schema.md      every field in data.json
-  daily-refresh.md    how the daily update job works, including its full instructions
+  daily-refresh.md    how the daily update works (GitHub Actions, then the artifact publish)
 legacy/
   proof-gap-original.html  the first version of the dashboard, kept for reference
 ```
