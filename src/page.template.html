@@ -178,6 +178,25 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .dots-key b { color: var(--ink); font-weight: 600; }
 .dots-key .pc { color: var(--muted); }
 .mx-scroll { overflow-x: auto; }
+.atlas { margin-top: 20px; border-top: 1px solid var(--rule); }
+.al-row { display: grid; grid-template-columns: clamp(92px, 12vw, 150px) minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
+.al-lab { appearance: none; border: 0; background: none; padding: 2px 0 0; text-align: left; cursor: pointer; color: var(--ink-2); font-size: 13px; font-weight: 600; line-height: 1.25; align-self: start; }
+.al-lab:hover { color: var(--ink); text-decoration: underline; }
+.al-lab small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.al-tiles { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; align-items: flex-start; }
+.ct { appearance: none; border: 1px solid var(--hit); background: var(--hit-soft); color: var(--ink); text-align: left; cursor: pointer; padding: 6px 8px 7px; width: 170px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; }
+.ct:hover, .ct:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.ct .nm { font-size: 12.5px; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.4em; }
+.ct .ct-n { font-family: var(--f-serif); font-size: 24px; line-height: 1; }
+.ct .wk { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px; margin-top: 5px; }
+.ct .wk i { height: 8px; background: var(--empty-dot); border-radius: 1px; }
+.ct .wk i.k { background: var(--hit); }
+.ct .wk i.k2 { background: #ffb08c; }
+.ct .wk i.z { background: var(--zd); }
+.ct.ct-chain { border-color: var(--rule-2); background: var(--bg-2); }
+.ct.ct-chain .wk i.k { background: var(--grey-dot); }
+.cc { appearance: none; border: 1px solid var(--rule); background: transparent; color: var(--muted); font-size: 11.5px; padding: 3px 7px; cursor: default; max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 640px) { .ct { width: calc(50% - 3px); } .al-row { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
 .grid-wrap { position: relative; margin-top: 18px; }
 .grid-wrap canvas { display: block; width: 100%; cursor: crosshair; touch-action: pan-y; }
 .dots-key .sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; flex: none; }
@@ -271,9 +290,9 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
 <main class="view" id="v-attacks">
   <header class="hero wrap">
     <p class="lab" id="a-eyebrow">State of the Stack · Incidents</p>
-    <h1 class="dots-h">Each dot is <span class="pill-h">1 component on 1 day</span></h1>
+    <h1 class="big"><span class="hit num" id="a-n">51</span> incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
     <p class="dots-sub" id="dots-sub"></p>
-    <div class="grid-wrap" id="grid-wrap"><canvas id="grid" role="img" aria-label="Grid of software components by day; lit dots are days with a reported incident caused by a flaw in that component"></canvas></div>
+    <div class="atlas" id="atlas"></div>
     <div class="dots-key" id="dots-key"></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
@@ -389,6 +408,8 @@ const METHOD = { proof_assistant: 'Proof assistant', 'proof_assistant+refinement
 const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Microsoft SharePoint/, 'SharePoint'], [/^Google Chrome users$/, 'Chrome V8'], [/Defense Manpower/, 'Pentagon personnel data'], [/autonomous AI agent/, 'AI-agent campaign'], [/^Citrix NetScaler ADC/, 'NetScaler']];
 
 // ---------- data: embedded copy first, then data.json ----------
+const CHAIN_MIN_USD = 10e6;
+let SMALL_CHAIN = [];
 let ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
 let seen = null; try { seen = new Set(JSON.parse(localStorage.getItem('pg-seen') || 'null') || []); } catch (e) { seen = null; }
 const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
@@ -399,7 +420,9 @@ function ingest(data) {
   ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
   const compBand = new Map(data.stack.map((s) => [s.component, s.band]));
   ALL.forEach((r) => { r.vband = r.band; if (r.component && compBand.has(r.component)) r.band = compBand.get(r.component); });
-  INC = ALL.filter(isFlaw);
+  const isChainBand = (r) => r.band === 'Smart contracts & chains';
+  SMALL_CHAIN = ALL.filter((r) => isFlaw(r) && isChainBand(r) && (Number(r.amount_lost_usd) || 0) < CHAIN_MIN_USD);
+  INC = ALL.filter((r) => isFlaw(r) && !(isChainBand(r) && (Number(r.amount_lost_usd) || 0) < CHAIN_MIN_USD));
   ST.forEach((s) => { s.share = COVER[s.coverage] != null ? COVER[s.coverage] : s.status_class === 'verified' ? 1 : 0; s.evidence = Array.isArray(s.evidence) ? s.evidence : String(s.evidence || '').split(';').filter(Boolean); });
   const ts = ALL.map((r) => r.t);
   WIN = { start: d3.utcDay.floor(new Date(d3.min(ts))), end: d3.utcDay.floor(new Date(d3.max(ts))) };
@@ -532,107 +555,52 @@ function renderFilt() {
 }
 
 // ================= INCIDENTS =================
-let gridState = null;
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));
-  const weeks = Math.round(days.length / 7);
+  const nW = Math.ceil(days.length / 7);
   $('#a-eyebrow').textContent = `State of the Stack · Incidents · ${fmtDay(iso(WIN.start))} – ${fmtDayY(iso(WIN.end))}`;
-  $('#method-p').textContent = `A dot lights up when an incident reported that day was traced to a flaw in that component's code: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a contract or protocol. The ${ALL.length - INC.length} incidents with other causes (phishing, stolen credentials, misconfiguration, malicious packages, or no stated cause) are not shown. Components and their layers are the same as on the Verification tab. The rules are in scripts/classify.py in the project repository.`;
-  const bandOrder = BANDS.filter((b) => b !== MUTED_BAND).concat([MUTED_BAND]);
-  const cols = [];
-  bandOrder.forEach((b) => ST.filter((s) => s.band === b).forEach((s) => cols.push(s)));
-  const byCell = d3.group(INC.filter((r) => r.component), (r) => r.component + '|' + r.date);
-  const lit = byCell.size, total = cols.length * days.length;
-  $('#dots-sub').textContent = `${cols.length} widely used software components × ${days.length} days = ${d3.format(',')(total)} dots. A dot lights up when a flaw in that component's code led to a reported incident that day: ${lit} of them did, across ${new Set(INC.filter((r) => r.component).map((r) => r.component)).size} components. Hover for details; select a lit dot for the case.`;
-  const cells = [...byCell.values()], isChain = (v) => v[0].band === MUTED_BAND;
-  const zdCells = cells.filter((v) => !isChain(v) && v.some((r) => r.zero_day === true)).length, chainCells = cells.filter(isChain).length, knownCells = cells.length - zdCells - chainCells;
+  $('#a-n').textContent = INC.length; $('#a-weeks').textContent = Math.round(days.length / 7);
+  $('#method-p').textContent = `An incident is counted when its reported way in was a defect in software: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a contract or protocol. Of the ${ALL.length} incidents tracked in this period, ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes are left out (phishing, stolen credentials, misconfiguration, malicious packages, no stated cause), and so are ${SMALL_CHAIN.length} smart-contract and blockchain incidents with losses under $10M. Components and layers are the same as on the Verification tab. The rules are in scripts/classify.py in the project repository.`;
+  const hitComps = new Set(INC.filter((r) => r.component).map((r) => r.component));
+  $('#dots-sub').textContent = `All ${ST.length} components on the stack map, by layer. ${hitComps.size} had at least one incident; each of those tiles shows its count and a strip of the ${nW} weeks (white = zero-day). The other ${ST.length - hitComps.size} are listed small.${INC.some((r) => !r.component) ? ` ${INC.filter((r) => !r.component).length} incident${INC.filter((r) => !r.component).length > 1 ? 's' : ''} could not be tied to a component on the map.` : ''} Select a tile for its incidents.`;
+  const box = $('#atlas'); box.replaceChildren();
+  const bandOrder = BANDS.filter((b) => b !== 'Smart contracts & chains').concat(['Smart contracts & chains']);
+  bandOrder.forEach((b) => {
+    const comps = ST.filter((s) => s.band === b); if (!comps.length) return;
+    const inc = INC.filter((r) => r.band === b && r.component);
+    const hot = comps.map((s) => ({ s, list: inc.filter((r) => r.component === s.component) })).filter((x) => x.list.length).sort((a, c) => c.list.length - a.list.length);
+    const cold = comps.filter((s) => !hot.some((x) => x.s === s));
+    const tiles = el('div', { class: 'al-tiles' });
+    hot.forEach(({ s, list }) => {
+      const wk = el('span', { class: 'wk' }, d3.range(nW).map((w) => { const l = list.filter((r) => weekOf(r) === w); return el('i', { class: !l.length ? '' : l.some((r) => r.zero_day === true) ? 'z' : l.length > 1 ? 'k k2' : 'k' }); }));
+      const tile = el('button', { type: 'button', class: 'ct' + (b === 'Smart contracts & chains' ? ' ct-chain' : '') + (list.some((r) => match(r, 'band')) ? '' : ' dim'), onclick: () => openList(short(s.component), `${bl(b)} · ${list.length} incident${list.length > 1 ? 's' : ''}`, [...list].sort((a, c) => a.t - c.t)) },
+        el('span', { class: 'nm', text: short(s.component) }), el('span', { class: 'ct-n num', text: list.length }), wk);
+      hoverable(tile, () => [el('b', { text: s.component }), el('div', { class: 'm', text: `${list.length} incident${list.length > 1 ? 's' : ''} · ${list.filter((r) => r.zero_day === true).length} zero-day` }), ...[...list].sort((a, c) => a.t - c.t).slice(0, 7).map((r) => el('div', { text: `${fmtDay(r.date)} · ${clip(r.victim, 40)}` }))]);
+      tiles.appendChild(tile);
+    });
+    cold.forEach((s) => tiles.appendChild(el('span', { class: 'cc', title: s.component, text: short(s.component) })));
+    const on = S.band === b;
+    box.appendChild(el('div', { class: 'al-row' + (S.band && !on ? ' dim' : '') },
+      el('button', { type: 'button', class: 'al-lab', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ band: on ? null : b }) }, bl(b), el('small', { text: `${inc.length} incident${inc.length === 1 ? '' : 's'} · ${hot.length} of ${comps.length} components` })), tiles));
+  });
   const key = $('#dots-key'); key.replaceChildren(
-    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--empty-dot)' }), 'No reported incident'),
-    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--hit)' }), 'Incident from a known flaw · ', el('b', { text: knownCells })),
-    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--zd)' }), 'Zero-day · ', el('b', { text: zdCells })),
-    el('span', { style: 'display:inline-flex;gap:9px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--grey-dot)' }), 'Smart contracts and blockchains, in grey at right · ', el('b', { text: chainCells })));
-  gridState = { days, cols, byCell, bandOrder };
-  drawGrid();
+    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--hit)' }), 'Week with an incident'),
+    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:#ffb08c' }), 'Two or more'),
+    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--zd)' }), 'Includes a zero-day'),
+    el('span', { style: 'display:inline-flex;gap:8px;align-items:center' }, el('i', { class: 'sw', style: 'background:var(--empty-dot)' }), 'No incident that week'),
+    el('span', { text: `Blockchain incidents shown only at $10M+ (${SMALL_CHAIN.length} smaller left out)` }));
   $('#w-n').textContent = INC.length;
 }
-function drawGrid() {
-  if (!gridState) return;
-  const { days, cols, byCell, bandOrder } = gridState;
-  const cv = $('#grid'), wrap = $('#grid-wrap');
-  const W = wrap.clientWidth || 1100, narrow = W < 640;
-  const groups = bandOrder.filter((b) => cols.some((c) => c.band === b));
-  const gap = narrow ? 3 : 6, left = narrow ? 30 : 46, top = narrow ? 18 : 30;
-  const pitch = Math.max(2.4, Math.min(11, (W - left - gap * (groups.length - 1)) / cols.length));
-  const ph = Math.max(narrow ? 3.2 : 5, Math.min(10, pitch));
-  const dot = Math.max(1.6, pitch - (pitch > 6 ? 2 : pitch > 3.5 ? 1 : 0.6)), doth = Math.max(1.8, ph - (ph > 6 ? 2 : 1));
-  const xs = []; let x = left, gi = -1, prev = null;
-  cols.forEach((c) => { if (c.band !== prev) { if (prev !== null) x += gap; prev = c.band; gi++; } xs.push(x); x += pitch; });
-  const H = top + days.length * ph + 4;
-  const dpr = Math.min(2, window.devicePixelRatio || 1);
-  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.height = H + 'px';
-  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-  const C = { empty: css('--empty-dot'), hit: css('--hit'), zd: css('--zd'), grey: css('--grey-dot'), muted: css('--muted'), ink: css('--ink') };
-  // layer labels
-  ctx.font = `${narrow ? 9 : 10.5}px ${css('--f-mono').split(',')[0]}, monospace`; ctx.fillStyle = C.muted; ctx.textBaseline = 'alphabetic';
-  groups.forEach((b) => {
-    const idx = cols.map((c, i) => (c.band === b ? i : -1)).filter((i) => i >= 0), x0 = xs[idx[0]], x1 = xs[idx[idx.length - 1]] + pitch;
-    const name = ({ 'Applications & data': 'Apps & data', 'Network appliances': 'Network', 'Libraries & supply chain': 'Libraries', 'Crypto & protocols': 'Crypto libs', 'Compilers & runtimes': 'Runtimes', 'Kernels & hypervisors': 'Kernels', 'Hardware & ISA': 'Hardware', 'Smart contracts & chains': 'Chains', 'Cloud & identity': 'Cloud & identity' })[b] || b;
-    let s = name.toUpperCase(); while (s.length > 1 && ctx.measureText(s).width > x1 - x0) s = s.slice(0, -1);
-    if (ctx.measureText(s).width <= x1 - x0 && s.length > 2) ctx.fillText(s, x0, top - 8);
-    if (S.band && S.band !== b) { ctx.globalAlpha = 1; }
-  });
-  // month labels
-  days.forEach((d, i) => { if (d.getUTCDate() === 1 || i === 0) { ctx.fillStyle = C.muted; ctx.fillText(d3.utcFormat(narrow ? '%b' : '%b %-d')(d).toUpperCase(), 0, top + i * ph + doth); } });
-  // dots
-  cols.forEach((c, ci) => {
-    const dim = S.band && S.band !== c.band, chain = c.band === MUTED_BAND;
-    days.forEach((d, di) => {
-      const list = byCell.get(c.component + '|' + iso(d));
-      let col = C.empty;
-      if (list) col = chain ? C.grey : list.some((r) => r.zero_day === true) ? C.zd : C.hit;
-      ctx.globalAlpha = dim ? (list ? 0.35 : 0.25) : 1;
-      ctx.fillStyle = col;
-      const big = list ? 1.6 : 0;
-      ctx.fillRect(xs[ci] - big / 2, top + di * ph - big / 2, dot + big, doth + big);
-    });
-  });
-  ctx.globalAlpha = 1;
-  gridState.geom = { xs, pitch, ph, top, left, H };
-}
-(() => {
-  const cv = $('#grid');
-  const hitAt = (ev) => {
-    if (!gridState || !gridState.geom) return null;
-    const { xs, pitch, ph, top } = gridState.geom, rect = cv.getBoundingClientRect();
-    const px = ev.clientX - rect.left, py = ev.clientY - rect.top;
-    let ci = -1; for (let i = 0; i < xs.length; i++) if (px >= xs[i] - 1 && px < xs[i] + pitch + 1) { ci = i; break; }
-    const di = Math.floor((py - top) / ph);
-    if (ci < 0 || di < 0 || di >= gridState.days.length) return null;
-    // snap to a lit cell within one cell, so small dots are easy to hit
-    for (const [dc, dd] of [[0, 0], [0, -1], [0, 1], [-1, 0], [1, 0]]) {
-      const c = gridState.cols[ci + dc], d = gridState.days[di + dd];
-      if (c && d && gridState.byCell.get(c.component + '|' + iso(d))) return { c, d, list: gridState.byCell.get(c.component + '|' + iso(d)) };
-    }
-    return { c: gridState.cols[ci], d: gridState.days[di], list: null };
-  };
-  cv.addEventListener('pointermove', (ev) => {
-    const h = hitAt(ev); if (!h) { hideTip(); return; }
-    cv.style.cursor = h.list ? 'pointer' : 'crosshair';
-    showTip(ev, [el('b', { text: h.c.component }), el('div', { class: 'm', text: `${fmtDayY(iso(h.d))} · ${bl(h.c.band)}` }), ...(h.list ? h.list.map((r) => el('div', { text: '· ' + clip(r.victim, 46) + (r.zero_day === true ? ' (zero-day)' : '') })) : [el('div', { class: 'm', text: 'No reported incident' })])]);
-  });
-  cv.addEventListener('pointerleave', hideTip);
-  cv.addEventListener('click', (ev) => { const h = hitAt(ev); if (h && h.list) { if (h.list.length === 1) openIncident(h.list[0]); else openList(h.c.component, fmtDayY(iso(h.d)), h.list); } });
-})();
 const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
 const MUTED_BAND = 'Smart contracts & chains';
 function renderTree() {
   const box = $('#tree'); const cw = box.clientWidth || 1000, narrow = cw < 640;
   const all = INC.filter((r) => match(r, 'band'));
-  const pool = all.filter((r) => r.band !== MUTED_BAND);
-  const chain = all.filter((r) => r.band === MUTED_BAND);
+  const pool = all;
+  const chain = SMALL_CHAIN;
   const note = $('#tree-note'); note.replaceChildren();
   if (chain.length) {
-    note.append(el('span', { text: `Not shown: ${chain.length} incident${chain.length > 1 ? 's' : ''} in smart contracts and blockchains` }));
+    note.append(el('span', { text: `Not shown: ${chain.length} smaller smart-contract and blockchain incident${chain.length > 1 ? 's' : ''} (losses under $10M)` }));
     d3.groups(chain, (r) => r.component || 'Not specified').sort((a, b) => b[1].length - a[1].length).forEach(([c, v]) => note.appendChild(el('button', { type: 'button', onclick: () => openList(short(c), bl(MUTED_BAND), v) }, `${short(c)} · ${v.length}`)));
   }
   box.replaceChildren();
@@ -805,10 +773,11 @@ function renderWeeks() {
 
 // ================= VERIFICATION =================
 function renderPHero() {
-  const v = ST.filter((s) => s.status_class === 'verified'), p = ST.filter((s) => s.status_class === 'partial'), b = ST.filter((s) => s.status_class === 'blank');
-  $('#p-v').textContent = v.length; $('#p-t').textContent = ST.length;
+  const STV = ST.filter((s) => s.band !== 'AI stack');
+  const v = STV.filter((s) => s.status_class === 'verified'), p = STV.filter((s) => s.status_class === 'partial'), b = STV.filter((s) => s.status_class === 'blank');
+  $('#p-v').textContent = v.length; $('#p-t').textContent = STV.length;
   const box = $('#cov'); box.replaceChildren();
-  const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${ST.length} components: ${v.length} fully verified, ${p.length} partly verified, ${b.length} with no published verification` });
+  const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${b.length} with no published verification` });
   [[v, 'v', 'verified', 'fully verified'], [p, 'p', 'partial', 'partly verified'], [b, 'b', 'blank', 'no published verification']].forEach(([list, cls, key, txt]) => {
     const on = S.status === key;
     const d = el('button', { type: 'button', class: cls, style: `flex:${list.length} 1 0`, 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ status: on ? null : key }) }, el('strong', { class: 'num', text: list.length }), el('span', { text: txt }));
@@ -820,7 +789,7 @@ function renderPHero() {
 function renderStack() {
   const box = $('#stack'); box.replaceChildren();
   const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
-  BANDS.filter((b) => ST.some((r) => r.band === b)).forEach((band) => {
+  BANDS.filter((b) => b !== 'AI stack' && ST.some((r) => r.band === b)).forEach((band) => {
     const rows = ST.filter((r) => r.band === band).sort((a, b) => Number(b.usage_log10) - Number(a.usage_log10));
     const blocks = el('div', { class: 'blocks' });
     rows.forEach((r) => {
@@ -835,7 +804,7 @@ function renderStack() {
     });
     box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', text: bl(band), 'aria-pressed': S.band === band ? 'true' : 'false', onclick: () => set({ band: S.band === band ? null : band }) }), blocks));
   });
-  $('#stack-src').textContent = `${ST.length} components · coverage levels are editorial estimates · data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'}`;
+  $('#stack-src').textContent = `${ST.filter((s) => s.band !== 'AI stack').length} components · coverage levels are editorial estimates · data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'}`;
 }
 function renderCum() {
   const box = $('#cum'); const cw = box.clientWidth || 800, narrow = cw < 560;
