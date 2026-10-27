@@ -152,7 +152,7 @@ COMPONENT_BY_ID = {str(i): c for c, ids in _C.items() for i in ids}
 COMPONENT_RULES = [
     (r"litellm|ai gateway|llm proxy", "AI gateways and proxies (LiteLLM and similar)"),
     (r"metabase|superset|tableau|power bi|looker|grafana", "BI and data tools (Metabase and similar)"),
-    (r"sharepoint|exchange server|confluence|jira", "Enterprise collaboration servers (SharePoint, Exchange, Confluence)"),
+    (r"sharepoint|exchange server|confluence|jira|collabora|onlyoffice|zimbra", "Enterprise collaboration servers (SharePoint, Exchange, Confluence)"),
     (r"magento|adobe commerce|wordpress|drupal|joomla|woocommerce|craft cms|sitecore", "E-commerce and CMS platforms (Magento, WordPress)"),
     (r"n-able|n-central|connectwise|screenconnect|kaseya|simplehelp|moveit|goanywhere|cleo|crushftp|rmm|file transfer", "Remote management software (RMM, file transfer)"),
     (r"vcenter|vsphere|vmware aria|hpe oneview|ilo amplifier", "Infrastructure management consoles (vCenter)"),
@@ -162,7 +162,7 @@ COMPONENT_RULES = [
     (r"netscaler|citrix adc|big-?ip|\bf5\b|loadmaster|kemp|a10 networks", "Load balancers and ADCs (F5, NetScaler, Kemp)"),
     (r"firewall|fortios|fortigate|pan-os|sonicos|fmc|firepower|asa\b|watchguard|sophos", "Firewalls and firewall management"),
     (r"email (security )?gateway|asyncos|secure email|barracuda esg|proofpoint", "Email security gateways"),
-    (r"sd-?wan|vmanage|catalyst sd", "SD-WAN controllers"),
+    (r"sd-?wan|vmanage|catalyst sd|velocloud", "SD-WAN controllers"),
     (r"routeros|mikrotik|\bios xe\b|ios xr|nx-os|zyxel|tp-link|d-link|router|switch", "Router and switch operating systems (Cisco IOS, MikroTik, Zyxel)"),
     (r"camera|nvr|dvr|video recorder|hikvision|dahua|axis comm", "IoT cameras and video recorders (Dahua, Hikvision and similar)"),
     (r"baseband|modem|exynos|qualcomm.*(modem|baseband)", "Cellular baseband firmware"),

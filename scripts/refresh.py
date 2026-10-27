@@ -158,13 +158,14 @@ def kev_incidents(kev, news, known_cves, today, next_id, log):
         words = [w for w in re.findall(r"[a-z0-9]+", f"{vendor} {product}".lower()) if len(w) > 3]
         hits = [n for n in news if cve.lower() in (n["title"] + " " + n["summary"]).lower()]
         if not hits and words:
-            hits = [n for n in news if all(w in (n["title"] + " " + n["summary"]).lower() for w in words[:2]) and re.search(r"exploit|zero-day|attack|kev", n["title"].lower())]
+            # No CVE match: the headline itself must name the product and say it is being exploited.
+            hits = [n for n in news if all(w in n["title"].lower() for w in words[:2]) and re.search(r"exploit|zero-day|attack|kev", n["title"].lower())]
         ransomware = v.get("knownRansomwareCampaignUse") == "Known"
         if not hits and not ransomware:
             log["kev_skipped"].append(cve)
             continue
         src = hits[0]["link"] if hits else f"https://nvd.nist.gov/vuln/detail/{cve}"
-        news_text = " ".join(h["title"] for h in hits[:3])
+        news_text = hits[0]["title"] if hits else ""
         r = {k: "" for k in INCIDENT_KEYS}
         r.update(
             id=str(next_id + len(added)), date=v["dateAdded"], victim=f"{name} users", sector="multiple",

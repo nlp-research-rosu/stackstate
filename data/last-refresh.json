@@ -27,11 +27,13 @@
  "errors": [],
  "added_incidents": [
   "173 2026-10-23 Arista VeloCloud Orchestrator users (code flaw)",
-  "174 2026-10-23 Collabora Online: Built-in CODE Server users (code flaw)",
-  "175 2026-10-14 Palo Alto Networks PAN-OS users (code flaw)"
+  "174 2026-10-23 Collabora Online: Built-in CODE Server users (code flaw)"
  ],
  "added_proofs": [],
  "archived": 1,
  "news_items": 102,
- "llm": false
+ "llm": false,
+ "corrections": [
+  "175 Palo Alto Networks PAN-OS removed by hand: the news match was a different story. The matcher now needs the CVE, or the product named in the headline."
+ ]
 }
