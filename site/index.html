@@ -64,7 +64,8 @@ a { color: var(--accent); }
 .mode button[data-v="proofs"] .sw { background: #f4f5f7; box-shadow: inset 0 0 0 3px #f4f5f7, inset 0 0 0 7px #13784a; }
 .mode button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .mode button:hover:not([aria-pressed="true"]) { color: var(--ink); }
-.live { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+.live { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; min-width: 0; }
+.live > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .live .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--live); position: relative; flex: none; }
 .live .dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--live); opacity: 0; animation: ping 2.4s ease-out infinite; }
 .live.stale .dot { background: var(--accent); } .live.stale .dot::after { border-color: var(--accent); }
@@ -186,6 +187,14 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .dots-key b { color: var(--ink); font-weight: 600; }
 .dots-key .pc { color: var(--muted); }
 .mx-scroll { overflow-x: auto; }
+.tl-h { font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 22px 0 4px; cursor: pointer; }
+.tl-row { appearance: none; width: 100%; border: 0; border-top: 1px solid var(--rule); background: none; color: var(--ink); text-align: left; padding: 11px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; cursor: pointer; font: inherit; }
+.tl-row .nm { font-size: 15px; font-weight: 600; line-height: 1.25; }
+.tl-row .v { font-family: var(--f-serif); font-size: 24px; line-height: 1; }
+.tl-row .bar { grid-column: 1 / -1; display: flex; height: 10px; }
+.tl-row .bar i { background: var(--hit); } .tl-row .bar i.z { background: var(--zd); } .tl-row .bar i.c { background: var(--grey-dot); }
+.tl-more { appearance: none; margin-top: 12px; width: 100%; padding: 12px; border: 1px solid var(--rule-2); background: transparent; color: var(--ink); font: inherit; font-size: 15px; cursor: pointer; }
+.tl-row .imp { grid-column: 1 / -1; font-size: 14px; font-weight: 700; color: var(--zd); }
 .sz { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 12px; }
 .sz button { appearance: none; border: 1px solid var(--rule-2); background: transparent; color: var(--ink-2); font-size: 14px; padding: 6px 12px; cursor: pointer; }
 .sz button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
@@ -230,10 +239,12 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .cov-bar strong { font-family: var(--f-serif); font-weight: 400; font-size: 28px; line-height: 1; }
 .cov-bar span { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cov-bar .v span { white-space: normal; line-height: 1.2; }
-@media (max-width: 600px) { .cov-bar { height: 72px; } .cov-bar .v { min-width: 84px; } }
+@media (max-width: 600px) { .cov-bar { height: 72px; } .cov-bar .v { min-width: 84px; } .cov-bar .long { display: none; } }
+@media (min-width: 601px) { .cov-bar .short { display: none; } }
 
 .stack { border-top: 2px solid var(--ink); }
 .srow { display: grid; grid-template-columns: clamp(104px, 14vw, 180px) minmax(0, 1fr); gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
+@media (max-width: 600px) { .srow { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 0; } .srow .sband { padding: 4px 0; font-weight: 600; } }
 .sband { appearance: none; border: 0; background: none; padding: 4px 0 0; text-align: left; font-size: 14px; font-weight: 500; color: var(--ink-2); cursor: pointer; line-height: 1.25; align-self: start; }
 .sband:hover { color: var(--ink); text-decoration: underline; }
 .blocks { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
@@ -301,7 +312,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 
   <footer class="foot wrap">
     <p>Every incident links to its public source. Layers and categories are our judgment. Updated daily.</p>
-    <p>Formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. We don't claim any proof would have stopped any incident.</p>
+    <p>Formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. We don't claim any proof would have stopped any incident.</p>
   </footer>
 </main>
 
@@ -8740,11 +8751,11 @@ function renderHero() {
   $('#a-n').textContent = INC.length; $('#a-weeks').textContent = Math.round(days.length / 7);
   $('#method-p').textContent = `We count an incident when the reports say the attackers got in through a defect in software: an exploited CVE, a zero-day, an injection, an authentication bypass, a memory-safety bug, or a logic bug in a contract or protocol. Of the ${ALL.length} incidents we tracked in this period, we left out ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes (phishing, stolen passwords, misconfiguration, malicious packages, or no stated cause) and ${SMALL_CHAIN.length} smart-contract and blockchain incidents with losses under $10M. Components and layers match the Verification tab. The exact rules are in scripts/classify.py in the project repository.`;
   const SIZE_TXT = {
-    n: 'Each block is a kind of software. Bigger blocks had more incidents.',
-    people: 'Blocks sized by people exposed, where a number was reported.',
-    usd: 'Blocks sized by money stolen, where a number was reported.',
+    n: ($('#tree').clientWidth || 1000) < 640 ? 'Each row is a kind of software, ranked by incidents.' : 'Each block is a kind of software. Bigger blocks had more incidents.',
+    people: 'Sized by people exposed, where a number was reported.',
+    usd: 'Sized by money stolen, where a number was reported.',
   };
-  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]} White squares are zero-days.`;
+  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]} White marks zero-days.`;
   $('#tree-size').replaceChildren(...[['n', 'Number of incidents'], ['people', 'People exposed'], ['usd', 'Money stolen']].map(([k, label]) =>
     el('button', { type: 'button', 'aria-pressed': S.size === k ? 'true' : 'false', onclick: () => { S.size = k; render(); } }, label)));
 }
@@ -8754,6 +8765,7 @@ function bigOf(list) {
   const p = d3.max(list, (r) => r.people) || 0, u = d3.max(list, (r) => r.usd) || 0;
   return u ? fmtUSD(u) + ' stolen' : p ? fmtN(p) + ' people exposed' : '';
 }
+let treeAll = false;
 function renderTree() {
   const box = $('#tree'); const cw = box.clientWidth || 1000, narrow = cw < 640;
   const all = INC.filter((r) => match(r, 'band'));
@@ -8765,7 +8777,25 @@ function renderTree() {
   const groups = d3.groups(pool, (r) => (r.component ? r.band : 'Not specified'), (r) => r.component || 'Not specified product');
   const root = d3.hierarchy({ children: groups.map(([b, comps]) => ({ name: b, children: comps.map(([c, list]) => ({ name: c, band: b, list, value: vOf(list) })).filter((d) => d.value > 0) })).filter((g) => g.children.length) })
     .sum((d) => d.value || 0).sort((a, b) => b.value - a.value);
-  const W = cw, H = narrow ? 720 : 540;
+  if (narrow) {
+    let shown = 0; const LIMIT = treeAll ? Infinity : 10, total = d3.sum(groups, ([, comps]) => comps.filter(([, list]) => vOf(list) > 0).length);
+    const vmax = d3.max(groups, ([, comps]) => d3.max(comps, ([, list]) => vOf(list))) || 1;
+    groups.map(([b, comps]) => [b, comps.filter(([, list]) => vOf(list) > 0), d3.sum(comps, ([, list]) => vOf(list))]).filter(([, comps]) => comps.length).sort((a, c) => c[2] - a[2]).forEach(([b, comps, tot]) => {
+      if (shown >= LIMIT) return;
+      box.appendChild(el('div', { class: 'tl-h' + (S.band && S.band !== b ? ' dim' : ''), onclick: () => b !== 'Not specified' && set({ band: S.band === b ? null : b }) }, `${bl(b)} · ${fmtV(tot)}`));
+      comps.sort((a, c) => vOf(c[1]) - vOf(a[1])).forEach(([c, list]) => {
+        if (shown++ >= LIMIT) return;
+        const v = vOf(list), w = (100 * v) / vmax, chain = b === MUTED_BAND || b === 'Not specified', z = list.filter((r) => r.zero_day === true).length;
+        const segs = S.size === 'n' ? [el('i', { class: 'z', style: `width:${(w * z) / list.length}%` }), el('i', { class: chain ? 'c' : '', style: `width:${(w * (list.length - z)) / list.length}%` })] : [el('i', { class: chain ? 'c' : '', style: `width:${w}%` })];
+        const big = S.size === 'n' ? bigOf(list) : '';
+        box.appendChild(el('button', { type: 'button', class: 'tl-row' + (S.band && S.band !== b ? ' dim' : ''), onclick: () => openList(short(c), `${bl(b)} · ${list.length} incident${list.length > 1 ? 's' : ''}`, [...list].sort((a, d) => a.t - d.t)) },
+          el('span', { class: 'nm', text: short(c) }), el('span', { class: 'v num', text: fmtV(v) }), el('span', { class: 'bar' }, segs), big ? el('span', { class: 'imp', text: big }) : null));
+      });
+    });
+    if (total > 10) box.appendChild(el('button', { type: 'button', class: 'tl-more', onclick: () => { treeAll = !treeAll; renderTree(); } }, treeAll ? 'Show fewer' : `Show all ${total}`));
+    return;
+  }
+  const W = cw, H = 540;
   if (!root.value) { box.appendChild(el('p', { class: 'help', text: 'No incidents here reported a number.' })); return; }
   d3.treemap().size([W, H]).paddingOuter(3).paddingTop(22).paddingInner(3).round(true).tile(d3.treemapSquarify.ratio(narrow ? 1.2 : 1.6))(root);
   const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Code-flaw incidents by specific component, grouped by layer');
@@ -8812,27 +8842,28 @@ function renderMatrix() {
   $('#bugs-dek').textContent = `Bigger circles mean more incidents. White centers are zero-days (${zdN} of ${base.length}).`;
   const cols = BANDS.filter((b) => base.some((r) => r.band === b)).sort((a, b) => (a === MUTED_BAND) - (b === MUTED_BAND));
   const rows = BUG_ORDER.filter((c) => base.some((r) => r.bug_class === c));
-  const labelW = narrow ? 150 : 230, colW = Math.max(narrow ? 64 : 84, (cw - labelW - 50) / cols.length), headH = narrow ? 110 : 96, rowH = narrow ? 56 : 64;
-  const W = labelW + cols.length * colW + 50, H = headH + rows.length * rowH + 10, padR = 90;
+  const labelW = narrow ? 0 : 230, totW = narrow ? 0 : 50, colW = narrow ? (cw - 2) / cols.length : Math.max(84, (cw - labelW - 50) / cols.length), headH = narrow ? 150 : 96, rowH = narrow ? 88 : 64;
+  const W = labelW + cols.length * colW + totW, H = headH + rows.length * rowH + 10, padR = narrow ? 0 : 90;
+  const cyOf = (i) => headH + i * rowH + (narrow ? 58 : rowH / 2);
   const max = d3.max(rows, (c) => d3.max(cols, (b) => base.filter((r) => r.bug_class === c && r.band === b).length)) || 1;
-  const rr = d3.scaleSqrt([0, max], [0, Math.min(colW, rowH) / 2 - 4]);
+  const rr = d3.scaleSqrt([0, max], [0, Math.min(colW, narrow ? rowH - 40 : rowH) / 2 - 3]);
   box.replaceChildren();
   const svg = d3.select(box).append('svg').attr('width', W + padR).attr('height', H).attr('viewBox', `0 0 ${W + padR} ${H}`).attr('role', 'img').attr('aria-label', 'Incidents by bug class and layer');
   const ink = css('--ink'), muted = css('--muted'), hit = css('--hit'), zd = css('--zd'), rule = css('--rule'), grey = css('--grey-dot');
   cols.forEach((b, j) => {
     const x = labelW + j * colW + colW / 2, on = S.band === b, n = base.filter((r) => r.band === b).length;
     const g = svg.append('g').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${bl(b)}: ${n}`).attr('opacity', S.band && !on ? 0.4 : 1).on('click', () => set({ band: on ? null : b })).on('keydown', (ev) => { if (ev.key === 'Enter') set({ band: on ? null : b }); });
-    g.append('text').attr('transform', `translate(${x - 4},${headH - 10}) rotate(-35)`).attr('font-size', narrow ? 13 : 14).attr('font-weight', on ? 700 : 500).attr('fill', b === MUTED_BAND ? muted : ink).text(({ 'Crypto & protocols': 'Crypto libraries', 'Smart contracts & chains': 'Smart contracts', 'Libraries & supply chain': 'Libraries', 'Network appliances': 'Network appliances', 'Kernels & hypervisors': 'Kernels & hypervisors' })[b] || short(bl(b)));
+    g.append('text').attr('transform', narrow ? `translate(${x + 5},${headH - 8}) rotate(-90)` : `translate(${x - 4},${headH - 10}) rotate(-35)`).attr('font-size', narrow ? 13 : 14).attr('font-weight', on ? 700 : 500).attr('fill', b === MUTED_BAND ? muted : ink).text(({ 'Crypto & protocols': 'Crypto libraries', 'Smart contracts & chains': 'Smart contracts', 'Libraries & supply chain': 'Libraries', 'Network appliances': 'Network appliances', 'Kernels & hypervisors': 'Kernels & hypervisors' })[b] || short(bl(b)));
     svg.append('line').attr('x1', x).attr('x2', x).attr('y1', headH).attr('y2', H - 6).attr('stroke', rule).attr('stroke-dasharray', '1 3');
   });
   rows.forEach((c, i) => {
-    const y = headH + i * rowH + rowH / 2, on = S.cls === c, n = base.filter((r) => r.bug_class === c).length;
+    const y = cyOf(i), on = S.cls === c, n = base.filter((r) => r.bug_class === c).length;
     svg.append('line').attr('x1', 0).attr('x2', W).attr('y1', headH + i * rowH).attr('y2', headH + i * rowH).attr('stroke', rule);
     const g = svg.append('g').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${c}: ${n}`).attr('opacity', S.cls && !on ? 0.4 : 1).on('click', () => set({ cls: on ? null : c })).on('keydown', (ev) => { if (ev.key === 'Enter') set({ cls: on ? null : c }); });
-    g.append('rect').attr('x', 0).attr('y', y - rowH / 2).attr('width', labelW - 8).attr('height', rowH).attr('fill', 'transparent');
-    g.append('text').attr('x', 0).attr('y', y + 1).attr('font-size', narrow ? 13.5 : 15).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(narrow ? c.replace(' & code execution', '').replace(' & access checks', ' & access').replace(' & business logic', ' logic').replace(' & request handling', ' handling') : c);
-    g.append('text').attr('x', 0).attr('y', y + 19).attr('font-size', 13.5).attr('fill', muted).text(n + ' incident' + (n === 1 ? '' : 's'));
-    svg.append('text').attr('x', W - 6).attr('y', y + 6).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', 22).attr('fill', ink).text(n);
+    g.append('rect').attr('x', 0).attr('y', headH + i * rowH).attr('width', narrow ? W : labelW - 8).attr('height', narrow ? 30 : rowH).attr('fill', 'transparent');
+    g.append('text').attr('x', 0).attr('y', narrow ? headH + i * rowH + 22 : y + 1).attr('font-size', narrow ? 13.5 : 15).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(narrow ? `${c} · ${n}` : c);
+    if (!narrow) g.append('text').attr('x', 0).attr('y', y + 19).attr('font-size', 13.5).attr('fill', muted).text(n + ' incident' + (n === 1 ? '' : 's'));
+    if (!narrow) svg.append('text').attr('x', W - 6).attr('y', y + 6).attr('text-anchor', 'end').attr('font-family', css('--f-serif')).attr('font-size', 22).attr('fill', ink).text(n);
     cols.forEach((b, j) => {
       const list = base.filter((r) => r.bug_class === c && r.band === b); if (!list.length) return;
       const z = list.filter((r) => r.zero_day === true).length, x = labelW + j * colW + colW / 2, active = (!S.cls || S.cls === c) && (!S.band || S.band === b);
@@ -8883,7 +8914,7 @@ function renderFlow() {
       .on('pointerenter', () => lk.attr('fill-opacity', (l) => ((side === 'L' ? l.m : l.g) === n ? 0.85 : 0.07))).on('pointerleave', () => lk.attr('fill-opacity', base));
     g.append('rect').attr('x', side === 'L' ? 0 : W - labelW).attr('y', n.y - 3).attr('width', labelW).attr('height', Math.max(18, n.h + 6)).attr('fill', 'transparent');
     g.append('rect').attr('x', x).attr('y', n.y).attr('width', nodeW).attr('height', Math.max(2, n.h)).attr('fill', ink);
-    const short = narrow ? n.label.replace('Authentication & access', 'Auth & access').replace('Parsing untrusted input', 'Parsing input').replace('Moving money (contracts)', 'Moving money').replace('Network device operators', 'Network operators').replace('Cryptocurrency & DeFi', 'Crypto & DeFi').replace('AI companies & tools', 'AI companies').replace('Software ecosystems', 'Software ecosys.') : n.label;
+    const short = narrow ? n.label.replace('Authentication & access', 'Auth & access').replace('Parsing untrusted input', 'Parsing input').replace('Memory & isolation', 'Memory').replace('Build & distribution', 'Build & ship').replace('Compiling & executing', 'Compiling').replace('Cryptography & keys', 'Crypto keys').replace('Moving money (contracts)', 'Moving money').replace('Network device operators', 'Network operators').replace('Cryptocurrency & DeFi', 'Crypto & DeFi').replace('AI companies & tools', 'AI companies').replace('Software ecosystems', 'Software ecosys.') : n.label;
     g.append('text').attr('x', side === 'L' ? labelW - 10 : W - labelW + 10).attr('y', n.y + n.h / 2 + 4).attr('text-anchor', side === 'L' ? 'end' : 'start').attr('font-size', narrow ? 13 : 14).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(short + '  ' + n.n);
   };
   L.forEach((n) => node(n, 'L')); Rn.forEach((n) => node(n, 'R'));
@@ -8919,8 +8950,8 @@ function renderWeeks() {
     const list = annBy.get(d.i);
     if (list) {
       const cy = y(d.all.length) - 30;
-      g.append('circle').attr('cx', xx + bw / 2).attr('cy', cy).attr('r', 4).attr('fill', acc);
       if (!narrow) {
+        g.append('circle').attr('cx', xx + bw / 2).attr('cy', cy).attr('r', 4).attr('fill', acc);
         const level = [...annBy.keys()].sort((a, b) => a - b).indexOf(d.i) % 2, ty = 16 + level * 22;
         g.append('line').attr('x1', xx + bw / 2).attr('x2', xx + bw / 2).attr('y1', ty + 6).attr('y2', cy - 4).attr('stroke', acc).attr('stroke-width', 1.2);
         const label = list.map((a) => a.label).join(' + '), tw = label.length * 7.4, tx = Math.max(m.l + tw / 2, Math.min(W - m.r - tw / 2, xx + bw / 2));
@@ -8938,9 +8969,9 @@ function renderPHero() {
   $('#p-v').textContent = v.length; $('#p-t').textContent = STV.length;
   const box = $('#cov'); box.replaceChildren();
   const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${b.length} with no published verification` });
-  [[v, 'v', 'verified', 'fully verified'], [p, 'p', 'partial', 'partly verified'], [b, 'b', 'blank', 'no published verification']].forEach(([list, cls, key, txt]) => {
+  [[v, 'v', 'verified', 'fully verified', 'full'], [p, 'p', 'partial', 'partly verified', 'partly'], [b, 'b', 'blank', 'no published verification', 'none']].forEach(([list, cls, key, txt, sh]) => {
     const on = S.status === key;
-    const d = el('button', { type: 'button', class: cls, style: `flex:${list.length} 1 0`, 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ status: on ? null : key }) }, el('strong', { class: 'num', text: list.length }), el('span', { text: txt }));
+    const d = el('button', { type: 'button', class: cls, style: `flex:${list.length} 1 0`, 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ status: on ? null : key }) }, el('strong', { class: 'num', text: list.length }), el('span', { class: 'long', text: txt }), el('span', { class: 'short', text: sh }));
     hoverable(d, () => [el('b', { text: list.length + ' ' + txt }), ...list.slice(0, 8).map((s) => el('div', { class: 'm', text: s.component.replace(/\s*\(.*?\)\s*/g, ' ').trim() })), list.length > 8 ? el('div', { class: 'm', text: '+' + (list.length - 8) + ' more · select to highlight below' }) : null]);
     bar.appendChild(d);
   });
