@@ -10,6 +10,10 @@ A scheduled Claude task ("Proof Gap data refresh", runs daily at 05:37 UTC) star
 
 It updates the artifact, not this repository. To bring the repo up to date, copy the artifact's current `data.json` into `site/data.json` and commit it, or change the task so it also commits here.
 
+## Code flaws
+
+Every new incident gets `code_flaw`: true when the reported way in was a defect in software (a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol). Phishing, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access and incidents with no stated cause get false. Only `code_flaw: true` incidents appear on the Incidents tab, but all are kept in the data.
+
 ## Grouping rules (first match wins)
 
 1. **crypto**: band Smart contracts & chains, or crypto/DeFi/blockchain/wallet victims

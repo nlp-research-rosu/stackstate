@@ -1,17 +1,21 @@
+<meta charset="utf-8">
 <title>Stack State</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="State of the Stack: incidents traced to flaws in code, and published formal verification across widely used software.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>__D3__</script>
 <style>
 __FONTS__
 
-/* Two views behind one switch. Attacks: charcoal ground, one attack red. Proofs: paper ground, proof green against blank red. Serif for statements, sans for reading, mono for small data labels. */
+/* Two tabs behind one switch. Incidents: charcoal ground, one coral. Verification: paper ground, green against neutral grey. Serif for statements, sans for reading, mono for small data labels. */
 :root {
   color-scheme: dark;
   --bg: #1b1819; --bg-2: #252122; --bg-3: #302b2c; --rule: #3b3537; --rule-2: #4d4648;
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
-  --hit: #f08a5d; --hit-soft: #6e3a26; --grey-sq: #6e6567;
-  --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497; --none: #8f8682; --none-soft: #2a2627;
+  --hit: #f08a5d; --hit-soft: #6e3a26;
+  --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
+  --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
   --f-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -21,8 +25,9 @@ __FONTS__
   color-scheme: light;
   --bg: #f4f5f7; --bg-2: #e8ebef; --bg-3: #dde1e7; --rule: #d0d5dc; --rule-2: #b4bbc5;
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
-  --hit: #b5532a; --hit-soft: #f3e2d8; --grey-sq: #a7a2a3; --none: #8b939f; --none-soft: #e6e9ee;
+  --hit: #b5532a; --hit-soft: #f3e2d8;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
+  --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff;
   --shadow: 0 12px 32px rgba(17,21,29,.14);
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -74,24 +79,29 @@ a { color: var(--accent); }
 .tk.p i { background: var(--proof); }
 .tk b { font-weight: 500; color: var(--ink); }
 .tk .new { font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; color: var(--bg); background: var(--accent); padding: 1px 5px; }
-@media (max-width: 760px) { .live .muted { display: none; } .bar-in { gap: 10px; padding-block: 8px; } .live { order: 3; margin-left: 0; flex-basis: 100%; } .filt { order: 4; } }
+@media (max-width: 1100px) { .live .muted { display: none; } }
+@media (max-width: 760px) { .bar-in { gap: 10px; padding-block: 8px; } .live { order: 3; margin-left: 0; flex-basis: 100%; } .filt { order: 4; } }
 @media (prefers-reduced-motion: reduce) { .tk-track { animation: none; overflow-x: auto; width: auto; } .live .dot::after { animation: none; } * { transition: none !important; } }
 
 /* ---------- shared ---------- */
-section.blk { padding-block: clamp(44px, 6vw, 80px) 0; scroll-margin-top: 110px; }
-.blk-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px 28px; flex-wrap: wrap; margin-bottom: 22px; }
-.h2 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.08; letter-spacing: -.015em; margin: 0; text-wrap: balance; max-width: 26ch; }
-.h2 em { font-style: italic; }
-.dek { font-size: 16px; color: var(--ink-2); margin: 10px 0 0; max-width: 60ch; }
-.btn { appearance: none; font-size: 14px; font-weight: 500; color: var(--ink); background: transparent; border: 1px solid var(--rule-2); padding: 8px 14px; cursor: pointer; }
-.btn:hover { border-color: var(--ink); }
-.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.seg { display: inline-flex; } .seg .btn + .btn { margin-left: -1px; }
-.link { appearance: none; border: 0; background: none; padding: 0; cursor: pointer; font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px; }
+.blk-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px 28px; flex-wrap: wrap; margin-bottom: 20px; }
+.h2 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.1; letter-spacing: -.015em; margin: 0; text-wrap: balance; max-width: 30ch; }
+.dek { font-size: 15.5px; color: var(--ink-2); margin: 10px 0 0; max-width: 64ch; }
 .chart { position: relative; }
 .chart svg { display: block; overflow: visible; }
 .help { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
 .dim { opacity: .3; }
+
+/* shareable figure card */
+.fig { background: var(--fig); border: 1px solid var(--rule-2); padding: clamp(16px, 2.4vw, 28px); }
+.fig-h { font-family: var(--f-serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -.012em; margin: 0; text-wrap: balance; }
+.fig-d { font-size: 14.5px; color: var(--ink-2); margin: 8px 0 0; max-width: 70ch; }
+.fig-k { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 16px; font-size: 13.5px; color: var(--ink-2); align-items: center; }
+.fig-k span { display: inline-flex; gap: 8px; align-items: center; }
+.fig-k i { width: 22px; height: 14px; display: inline-block; }
+.fig-f { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.fig-f b { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 14px; color: var(--ink); }
 
 /* tooltip */
 .tip { position: fixed; z-index: 60; pointer-events: none; max-width: 340px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; background: var(--bg-2); color: var(--ink); border: 1px solid var(--rule-2); box-shadow: var(--shadow); }
@@ -109,7 +119,7 @@ section.blk { padding-block: clamp(44px, 6vw, 80px) 0; scroll-margin-top: 110px;
 .dr-h h3 { font-family: var(--f-serif); font-weight: 400; font-size: 28px; line-height: 1.12; margin: 0; flex: 1; overflow-wrap: anywhere; }
 .dr-x { appearance: none; border: 1px solid var(--rule-2); background: none; width: 36px; height: 36px; cursor: pointer; font-size: 19px; flex: none; }
 .dr-b { padding: 18px 24px 36px; overflow-y: auto; }
-.dr-big { font-family: var(--f-serif); font-size: 34px; line-height: 1.1; color: var(--hit); margin: 0 0 14px; }
+.dr-big { font-family: var(--f-serif); font-size: 32px; line-height: 1.1; color: var(--hit); margin: 0 0 14px; }
 .dr-p { font-size: 16px; line-height: 1.55; margin: 0 0 18px; }
 .dl { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 16px; margin: 0 0 18px; font-size: 14px; }
 .dl dt { color: var(--muted); }
@@ -123,108 +133,67 @@ section.blk { padding-block: clamp(44px, 6vw, 80px) 0; scroll-margin-top: 110px;
 .mini .d { color: var(--muted); white-space: nowrap; }
 @media (max-width: 600px) { .dl { grid-template-columns: minmax(0, 1fr); gap: 2px; } .dl dd { margin-bottom: 10px; } }
 
-/* ---------- ATTACKS ---------- */
-.a-hero { padding-block: clamp(36px, 5vw, 64px) 0; }
-.big { font-family: var(--f-serif); font-weight: 400; font-size: clamp(36px, 5.6vw, 76px); line-height: 1; letter-spacing: -.025em; margin: 14px 0 0; text-wrap: balance; }
+/* ---------- INCIDENTS ---------- */
+.hero { padding-block: clamp(22px, 3vw, 40px) 0; }
+.big { font-family: var(--f-serif); font-weight: 400; font-size: clamp(30px, 4.4vw, 58px); line-height: 1.04; letter-spacing: -.022em; margin: 12px 0 0; text-wrap: balance; max-width: 22ch; }
 .big .hit { color: var(--hit); }
-.big .zero { color: var(--proof); }
-.sub { font-size: 17px; color: var(--ink-2); max-width: 62ch; margin: 16px 0 0; }
+.big .pv { color: var(--proof); }
+.sub { font-size: 16px; color: var(--ink-2); max-width: 68ch; margin: 14px 0 0; }
 .sub b { color: var(--ink); font-weight: 600; }
+.sub button { appearance: none; border: 0; background: none; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
-.units { margin-top: 34px; border-top: 1px solid var(--rule); }
-.urow { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4ch; gap: 18px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
-.urow .ul { appearance: none; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.25; }
-.urow .ul small { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+.units { margin-top: 20px; border-top: 1px solid var(--rule); }
+.urow { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr) 4ch; gap: 18px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
+.urow .ul { appearance: none; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font-size: 15.5px; font-weight: 500; color: var(--ink); line-height: 1.25; }
+.urow .ul small { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); }
 .urow .ul:hover { text-decoration: underline; text-underline-offset: 3px; }
 .urow .sqs { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
-.urow .n { font-family: var(--f-serif); font-size: 28px; text-align: right; line-height: 1; }
-.sq { width: 16px; height: 16px; background: var(--hit); cursor: pointer; flex: none; position: relative; }
+.urow .n { font-family: var(--f-serif); font-size: 26px; text-align: right; line-height: 1; }
+.sq { width: 18px; height: 18px; background: var(--hit); cursor: pointer; flex: none; position: relative; }
 .sq.cl { background: transparent; box-shadow: inset 0 0 0 2px var(--hit); }
-.sq.cr { background: var(--grey-sq); } .sq.cr.cl { background: transparent; box-shadow: inset 0 0 0 2px var(--grey-sq); }
 .sq:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
 .sq.fresh::after { content: ""; position: absolute; inset: -4px; border: 2px solid var(--accent); animation: ping 2.4s ease-out 3; }
 .sq.isnew { box-shadow: 0 0 0 2px var(--accent); }
-.urow.zero .sqs { height: 16px; border: 2px dashed var(--proof); width: 16px; }
-.urow.zero .n { color: var(--proof); }
-.urow.zero .ul { cursor: default; }
-.urow.zero .ul:hover { text-decoration: none; }
-.ukey { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 14px; font-size: 13px; color: var(--muted); align-items: center; }
+.ukey { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 12px; font-size: 13px; color: var(--muted); align-items: center; }
 .ukey span { display: inline-flex; gap: 8px; align-items: center; }
 .ukey i { width: 13px; height: 13px; display: inline-block; }
 .ukey [hidden] { display: none; }
-@media (max-width: 700px) {
-  .urow { grid-template-columns: minmax(0, 1fr) 4ch; gap: 8px 12px; }
-  .urow .sqs { grid-column: 1 / -1; grid-row: 2; }
-  .sq { width: 13px; height: 13px; }
-}
-
-.bars { border-top: 1px solid var(--rule); }
-.brow { appearance: none; border: 0; border-bottom: 1px solid var(--rule); background: none; color: var(--ink); display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 18px; align-items: center; width: 100%; padding: 11px 0; text-align: left; cursor: pointer; transition: opacity .2s; }
-.brow:hover { background: var(--bg-2); }
-.brow .nm { font-size: 16px; font-weight: 500; line-height: 1.25; overflow-wrap: anywhere; }
-.brow .nm small { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
-.brow .track { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.brow .bar { height: 22px; background: var(--hit); flex: none; min-width: 3px; position: relative; }
-.brow .bar.cl { background: repeating-linear-gradient(135deg, var(--hit) 0 3px, transparent 3px 7px); box-shadow: inset 0 0 0 2px var(--hit); }
-.brow .bar .rec { position: absolute; left: 0; top: 0; bottom: 0; background: var(--proof); }
-.brow .v { font-family: var(--f-serif); font-size: 24px; line-height: 1; white-space: nowrap; }
-@media (max-width: 640px) { .brow { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
-
-/* flow + tower */
+@media (max-width: 700px) { .urow { grid-template-columns: minmax(0, 1fr) 4ch; gap: 8px 12px; } .urow .sqs { grid-column: 1 / -1; grid-row: 2; } .sq { width: 14px; height: 14px; } }
 #flow { margin-top: 26px; }
 #flow .lk { cursor: pointer; transition: fill-opacity .15s; }
 #flow .nd { cursor: pointer; }
-#flow .nd:focus-visible rect { stroke: var(--ink); stroke-width: 2; }
-.tower { border-top: 1px solid var(--rule); }
-.trow2 { appearance: none; border: 0; border-bottom: 1px solid var(--rule); background: none; color: var(--ink); width: 100%; display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 4ch; gap: 16px; align-items: center; padding: 6px 0; cursor: pointer; text-align: left; transition: opacity .2s; }
-.trow2:hover { background: var(--bg-2); }
-.trow2[aria-pressed="true"] { background: var(--bg-3); }
-.trow2 .tl { font-size: 15px; font-weight: 500; }
-.trow2 .tb { display: flex; justify-content: center; }
-.trow2 .tb i { display: block; height: 24px; background: var(--hit); min-width: 0; }
-.trow2 .tn { font-family: var(--f-serif); font-size: 22px; text-align: right; line-height: 1; }
-@media (max-width: 640px) { .trow2 { grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 3ch; gap: 10px; } .trow2 .tl { font-size: 13px; } }
+.method { margin-top: 22px; font-size: 13.5px; color: var(--ink-2); }
+.method summary { cursor: pointer; font-weight: 500; color: var(--ink); }
+.method p { max-width: 80ch; margin: 8px 0 0; }
+
+/* ---------- VERIFICATION ---------- */
+.cov { margin-top: 22px; }
+.cov-bar { display: flex; height: 62px; gap: 3px; }
 .cov-bar > button { appearance: none; border: 0; font: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; min-width: 0; color: var(--ink); }
 .cov-bar > button:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
 .cov-bar > button[aria-pressed="true"] { outline: 3px solid var(--ink); outline-offset: 1px; }
-.facts button { appearance: none; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; display: grid; gap: 2px; color: var(--ink); }
-.facts button:hover span { text-decoration: underline; text-underline-offset: 3px; }
-
-/* ---------- PROOFS ---------- */
-.p-hero { padding-block: clamp(36px, 5vw, 64px) 0; }
-.p-hero .big em { font-style: italic; }
-.cov { margin-top: 34px; }
-.cov-bar { display: flex; height: 64px; gap: 3px; }
-.cov-bar > div { display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; min-width: 0; color: var(--ink); cursor: default; }
-.cov-bar .v { background: var(--proof); color: #fff; min-width: 64px; }
+.cov-bar .v { background: var(--proof); color: #fff; min-width: 116px; }
 .cov-bar .p { background: repeating-linear-gradient(135deg, var(--proof-soft) 0 3px, transparent 3px 8px), var(--bg-2); box-shadow: inset 0 0 0 1.5px var(--proof); }
 .cov-bar .b { background: var(--none-soft); box-shadow: inset 0 0 0 1.5px var(--none); }
-.cov-bar strong { font-family: var(--f-serif); font-weight: 400; font-size: 30px; line-height: 1; }
+.cov-bar strong { font-family: var(--f-serif); font-weight: 400; font-size: 28px; line-height: 1; }
 .cov-bar span { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.facts { display: flex; flex-wrap: wrap; gap: 14px 40px; margin-top: 22px; }
-.facts div { display: grid; gap: 2px; }
-.facts strong { font-family: var(--f-serif); font-weight: 400; font-size: 34px; line-height: 1; }
-.facts span { font-size: 13.5px; color: var(--muted); }
+.cov-bar .v span { white-space: normal; line-height: 1.2; }
+@media (max-width: 600px) { .cov-bar { height: 72px; } .cov-bar .v { min-width: 84px; } }
 
 .stack { border-top: 2px solid var(--ink); }
-.srow { display: grid; grid-template-columns: clamp(110px, 14vw, 180px) minmax(0, 1fr); gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
+.srow { display: grid; grid-template-columns: clamp(104px, 14vw, 180px) minmax(0, 1fr); gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--rule); transition: opacity .2s; }
 .sband { appearance: none; border: 0; background: none; padding: 4px 0 0; text-align: left; font-size: 14px; font-weight: 500; color: var(--ink-2); cursor: pointer; line-height: 1.25; align-self: start; }
 .sband:hover { color: var(--ink); text-decoration: underline; }
 .blocks { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
-.blk-c { appearance: none; border: 0; min-width: 0; min-height: 70px; padding: 8px 10px; font-size: 13.5px; font-weight: 500; line-height: 1.25; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; position: relative; text-align: left; cursor: pointer; background: #fff; box-shadow: inset 0 0 0 1.5px var(--none); overflow: hidden; }
+.blk-c { appearance: none; border: 0; min-width: 0; min-height: 52px; padding: 7px 10px; font-size: 13.5px; font-weight: 500; line-height: 1.25; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; position: relative; text-align: left; cursor: pointer; background: #fff; box-shadow: inset 0 0 0 1.5px var(--none); overflow: hidden; }
 .blk-c .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--proof-soft); border-bottom: 5px solid var(--proof); }
 .blk-c.ver .fill { background: var(--proof); border: 0; }
 .blk-c > span { position: relative; overflow-wrap: anywhere; }
-.blk-c .meta { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 400; color: var(--muted); }
-.blk-c .meta .a { color: var(--hit); font-weight: 600; }
-.blk-c.part { box-shadow: inset 0 0 0 1.5px var(--none); }
-.blk-c.part .meta span:first-child { color: var(--proof); font-weight: 600; }
-.blk-c.ver { box-shadow: inset 0 0 0 2px var(--proof); color: #fff; }
-.blk-c.ver .meta { color: rgba(255,255,255,.85); }
+.blk-c .meta { font-size: 12px; font-weight: 400; color: var(--muted); }
+.blk-c.part .meta { color: var(--proof); font-weight: 600; }
+.blk-c.ver { color: #fff; }
+.blk-c.ver .meta { color: rgba(255,255,255,.88); }
 .blk-c:hover { outline: 2px solid var(--ink); outline-offset: 2px; }
-.skey { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; font-size: 13.5px; color: var(--ink-2); align-items: center; }
-.skey span { display: inline-flex; gap: 8px; align-items: center; }
-.skey i { width: 22px; height: 14px; display: inline-block; }
 
 .time-note { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 20rem); gap: 28px; align-items: start; }
 @media (max-width: 900px) { .time-note { grid-template-columns: minmax(0, 1fr); } }
@@ -236,20 +205,8 @@ section.blk { padding-block: clamp(44px, 6vw, 80px) 0; scroll-margin-top: 110px;
 .rc .s { font-size: 12.5px; color: var(--muted); }
 .ai-b { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; color: #6250d6; border: 1px solid currentColor; padding: 0 5px; margin-left: 6px; }
 
-.gap { border-top: 1px solid var(--rule); }
-.grow { appearance: none; border: 0; border-bottom: 1px solid var(--rule); background: none; color: var(--ink); width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) clamp(130px, 16vw, 200px) minmax(0, 1fr); gap: 0 16px; align-items: center; padding: 7px 0; cursor: pointer; transition: opacity .2s; }
-.grow:hover { background: var(--bg-2); }
-.grow .nm { text-align: center; font-size: 14px; font-weight: 500; }
-.gside { display: flex; align-items: center; gap: 10px; }
-.gside.l { flex-direction: row-reverse; }
-.gside .b { height: 18px; display: flex; gap: 2px; }
-.gside .n { font-size: 14px; color: var(--muted); white-space: nowrap; }
-.gside .n b { color: var(--ink); font-weight: 600; }
-.ghead { display: grid; grid-template-columns: minmax(0, 1fr) clamp(130px, 16vw, 200px) minmax(0, 1fr); gap: 0 16px; padding-bottom: 8px; font-size: 13px; color: var(--muted); }
-.ghead .l { text-align: right; } .ghead .c { text-align: center; }
-@media (max-width: 640px) { .grow, .ghead { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 10px; } .grow .nm { grid-column: 1 / -1; grid-row: 1; text-align: left; } .ghead .c { display: none; } }
-
 footer.foot { margin-top: clamp(48px, 6vw, 80px); padding-block: 18px 44px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+footer.foot p { max-width: 90ch; margin: 0 0 8px; }
 footer.foot code { font-family: var(--f-mono); font-size: 12px; }
 </style>
 
@@ -261,85 +218,71 @@ footer.foot code { font-family: var(--f-mono); font-size: 12px; }
       <button type="button" data-v="proofs" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Verification</button>
     </div>
     <div class="filt" id="filt" hidden></div>
-    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Live data</b> <span id="live-t">· loading</span></span></div>
+    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Live data</b> <span id="live-t"></span></span></div>
   </div>
-  <div class="ticker" id="ticker" aria-label="Latest items"><div class="tk-track" id="tk"></div></div>
+  <div class="ticker" id="ticker" aria-label="Latest entries"><div class="tk-track" id="tk"></div></div>
 </div>
 
-<!-- ================= ATTACKS ================= -->
+<!-- ================= INCIDENTS ================= -->
 <main class="view" id="v-attacks">
-  <header class="a-hero wrap">
-    <p class="lab" id="a-eyebrow">Reported incidents · last 13 weeks</p>
-    <h1 class="big"><span class="hit num" id="a-n">171</span> publicly reported security incidents in <span id="a-weeks">13</span> weeks</h1>
-    <p class="sub" id="a-sub">Each square is one incident, grouped by the kind of organization or software affected. Select a group to filter the page, or a square for details and sources.</p>
+  <header class="hero wrap">
+    <p class="lab" id="a-eyebrow">State of the Stack · Incidents</p>
+    <h1 class="big"><span class="hit num" id="a-n">66</span> reported incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
+    <p class="sub" id="a-sub">Exploited vulnerabilities, injection and bypass bugs, and contract logic errors. One square per incident, on the layer of software where the flaw was.</p>
     <div class="units" id="units"></div>
-    <div class="ukey"><span><i style="background:var(--hit)"></i>Confirmed</span><span><i style="box-shadow:inset 0 0 0 2px var(--hit)"></i>Claimed, not yet confirmed</span><span><i style="background:var(--grey-sq)"></i>Crypto &amp; DeFi</span><span id="newkey" hidden><i style="box-shadow:0 0 0 2px var(--accent);background:var(--hit)"></i><span id="newtxt"></span></span></div>
+    <div class="ukey"><span><i style="background:var(--hit)"></i>Confirmed</span><span><i style="box-shadow:inset 0 0 0 2px var(--hit)"></i>Claimed, not yet confirmed</span><span id="newkey" hidden><i style="box-shadow:0 0 0 2px var(--accent);background:var(--hit)"></i><span id="newtxt"></span></span></div>
+    <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
 
   <section class="blk wrap" id="a-flow">
-    <div class="blk-h"><div><h2 class="h2">How incidents happened, and who they hit</h2><p class="dek">Each band connects a method to the kind of organization affected; its thickness is the number of incidents. Hover to trace a path; select a method, an area or a band to filter every chart on this tab.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">What the flawed code did, and who was hit</h2><p class="dek">Left: the job of the code that failed. Right: the kind of organization affected. Band thickness is the number of incidents. Hover to trace a path; select a node or band to filter this tab.</p></div></div>
     <div class="chart" id="flow"></div>
   </section>
 
   <section class="blk wrap" id="a-time">
-    <div class="blk-h"><div><h2 class="h2">Incidents by week</h2><p class="dek">Incidents disclosed each week, about one every <span id="a-cad">13</span> hours on average. Labels mark widely covered incidents. Select a week to filter.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">Incidents by week</h2><p class="dek" id="weeks-dek">Seven-day periods from the start of the data. Labels mark widely covered incidents. Select a week to filter.</p></div></div>
     <div class="chart" id="weeks"></div>
   </section>
 
-  <section class="blk wrap" id="a-layer">
-    <div class="blk-h"><div><h2 class="h2">Which layer of software was hit</h2><p class="dek">Incidents by layer of the software stack, from people and applications at the top down to firmware and hardware. Select a layer to filter, then compare it with the verification work for the same layer.</p></div><div id="tower-cta"></div></div>
-    <div class="tower" id="tower"></div>
-  </section>
-
-  <section class="blk wrap" id="a-breach">
-    <div class="blk-h">
-      <div><h2 class="h2" id="b-h">Largest reported data exposures</h2><p class="dek" id="b-d">Records exposed per incident, where the report gives a number. Striped bars are unconfirmed claims.</p></div>
-      <div class="seg" role="group" aria-label="Rank by"><button type="button" class="btn" data-b="rec" aria-pressed="true">Records exposed</button><button type="button" class="btn" data-b="usd" aria-pressed="false">Financial loss</button></div>
-    </div>
-    <div class="bars" id="bars"></div>
-    <p class="help">Published formal verification work is tracked separately. <button type="button" class="link" data-goto="proofs">Open the Verification view →</button></p>
-  </section>
-
-  <footer class="foot wrap" id="a-foot">Compiled from public incident reporting; every entry links to its source. Groups are assigned from sector, affected layer and product, so some are judgment calls. The page rereads <code>data.json</code> every five minutes and outlines newly added incidents in amber. Corrections and additions are welcome.</footer>
+  <footer class="foot wrap">
+    <p>Compiled from public incident reporting; every entry links to its source. Layers, functions and organization types are assigned from the reports and involve judgment. The page rereads <code>data.json</code> every five minutes and outlines newly added incidents in amber.</p>
+    <p>Published formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. This tab does not assess whether any particular proof would have prevented a given incident.</p>
+  </footer>
 </main>
 
-<!-- ================= PROOFS ================= -->
+<!-- ================= VERIFICATION ================= -->
 <main class="view" id="v-proofs" hidden>
-  <header class="p-hero wrap">
-    <p class="lab">State of the Stack · Formal verification · 2004–2026</p>
-    <h1 class="big">Formal verification across widely used software</h1>
-    <p class="sub">How much of the software most systems depend on has published, machine-checked verification, and where that work is happening.</p>
+  <header class="hero wrap">
+    <p class="lab">State of the Stack · Formal verification</p>
+    <h1 class="big"><span class="pv num" id="p-v">2</span> of <span class="num" id="p-t">40</span> widely used software components have full published formal verification</h1>
     <div class="cov" id="cov"></div>
-    <div class="facts" id="facts"></div>
   </header>
 
   <section class="blk wrap" id="p-stack">
-    <div class="blk-h"><div><h2 class="h2">Verification across the stack</h2><p class="dek">Each block is a widely deployed component, sized by estimated install base. Green shading shows the approximate share covered by published verification. Counts are incidents reported this quarter.</p></div></div>
-    <div class="stack" id="stack"></div>
-    <div class="skey"><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Proven share</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span><span style="color:var(--hit);font-weight:600">3 incidents</span><span>= reported this quarter</span></div>
-  </section>
-
-  <section class="blk wrap" id="p-blanks">
-    <div class="blk-h"><div><h2 class="h2">Least-verified components, by reach</h2><p class="dek">The twenty components that combine the largest install base with the least published verification. Circle area is estimated devices. A dark ring marks components with incidents this quarter; the green arc shows the approximate verified share.</p></div></div>
-    <div class="chart" id="pack"></div>
+    <figure class="fig" style="margin:0">
+      <h2 class="fig-h">Formal verification across the software stack</h2>
+      <p class="fig-d">Each block is a widely deployed component, sized by estimated install base. Green shading shows the approximate share covered by published, machine-checked verification.</p>
+      <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (approx. share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span></div>
+      <div class="stack" id="stack"></div>
+      <figcaption class="fig-f"><span><b>Stack State</b> · State of the Stack</span><span id="stack-src">Published verification, 2004–2026 · shares are rough estimates</span></figcaption>
+    </figure>
   </section>
 
   <section class="blk wrap" id="p-time">
-    <div class="blk-h"><div><h2 class="h2">Published verification efforts over time</h2><p class="dek">Cumulative count by year; darker green is fully verified (<span id="p-full2">29</span>). Select a year to list what was added. Activity has picked up since 2023, including work where AI systems write the proofs.</p></div></div>
     <div class="time-note">
-      <div class="chart" id="cum"></div>
+      <figure class="fig" style="margin:0">
+        <h2 class="fig-h">Published formal verification efforts, <span id="cum-yrs">2004–2026</span></h2>
+        <p class="fig-d" id="cum-d">Cumulative count by year. Darker green is fully verified. Select a year to list what was added.</p>
+        <div class="chart" id="cum"></div>
+        <figcaption class="fig-f"><span><b>Stack State</b> · State of the Stack</span><span id="cum-src">Machine-checked proofs and related work</span></figcaption>
+      </figure>
       <div><p class="lab" style="margin:0 0 8px">Newest work</p><div class="recent" id="recent"></div></div>
     </div>
   </section>
 
-  <section class="blk wrap" id="p-gap">
-    <div class="blk-h"><div><h2 class="h2">Incidents and verification work, by layer</h2><p class="dek">Incidents reported this quarter next to all published verification efforts for each layer of the stack. Select a layer to highlight it above.</p></div>
-      <button type="button" class="btn" data-goto="attacks">Open the Incidents view →</button></div>
-    <div class="ghead"><span class="l">← Incidents this quarter</span><span class="c">Layer</span><span>Verification efforts →</span></div>
-    <div class="gap" id="gap"></div>
-  </section>
-
-  <footer class="foot wrap">Covers published, machine-checked verification and closely related work. Install base and verified share are rough estimates from the source dataset, not measurements. Every entry links to its source; the page rereads <code>data.json</code> every five minutes.</footer>
+  <footer class="foot wrap">
+    <p>Covers published, machine-checked verification and closely related work. Install base and verified share are rough estimates from the source dataset, not measurements. Every entry links to its source; the page rereads <code>data.json</code> every five minutes.</p>
+  </footer>
 </main>
 
 <div class="tip" id="tip" hidden></div>
@@ -370,39 +313,36 @@ const fmtDayY = (s) => d3.utcFormat('%b %-d, %Y')(new Date(s + 'T00:00:00Z'));
 const iso = (d) => d.toISOString().slice(0, 10);
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : null);
 const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ago = (ms) => { const m = Math.round(ms / 6e4); if (m < 1) return 'just now'; if (m < 60) return m + ' min ago'; const h = Math.round(m / 60); if (h < 48) return h + ' h ago'; return Math.round(h / 24) + ' days ago'; };
 const dayAgo = (date) => { const d = Math.round((d3.utcDay.floor(new Date()) - Date.parse(date + 'T00:00:00Z')) / 864e5); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; };
+const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 
 const BANDS = ['People', 'AI stack', 'Smart contracts & chains', 'Applications & data', 'Cloud & identity', 'Network appliances', 'Libraries & supply chain', 'Crypto & protocols', 'Compilers & runtimes', 'Kernels & hypervisors', 'Firmware', 'Hardware & ISA'];
+const BAND_LABEL = { 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
+const BAND_SUB = { 'AI stack': 'Model gateways, agent frameworks', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
+const bl = (b) => BAND_LABEL[b] || b;
+const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'AI & agents', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
+const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'AI & agents': 'AI & agent tooling', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
 const GROUPS = [
-  { k: 'ai', label: 'AI stack & agents', sub: 'LLM gateways, agent platforms' },
-  { k: 'supply', label: 'Libraries & supply chain', sub: 'Packages, extensions, PHP' },
-  { k: 'cloud', label: 'Cloud & identity', sub: 'SaaS tenants, logins, tokens' },
-  { k: 'gov', label: 'Government', sub: 'Agencies, police, registers' },
-  { k: 'fin', label: 'Banks & finance', sub: 'Banks, funds, payments' },
-  { k: 'health', label: 'Healthcare', sub: 'Hospitals, insurers, labs' },
-  { k: 'edge', label: 'VPNs & firewalls', sub: 'Edge devices' },
-  { k: 'other', label: 'Other companies', sub: 'Retail, education, telecom…' },
-  { k: 'crypto', label: 'Crypto & DeFi', sub: 'Wallets, exchanges' },
+  { k: 'ai', label: 'AI companies & tools' }, { k: 'supply', label: 'Software ecosystems' }, { k: 'cloud', label: 'Cloud & SaaS' },
+  { k: 'gov', label: 'Government' }, { k: 'fin', label: 'Banks & finance' }, { k: 'health', label: 'Healthcare' },
+  { k: 'edge', label: 'Network device operators' }, { k: 'other', label: 'Other companies' }, { k: 'crypto', label: 'Cryptocurrency & DeFi' },
 ];
 const GL = Object.fromEntries(GROUPS.map((g) => [g.k, g]));
 const STATUS = { VERIFIED: 'Fully verified', PARTIAL: 'Partial', SPEC_ONLY: 'Spec only', TESTING_ONLY: 'Testing only', IN_PROGRESS: 'In progress' };
 const METHOD = { proof_assistant: 'Proof assistant', 'proof_assistant+refinement': 'Proof assistant + refinement', smt_deductive: 'SMT / deductive verifier', symbolic_protocol: 'Symbolic protocol analysis', bounded_model_checking: 'Bounded model checking', model_checking: 'Model checking', testing_only: 'Testing only' };
-const NEWS = [[/autonomous AI agent/, 'AI-agent campaign'], [/Zenith Bank/, 'Zenith Bank'], [/Defense Manpower/, 'Pentagon personnel data'], [/Denmark national population/, 'Denmark population register'], [/PHP2Shell/, 'PHP2Shell'], [/^LiteLLM$/, 'LiteLLM on PyPI']];
+const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Microsoft SharePoint/, 'SharePoint'], [/^Google Chrome users$/, 'Chrome V8'], [/Defense Manpower/, 'Pentagon personnel data'], [/autonomous AI agent/, 'AI-agent campaign'], [/^Citrix NetScaler ADC/, 'NetScaler']];
 
-// ---------- data (embedded copy, then data.json) ----------
-let D = null, INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
+// ---------- data: embedded copy first, then data.json ----------
+let ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
 let seen = null; try { seen = new Set(JSON.parse(localStorage.getItem('pg-seen') || 'null') || []); } catch (e) { seen = null; }
+const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
 function ingest(data) {
-  D = data; INC = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
-  INC.forEach((r) => {
-    r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z');
-    if (!GL[r.theme]) r.theme = 'other';
-    r.how = howOf(r);
-  });
-  ST.forEach((s) => { const u = Number(s.usage_log10) || 0, b = Number(s.blank_score); s.reach = Math.pow(10, u); s.share = s.status_class === 'verified' ? 1 : (b && u ? Math.max(0, 1 - b / u) : 0); });
-  const ts = INC.map((r) => r.t);
+  ALL = data.incidents; PR = data.proofs; ST = data.stack; gen = data.generated_at || null;
+  ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
+  INC = ALL.filter(isFlaw);
+  ST.forEach((s) => { const u = Number(s.usage_log10) || 0, b = Number(s.blank_score); s.share = s.status_class === 'verified' ? 1 : (b && u ? Math.max(0, 1 - b / u) : 0); });
+  const ts = ALL.map((r) => r.t);
   WIN = { start: d3.utcDay.floor(new Date(d3.min(ts))), end: d3.utcDay.floor(new Date(d3.max(ts))) };
 }
 ingest(JSON.parse($('#pg-data').textContent));
@@ -425,21 +365,9 @@ async function poll(first) {
 }
 
 // ---------- state ----------
-const S = { view: 'attacks', group: null, week: null, band: null, how: null, status: null, board: 'rec' };
-const matchA = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'how' || !S.how || r.how === S.how);
-const HOW = [
-  { k: 'ransom', label: 'Ransomware' },
-  { k: 'data', label: 'Data theft & extortion' },
-  { k: 'vuln', label: 'Exploited vulnerability' },
-  { k: 'supply', label: 'Supply-chain compromise' },
-  { k: 'ai', label: 'AI-enabled operation' },
-  { k: 'crypto', label: 'Crypto theft' },
-  { k: 'other', label: 'Other' },
-];
-const HL = Object.fromEntries(HOW.map((h) => [h.k, h]));
-function howOf(r) { const a = (r.attack_type || '').toLowerCase(); if (/supply/.test(a)) return 'supply'; if (/\bai\b|ai-/.test(a)) return 'ai'; if (/crypto/.test(a)) return 'crypto'; if (/ransom/.test(a)) return 'ransom'; if (/exploit|zero-day|kev/.test(a)) return 'vuln'; if (/data|theft|extortion|breach|exposure|unauthori|takeover|vishing/.test(a)) return 'data'; return 'other'; }
-const STC = { verified: 'verified', partial: 'partly verified', blank: 'no published verification' };
-const weekOf = (r) => Math.floor((d3.utcDay.floor(new Date(r.t)) - d3.utcWeek.floor(WIN.start)) / (7 * 864e5));
+const S = { view: 'attacks', group: null, week: null, band: null, func: null, status: null };
+const weekOf = (r) => Math.floor((d3.utcDay.floor(new Date(r.t)) - WIN.start) / (7 * 864e5));
+const match = (r, skip) => (skip === 'group' || !S.group || r.theme === S.group) && (skip === 'week' || S.week == null || weekOf(r) === S.week) && (skip === 'band' || !S.band || r.band === S.band) && (skip === 'func' || !S.func || r.func === S.func);
 const set = (p) => { Object.assign(S, p); render(); };
 
 // ---------- tooltip + drawer ----------
@@ -475,12 +403,12 @@ function openIncident(r) {
   openDrawer(`${fmtDayY(r.date)} · ${r.claim_status === 'reported' ? 'confirmed' : 'claimed, not confirmed'}`, r.victim, [
     r.usd ? el('p', { class: 'dr-big', text: fmtUSD(r.usd) + ' reported lost' }) : r.people ? el('p', { class: 'dr-big', text: fmtN(r.people) + ' records exposed' }) : null,
     el('p', { class: 'dr-p', text: r.impact }),
-    dl([['Group', GL[r.theme].label], ['Attack', r.attack_type], ['Way in', r.initial_vector], ['Product', r.product], ['CVE', r.cve], ['Actor', r.threat_actor], ['Sector', r.sector], ['Country', r.country], ['Layer', r.band], ['Formal verification', 'None on record for the affected code']]),
+    dl([['Flaw', r.initial_vector], ['CVE', r.cve], ['Product', r.product], ['Layer', bl(r.band)], ['Code was doing', FUNC_LABEL[r.func]], ['Language', r.lang], ['Attack', r.attack_type], ['Actor', r.threat_actor], ['Organization', GL[r.theme].label], ['Sector', r.sector], ['Country', r.country]]),
     safeUrl(r.source_url) ? sec('Source', el('p', {}, srcLink(r.source_url))) : null,
   ]);
 }
 function openList(title, kicker, list) {
-  openDrawer(kicker, title, [el('ul', { class: 'mini' }, list.map((r) => el('li', {}, el('button', { type: 'button', text: r.victim.length > 60 ? r.victim.slice(0, 58) + '…' : r.victim, onclick: () => openIncident(r) }), el('span', { class: 'd', text: fmtDay(r.date) }))))]);
+  openDrawer(kicker, title, [el('ul', { class: 'mini' }, list.map((r) => el('li', {}, el('button', { type: 'button', text: clip(r.victim, 60), onclick: () => openIncident(r) }), el('span', { class: 'd', text: fmtDay(r.date) }))))]);
 }
 function openProof(p) {
   openDrawer(`${p.band} · ${p.year}`, p.project, [
@@ -489,15 +417,17 @@ function openProof(p) {
     safeUrl(p.source_url) ? sec('Source', el('p', {}, srcLink(p.source_url))) : null,
   ]);
 }
+function openProofList(title, list) {
+  openDrawer('Verification efforts', title, [el('ul', { class: 'mini' }, list.map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: p.year + ' · ' + (STATUS[p.status] || p.status) }))))]);
+}
 function openComponent(c) {
-  const incs = INC.filter((r) => r.band === c.band).sort((a, b) => b.t - a.t), prs = PR.filter((p) => p.band === c.band);
-  openDrawer(c.band, c.component, [
-    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Verified' : c.share > 0 ? `About ${Math.round(c.share * 100)}% verified` : 'No published verification' }),
-    dl([['Install base', c.usage_estimate], ['Status', c.verification_status], ['Blank score', c.blank_score ? `${Number(c.blank_score).toFixed(1)} of 10, rank ${c.blank_rank}` : null], ['Incidents, 3 mo', c.incidents_3mo !== '' && c.incidents_3mo != null ? String(c.incidents_3mo) : null]]),
+  const prs = PR.filter((p) => p.band === c.band);
+  openDrawer(bl(c.band), c.component, [
+    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Fully verified' : c.share > 0 ? `About ${Math.round(c.share * 100)}% verified` : 'No published verification' }),
+    dl([['Install base', c.usage_estimate], ['Status', c.verification_status]]),
     sec('Not covered', el('p', { class: 'dr-p', text: c.what_is_unverified })),
     sec('Closest existing work', el('p', { class: 'dr-p', text: c.closest_existing_work })),
-    sec(`Verification efforts in ${c.band} (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 10).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
-    sec(`Incidents in ${c.band} this quarter (${incs.length})`, incs.length ? el('ul', { class: 'mini' }, incs.slice(0, 8).map((r) => el('li', {}, el('button', { type: 'button', text: r.victim.length > 56 ? r.victim.slice(0, 54) + '…' : r.victim, onclick: () => openIncident(r) }), el('span', { class: 'd', text: fmtDay(r.date) })))) : el('p', { class: 'help', text: 'None reported.' })),
+    sec(`Verification efforts in this layer (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 12).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
   ]);
 }
 
@@ -518,204 +448,150 @@ addEventListener('hashchange', () => { const h = location.hash.slice(1); if (vie
 
 // ---------- live strip ----------
 function renderLive() {
-  const live = $('#live');
-  const g = gen ? Date.parse(gen) : null;
-  live.classList.toggle('stale', !fetchedOk);
+  const live = $('#live'), g = gen ? Date.parse(gen) : null;
+  live.classList.toggle('stale', !fetchedOk && lastCheck != null);
   const parts = [];
   if (g) parts.push('· updated ' + ago(Date.now() - g));
-  const latest = S.view === 'attacks' ? INC.reduce((a, b) => (b.t > a.t ? b : a), INC[0]) : null;
-  if (latest) parts.push('· newest entry ' + dayAgo(latest.date));
+  if (S.view === 'attacks' && INC.length) parts.push('· newest entry ' + dayAgo(INC.reduce((a, b) => (b.t > a.t ? b : a)).date));
   $('#live-t').replaceChildren(document.createTextNode(parts.join(' ')), el('span', { class: 'muted', text: lastCheck ? ' · checked ' + d3.timeFormat('%H:%M')(new Date(lastCheck)) : '' }));
-  live.title = fetchedOk ? 'Reading data.json, rechecked every 5 minutes' : 'Showing the copy stored in the page because data.json could not be reached';
+  live.title = fetchedOk ? 'Reading data.json, rechecked every 5 minutes' : 'Showing the copy stored in the page';
 }
 function renderTicker() {
   const tk = $('#tk'); tk.replaceChildren();
+  const isNew = (r) => freshIds.has(String(r.id)) || (seen && seen.size && !seen.has(String(r.id)));
   const items = S.view === 'attacks'
-    ? [...INC].sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: r.attack_type }), (freshIds.has(String(r.id)) || (seen && seen.size && !seen.has(String(r.id)))) ? el('span', { class: 'new', text: 'NEW' }) : null))
+    ? [...INC].sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: clip(r.initial_vector || r.attack_type, 60) }), isNew(r) ? el('span', { class: 'new', text: 'NEW' }) : null))
     : [...PR].sort((a, b) => Number(b.year) - Number(a.year) || Number(b.id) - Number(a.id)).slice(0, 14).map((p) => el('button', { type: 'button', class: 'tk p', onclick: () => openProof(p) }, el('i'), el('span', { class: 'when', text: p.year }), el('b', { text: p.project }), el('span', { text: STATUS[p.status] })));
-  // two copies for a seamless loop
   tk.append(...items, ...items.map((n) => { const c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; c.addEventListener('click', () => n.click()); return c; }));
 }
 function renderFilt() {
   const f = $('#filt');
-  const p = S.view === 'attacks' ? [S.how && HL[S.how].label, S.group && GL[S.group].label, S.band, S.week != null && 'Week of ' + d3.utcFormat('%b %-d')(d3.utcDay.offset(d3.utcWeek.floor(WIN.start), S.week * 7))] : [S.band, S.status && STC[S.status]];
+  const p = S.view === 'attacks' ? [S.band && bl(S.band), S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
   const parts = p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
-  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, how: null, status: null }) }));
+  if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, status: null }) }));
 }
 
-// ================= ATTACKS =================
-function renderAHero() {
+// ================= INCIDENTS =================
+function renderHero() {
   const weeks = Math.round((WIN.end - WIN.start) / (7 * 864e5));
   $('#a-n').textContent = INC.length; $('#a-weeks').textContent = weeks;
-  $('#a-eyebrow').textContent = `State of the Stack · Reported incidents · ${fmtDay(iso(WIN.start))} – ${fmtDayY(iso(WIN.end))}`;
+  $('#a-eyebrow').textContent = `State of the Stack · Incidents · ${fmtDay(iso(WIN.start))} – ${fmtDayY(iso(WIN.end))}`;
+  $('#method-p').textContent = `An incident is included when its reported way in was a defect in software: a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol. Of the ${ALL.length} incidents tracked in this period, ${ALL.length - INC.length} are left out: phishing and social engineering, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access, and cases with no stated cause. The rules are in scripts/classify.py in the project repository.`;
   const box = $('#units'); box.replaceChildren();
   const newIds = new Set(INC.filter((r) => seen && seen.size && !seen.has(String(r.id))).map((r) => String(r.id)));
-  GROUPS.forEach((g) => {
-    const list = INC.filter((r) => r.theme === g.k).sort((a, b) => a.t - b.t);
+  BANDS.forEach((b) => {
+    const list = INC.filter((r) => r.band === b).sort((a, c) => a.t - c.t);
     if (!list.length) return;
-    const on = S.group === g.k;
-    const sqs = el('div', { class: 'sqs' });
+    const on = S.band === b, sqs = el('div', { class: 'sqs' });
     list.forEach((r) => {
-      const s = el('span', { class: 'sq' + (r.theme === 'crypto' ? ' cr' : '') + (r.claim_status === 'reported' ? '' : ' cl') + (freshIds.has(String(r.id)) ? ' fresh' : '') + (newIds.has(String(r.id)) ? ' isnew' : ''), style: matchA(r, 'group') ? null : 'opacity:.16' });
+      const s = el('span', { class: 'sq' + (r.claim_status === 'reported' ? '' : ' cl') + (freshIds.has(String(r.id)) ? ' fresh' : '') + (newIds.has(String(r.id)) ? ' isnew' : ''), style: match(r, 'band') ? null : 'opacity:.16' });
       s.addEventListener('click', () => openIncident(r));
-      hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + ' · ' + r.attack_type + (r.claim_status === 'reported' ? '' : ' · claimed') }), r.people ? el('div', { text: fmtN(r.people) + ' records' }) : r.usd ? el('div', { text: fmtUSD(r.usd) + ' lost' }) : null]);
+      hoverable(s, () => [el('b', { text: r.victim }), el('div', { class: 'm', text: fmtDay(r.date) + (r.cve && r.cve !== 'unknown' ? ' · ' + r.cve.split(';')[0] : '') }), el('div', { text: clip(r.initial_vector || r.attack_type, 90) })]);
       sqs.appendChild(s);
     });
-    box.appendChild(el('div', { class: 'urow' + (S.group && !on ? ' dim' : '') },
-      el('button', { type: 'button', class: 'ul', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ group: on ? null : g.k }) }, g.label, el('small', { text: g.sub })),
+    box.appendChild(el('div', { class: 'urow' + (S.band && !on ? ' dim' : '') },
+      el('button', { type: 'button', class: 'ul', 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ band: on ? null : b }) }, bl(b), el('small', { text: BAND_SUB[b] || '' })),
       sqs, el('span', { class: 'n num', text: list.length })));
   });
-  const nk = $('#newkey');
-  nk.hidden = !newIds.size; $('#newtxt').textContent = newIds.size + ' new since your last visit';
-}
-function renderWeeks() {
-  const box = $('#weeks'); const cw = box.clientWidth || 900, narrow = cw < 640;
-  const w0 = d3.utcWeek.floor(WIN.start), weeks = d3.utcWeek.range(w0, d3.utcDay.offset(WIN.end, 1));
-  const days = (WIN.end - WIN.start) / 864e5 + 1;
-  $('#a-cad').textContent = Math.round((days * 24) / INC.length);
-  const data = weeks.map((w, i) => { const all = INC.filter((r) => weekOf(r) === i); return { i, w, all, sel: all.filter((r) => matchA(r, 'week')) }; });
-  const narrowed = !!(S.group || S.how || S.band);
-  const annH = narrow ? 64 : 76, W = cw, H = (narrow ? 230 : 300) + annH, m = { t: annH, r: 6, b: 34, l: 6 };
-  const x = d3.scaleBand(data.map((d) => d.i), [m.l, W - m.r]).paddingInner(0.18);
-  const y = d3.scaleLinear([0, d3.max(data, (d) => d.all.length) || 1], [H - m.b, m.t + 24]);
-  box.replaceChildren();
-  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Incidents disclosed per week');
-  const hit = css('--hit'), soft = css('--hit-soft'), ink = css('--ink'), muted = css('--muted'), rule = css('--rule'), acc = css('--accent');
-  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', rule);
-  const lastPartial = (WIN.end.getUTCDay() + 6) % 7 < 6;
-  data.forEach((d) => {
-    const xx = x(d.i), bw = x.bandwidth(), on = S.week == null || S.week === d.i, partial = lastPartial && d.i === data.length - 1;
-    const g = svg.append('g').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `Week of ${d3.utcFormat('%b %-d')(d.w)}: ${d.all.length} incidents`).style('cursor', 'pointer')
-      .on('click', () => set({ week: S.week === d.i ? null : d.i })).on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set({ week: S.week === d.i ? null : d.i }); } });
-    g.append('rect').attr('x', xx - 4).attr('y', m.t).attr('width', bw + 8).attr('height', H - m.b - m.t).attr('fill', 'transparent');
-    const r = Math.min(4, bw / 2);
-    const bar = (n, fill, op) => { if (!n) return; const top = y(n), h = y(0) - top; g.append('path').attr('d', `M${xx},${y(0)} V${top + r} Q${xx},${top} ${xx + r},${top} H${xx + bw - r} Q${xx + bw},${top} ${xx + bw},${top + r} V${y(0)} Z`).attr('fill', fill).attr('opacity', op); };
-    if (narrowed) { bar(d.all.length, soft, on ? 1 : 0.4); bar(d.sel.length, hit, on ? 1 : 0.35); }
-    else bar(d.all.length, partial ? soft : hit, on ? 1 : 0.3);
-    const show = narrowed ? d.sel.length : d.all.length;
-    g.append('text').attr('x', xx + bw / 2).attr('y', y(d.all.length) - 8).attr('text-anchor', 'middle').attr('font-size', narrow ? 12 : 15).attr('font-weight', 600).attr('fill', ink).attr('opacity', on ? 1 : 0.4).text(show + (narrowed ? '/' + d.all.length : ''));
-    if (narrow ? d.i % 3 === 0 : true) g.append('text').attr('x', xx + bw / 2).attr('y', H - 12).attr('text-anchor', 'middle').attr('font-size', narrow ? 11 : 12.5).attr('fill', muted).text(d3.utcFormat('%b %-d')(d.w));
-    g.on('pointermove', (ev) => showTip(ev, [el('b', { text: `Week of ${d3.utcFormat('%b %-d')(d.w)}${partial ? ' (so far)' : ''}` }), el('div', { class: 'm', text: d.all.length + ' incidents' }), ...d.sel.slice(0, 6).map((r) => el('div', { text: '· ' + (r.victim.length > 44 ? r.victim.slice(0, 42) + '…' : r.victim) })), d.sel.length > 6 ? el('div', { class: 'm', text: '+' + (d.sel.length - 6) + ' more, click to filter' }) : null])).on('pointerleave', hideTip);
-  });
-  // annotations for headline incidents
-  const anns = NEWS.map(([re, label]) => { const r = INC.find((x) => re.test(x.victim)); return r ? { r, label, i: weekOf(r) } : null; }).filter(Boolean);
-  const byWeek = d3.groups(anns, (a) => a.i);
-  const placed = [];
-  byWeek.forEach(([i, list]) => {
-    const d = data[i]; if (!d) return;
-    const cx = x(i) + x.bandwidth() / 2, label = list.map((a) => a.label).join(' + ');
-    let level = 0; const tw = label.length * (narrow ? 6.2 : 7.4);
-    while (placed.some((p) => p.level === level && Math.abs(p.cx - cx) < (p.tw + tw) / 2 + 10)) level++;
-    placed.push({ cx, tw, level });
-    const ty = 16 + level * 22;
-    const tx = Math.max(m.l + tw / 2, Math.min(W - m.r - tw / 2, cx));
-    const g = svg.append('g').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button').attr('aria-label', label).on('click', () => (list.length === 1 ? openIncident(list[0].r) : openList(label, 'In the news', list.map((a) => a.r)))).on('keydown', (ev) => { if (ev.key === 'Enter') (list.length === 1 ? openIncident(list[0].r) : openList(label, 'In the news', list.map((a) => a.r))); });
-    g.append('line').attr('x1', cx).attr('x2', cx).attr('y1', ty + 6).attr('y2', y(d.all.length) - 30).attr('stroke', acc).attr('stroke-width', 1.2);
-    g.append('circle').attr('cx', cx).attr('cy', y(d.all.length) - 30).attr('r', 3).attr('fill', acc);
-    g.append('text').attr('x', tx).attr('y', ty).attr('text-anchor', 'middle').attr('font-size', narrow ? 11.5 : 13.5).attr('font-weight', 600).attr('fill', acc).text(label);
-  });
+  $('#newkey').hidden = !newIds.size; $('#newtxt').textContent = newIds.size + ' new since your last visit';
 }
 function renderFlow() {
   const box = $('#flow'); const cw = box.clientWidth || 900, narrow = cw < 640;
-  const base = INC.filter((r) => matchA(r, 'how') && (S.group ? true : true) && (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band));
   const pool = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band));
-  const L = HOW.map((h) => ({ ...h, n: pool.filter((r) => r.how === h.k).length })).filter((n) => n.n);
+  const L = FUNC_ORDER.map((k) => ({ k, label: FUNC_LABEL[k], n: pool.filter((r) => r.func === k).length })).filter((n) => n.n);
   const Rn = GROUPS.map((g) => ({ ...g, n: pool.filter((r) => r.theme === g.k).length })).filter((n) => n.n);
   box.replaceChildren();
   if (!pool.length) { box.appendChild(el('p', { class: 'help', text: 'No incidents match this filter.' })); return; }
-  const W = cw, labelW = narrow ? 112 : 230, nodeW = 12, H = narrow ? 440 : 480, gap = narrow ? 7 : 10;
+  const W = cw, labelW = narrow ? 118 : 240, nodeW = 12, H = narrow ? 400 : 440, gap = narrow ? 8 : 10;
   const k = Math.min((H - gap * (L.length - 1)) / pool.length, (H - gap * (Rn.length - 1)) / pool.length);
-  const lay = (arr) => { let y = 0; arr.forEach((n) => { n.y = y; n.h = n.n * k; y += n.h + gap; }); const off = (H - (y - gap)) / 2; arr.forEach((n) => { n.y += off; n.o = 0; }); };
-  lay(L); lay(Rn);
+  const minLab = narrow ? 15 : 17;
+  const lay = (arr) => { let y = 0; arr.forEach((n) => { n.h = n.n * k; n.y = y + Math.max(0, (minLab - n.h) / 2); y += Math.max(n.h, minLab) + gap; n.o = 0; }); return y - gap; };
+  const HH = Math.max(lay(L), lay(Rn));
+  [L, Rn].forEach((arr) => { const end = arr[arr.length - 1]; const used = end.y + Math.max(end.h, minLab) - Math.max(0, (minLab - end.h) / 2); const off = (HH - used) / 2; arr.forEach((n) => { n.y += off; }); });
   const links = [];
-  L.forEach((m) => Rn.forEach((g) => { const c = pool.filter((r) => r.how === m.k && r.theme === g.k).length; if (c) links.push({ m, g, c, h: c * k }); }));
+  L.forEach((m) => Rn.forEach((g) => { const c = pool.filter((r) => r.func === m.k && r.theme === g.k).length; if (c) links.push({ m, g, c, h: c * k }); }));
   links.forEach((l) => { l.sy = l.m.y + l.m.o; l.m.o += l.h; });
   Rn.forEach((g) => L.forEach((m) => { const l = links.find((x) => x.m === m && x.g === g); if (l) { l.ty = g.y + g.o; g.o += l.h; } }));
   const x0 = labelW + nodeW, x1 = W - labelW - nodeW, xm = (x0 + x1) / 2;
-  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Incidents by method and area affected');
-  const hit = css('--hit'), grey = css('--grey-sq'), ink = css('--ink'), muted = css('--muted');
-  const sel = (l) => (!S.how || S.how === l.m.k) && (!S.group || S.group === l.g.k);
-  const any = !!(S.how || S.group);
+  const svg = d3.select(box).append('svg').attr('width', W).attr('height', HH + 20).attr('viewBox', `0 -20 ${W} ${HH + 20}`).attr('role', 'img').attr('aria-label', 'Incidents by what the flawed code was doing and the kind of organization affected');
+  const hit = css('--hit'), ink = css('--ink'), muted = css('--muted');
+  const sel = (l) => (!S.func || S.func === l.m.k) && (!S.group || S.group === l.g.k);
+  const any = !!(S.func || S.group), base = (l) => (any ? (sel(l) ? 0.8 : 0.07) : 0.36);
   const lk = svg.append('g').selectAll('path').data(links).join('path').attr('class', 'lk')
     .attr('d', (l) => `M${x0},${l.sy} C${xm},${l.sy} ${xm},${l.ty} ${x1},${l.ty} L${x1},${l.ty + l.h} C${xm},${l.ty + l.h} ${xm},${l.sy + l.h} ${x0},${l.sy + l.h} Z`)
-    .attr('fill', (l) => (l.g.k === 'crypto' || l.m.k === 'crypto' ? grey : hit)).attr('fill-opacity', (l) => (any ? (sel(l) ? 0.8 : 0.07) : 0.34))
-    .on('pointermove', (ev, l) => { lk.attr('fill-opacity', (o) => (o === l ? 0.9 : 0.08)); const list = pool.filter((r) => r.how === l.m.k && r.theme === l.g.k); showTip(ev, [el('b', { text: `${l.m.label} → ${l.g.label}` }), el('div', { class: 'm', text: l.c + ' incident' + (l.c > 1 ? 's' : '') }), ...list.slice(0, 5).map((r) => el('div', { text: '· ' + (r.victim.length > 44 ? r.victim.slice(0, 42) + '…' : r.victim) })), list.length > 5 ? el('div', { class: 'm', text: '+' + (list.length - 5) + ' more' }) : null]); })
-    .on('pointerleave', () => { hideTip(); lk.attr('fill-opacity', (l) => (any ? (sel(l) ? 0.8 : 0.07) : 0.34)); })
-    .on('click', (ev, l) => set(S.how === l.m.k && S.group === l.g.k ? { how: null, group: null } : { how: l.m.k, group: l.g.k }));
+    .attr('fill', hit).attr('fill-opacity', base)
+    .on('pointermove', (ev, l) => { lk.attr('fill-opacity', (o) => (o === l ? 0.9 : 0.08)); const list = pool.filter((r) => r.func === l.m.k && r.theme === l.g.k); showTip(ev, [el('b', { text: `${l.m.label} → ${l.g.label}` }), el('div', { class: 'm', text: l.c + ' incident' + (l.c > 1 ? 's' : '') }), ...list.slice(0, 5).map((r) => el('div', { text: '· ' + clip(r.victim, 44) })), list.length > 5 ? el('div', { class: 'm', text: '+' + (list.length - 5) + ' more' }) : null]); })
+    .on('pointerleave', () => { hideTip(); lk.attr('fill-opacity', base); })
+    .on('click', (ev, l) => set(S.func === l.m.k && S.group === l.g.k ? { func: null, group: null } : { func: l.m.k, group: l.g.k }));
   const node = (n, side) => {
-    const x = side === 'L' ? labelW : W - labelW - nodeW, on = side === 'L' ? S.how === n.k : S.group === n.k, key = side === 'L' ? 'how' : 'group';
-    const dim = side === 'L' ? (S.how && !on) : (S.group && !on);
+    const key = side === 'L' ? 'func' : 'group', on = S[key] === n.k, dim = S[key] && !on;
+    const x = side === 'L' ? labelW : W - labelW - nodeW;
     const g = svg.append('g').attr('class', 'nd').attr('tabindex', 0).attr('role', 'button').attr('aria-pressed', on ? 'true' : 'false').attr('aria-label', `${n.label}: ${n.n} incidents`).attr('opacity', dim ? 0.4 : 1)
       .on('click', () => set({ [key]: on ? null : n.k })).on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set({ [key]: on ? null : n.k }); } })
-      .on('pointerenter', () => lk.attr('fill-opacity', (l) => ((side === 'L' ? l.m : l.g) === n ? 0.85 : 0.07))).on('pointerleave', () => lk.attr('fill-opacity', (l) => (any ? (sel(l) ? 0.8 : 0.07) : 0.34)));
-    g.append('rect').attr('x', x).attr('y', n.y).attr('width', nodeW).attr('height', Math.max(2, n.h)).attr('fill', n.k === 'crypto' ? grey : ink);
-    const tx = side === 'L' ? labelW - 10 : W - labelW + 10, anchor = side === 'L' ? 'end' : 'start', cy = n.y + n.h / 2;
-    const short = narrow ? n.label.replace('Data theft & extortion', 'Data theft').replace('Exploited vulnerability', 'Exploited vuln.').replace('Supply-chain compromise', 'Supply chain').replace('AI-enabled operation', 'AI-enabled').replace('Libraries & supply chain', 'Libraries & supply').replace('AI stack & agents', 'AI stack').replace('Other companies', 'Other') : n.label;
-    g.append('rect').attr('x', side === 'L' ? 0 : W - labelW).attr('y', n.y - 2).attr('width', labelW).attr('height', Math.max(18, n.h + 4)).attr('fill', 'transparent');
-    g.append('text').attr('x', tx).attr('y', cy + 4).attr('text-anchor', anchor).attr('font-size', narrow ? 11.5 : 14).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(short + '  ' + n.n);
+      .on('pointerenter', () => lk.attr('fill-opacity', (l) => ((side === 'L' ? l.m : l.g) === n ? 0.85 : 0.07))).on('pointerleave', () => lk.attr('fill-opacity', base));
+    g.append('rect').attr('x', side === 'L' ? 0 : W - labelW).attr('y', n.y - 3).attr('width', labelW).attr('height', Math.max(18, n.h + 6)).attr('fill', 'transparent');
+    g.append('rect').attr('x', x).attr('y', n.y).attr('width', nodeW).attr('height', Math.max(2, n.h)).attr('fill', ink);
+    const short = narrow ? n.label.replace('Authentication & access', 'Auth & access').replace('Parsing untrusted input', 'Parsing input').replace('Moving money (contracts)', 'Moving money').replace('Network device operators', 'Network operators').replace('Cryptocurrency & DeFi', 'Crypto & DeFi').replace('AI companies & tools', 'AI companies').replace('Software ecosystems', 'Software ecosys.') : n.label;
+    g.append('text').attr('x', side === 'L' ? labelW - 10 : W - labelW + 10).attr('y', n.y + n.h / 2 + 4).attr('text-anchor', side === 'L' ? 'end' : 'start').attr('font-size', narrow ? 11.5 : 14).attr('font-weight', on ? 700 : 500).attr('fill', ink).text(short + '  ' + n.n);
   };
   L.forEach((n) => node(n, 'L')); Rn.forEach((n) => node(n, 'R'));
-  if (!narrow) { svg.append('text').attr('x', labelW + nodeW / 2).attr('y', -10).attr('text-anchor', 'middle').attr('class', 'lab').attr('font-size', 11).attr('fill', muted).text('METHOD'); svg.append('text').attr('x', W - labelW - nodeW / 2).attr('y', -10).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', muted).text('AREA'); }
+  svg.append('text').attr('x', labelW + nodeW).attr('y', -6).attr('text-anchor', 'end').attr('font-size', 11).attr('letter-spacing', '.1em').attr('fill', muted).text('CODE WAS DOING');
+  svg.append('text').attr('x', W - labelW - nodeW).attr('y', -6).attr('font-size', 11).attr('letter-spacing', '.1em').attr('fill', muted).text('WHO WAS HIT');
 }
-function renderTower() {
-  const box = $('#tower'); box.replaceChildren();
-  const base = INC.filter((r) => matchA(r, 'band'));
-  const max = Math.max(1, ...BANDS.map((b) => base.filter((r) => r.band === b).length));
-  BANDS.forEach((b) => {
-    const list = base.filter((r) => r.band === b), n = list.length, on = S.band === b;
-    const row = el('button', { type: 'button', class: 'trow2' + (S.band && !on ? ' dim' : ''), 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ band: on ? null : b }) },
-      el('span', { class: 'tl', text: b }), el('span', { class: 'tb' }, el('i', { style: `width:${n ? Math.max(1.2, (n / max) * 100).toFixed(1) : 0}%` })), el('span', { class: 'tn num', text: n }));
-    hoverable(row, () => [el('b', { text: b }), el('div', { class: 'm', text: n + ' incident' + (n === 1 ? '' : 's') + ' · ' + PR.filter((p) => p.band === b).length + ' verification efforts on record' }), ...[...list].sort((a, c) => c.t - a.t).slice(0, 5).map((r) => el('div', { text: '· ' + (r.victim.length > 44 ? r.victim.slice(0, 42) + '…' : r.victim) }))]);
-    box.appendChild(row);
+function renderWeeks() {
+  const box = $('#weeks'); const cw = box.clientWidth || 900, narrow = cw < 640;
+  const n = Math.floor((WIN.end - WIN.start) / (7 * 864e5)) + 1;
+  const data = d3.range(n).map((i) => { const s = d3.utcDay.offset(WIN.start, i * 7), all = INC.filter((r) => weekOf(r) === i); return { i, s, e: d3.utcDay.offset(s, 6), all, sel: all.filter((r) => match(r, 'week')) }; });
+  const narrowed = !!(S.group || S.func || S.band);
+  const days = (WIN.end - WIN.start) / 864e5 + 1;
+  $('#weeks-dek').textContent = `Seven-day periods from ${fmtDay(iso(WIN.start))}; about one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours. Labels mark widely covered incidents. Select a week to filter.`;
+  const annH = narrow ? 0 : 64, W = cw, H = (narrow ? 220 : 280) + annH, m = { t: annH, r: 6, b: 34, l: 6 };
+  const x = d3.scaleBand(data.map((d) => d.i), [m.l, W - m.r]).paddingInner(0.18);
+  const y = d3.scaleLinear([0, d3.max(data, (d) => d.all.length) || 1], [H - m.b, m.t + 26]);
+  box.replaceChildren();
+  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Incidents per seven-day period');
+  const hit = css('--hit'), soft = css('--hit-soft'), ink = css('--ink'), muted = css('--muted'), rule = css('--rule'), acc = css('--accent');
+  svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', rule);
+  const anns = NEWS.map(([re, label]) => { const r = INC.find((x) => re.test(x.victim)); return r ? { r, label, i: weekOf(r) } : null; }).filter(Boolean);
+  const annBy = d3.group(anns, (a) => a.i);
+  data.forEach((d) => {
+    const xx = x(d.i), bw = x.bandwidth(), on = S.week == null || S.week === d.i, partial = d.i === n - 1 && WIN.end < d.e;
+    const g = svg.append('g').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${fmtDay(iso(d.s))} to ${fmtDay(iso(d.e))}: ${d.all.length} incidents`).style('cursor', 'pointer')
+      .on('click', () => set({ week: S.week === d.i ? null : d.i })).on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set({ week: S.week === d.i ? null : d.i }); } });
+    g.append('rect').attr('x', xx - 4).attr('y', m.t).attr('width', bw + 8).attr('height', H - m.b - m.t).attr('fill', 'transparent');
+    const r = Math.min(4, bw / 2);
+    const bar = (cnt, fill, op) => { if (!cnt) return; const top = y(cnt); g.append('path').attr('d', `M${xx},${y(0)} V${top + r} Q${xx},${top} ${xx + r},${top} H${xx + bw - r} Q${xx + bw},${top} ${xx + bw},${top + r} V${y(0)} Z`).attr('fill', fill).attr('opacity', op); };
+    if (narrowed) { bar(d.all.length, soft, on ? 1 : 0.4); bar(d.sel.length, hit, on ? 1 : 0.35); } else bar(d.all.length, partial ? soft : hit, on ? 1 : 0.3);
+    g.append('text').attr('x', xx + bw / 2).attr('y', y(d.all.length) - 8).attr('text-anchor', 'middle').attr('font-size', narrow ? 11 : 14).attr('font-weight', 600).attr('fill', ink).attr('opacity', on ? 1 : 0.4).text((narrowed ? d.sel.length + '/' : '') + d.all.length);
+    if (narrow ? d.i % 3 === 0 : true) g.append('text').attr('x', xx + bw / 2).attr('y', H - 12).attr('text-anchor', 'middle').attr('font-size', narrow ? 11 : 12.5).attr('fill', muted).text(fmtDay(iso(d.s)));
+    const list = annBy.get(d.i);
+    if (list) {
+      const cy = y(d.all.length) - 30;
+      g.append('circle').attr('cx', xx + bw / 2).attr('cy', cy).attr('r', 4).attr('fill', acc);
+      if (!narrow) {
+        const level = [...annBy.keys()].sort((a, b) => a - b).indexOf(d.i) % 2, ty = 16 + level * 22;
+        g.append('line').attr('x1', xx + bw / 2).attr('x2', xx + bw / 2).attr('y1', ty + 6).attr('y2', cy - 4).attr('stroke', acc).attr('stroke-width', 1.2);
+        const label = list.map((a) => a.label).join(' + '), tw = label.length * 7.4, tx = Math.max(m.l + tw / 2, Math.min(W - m.r - tw / 2, xx + bw / 2));
+        g.append('text').attr('x', tx).attr('y', ty).attr('text-anchor', 'middle').attr('font-size', 13.5).attr('font-weight', 600).attr('fill', acc).text(label);
+      }
+    }
+    g.on('pointermove', (ev) => showTip(ev, [el('b', { text: `${fmtDay(iso(d.s))} – ${fmtDay(iso(partial ? WIN.end : d.e))}${partial ? ' (so far)' : ''}` }), el('div', { class: 'm', text: d.all.length + ' incidents' }), ...(list ? list.map((a) => el('div', { style: 'color:var(--accent)', text: '★ ' + a.label })) : []), ...d.sel.slice(0, 6).map((q) => el('div', { text: '· ' + clip(q.victim, 44) })), d.sel.length > 6 ? el('div', { class: 'm', text: '+' + (d.sel.length - 6) + ' more' }) : null])).on('pointerleave', hideTip);
   });
-  const cta = $('#tower-cta'); cta.replaceChildren();
-  if (S.band) cta.appendChild(el('button', { type: 'button', class: 'btn', text: `Verification work for ${S.band} →`, onclick: () => setView('proofs', true) }));
-}
-function openProofList(title, list) {
-  openDrawer('Verification efforts', title, [el('ul', { class: 'mini' }, list.map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: p.year + ' · ' + (STATUS[p.status] || p.status) }))))]);
-}
-document.querySelectorAll('[data-b]').forEach((b) => b.addEventListener('click', () => set({ board: b.dataset.b })));
-function renderBars() {
-  document.querySelectorAll('[data-b]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.b === S.board ? 'true' : 'false'));
-  const rec = S.board === 'rec', key = rec ? 'people' : 'usd';
-  $('#b-h').textContent = rec ? 'Largest reported data exposures' : 'Largest reported financial losses';
-  $('#b-d').textContent = rec ? 'Records exposed per incident, where the report gives a number. Striped bars are unconfirmed claims.' : 'Reported losses per incident, mostly from crypto and DeFi. Green shows the amount recovered.';
-  const all = INC.filter((r) => r[key] > 0).sort((a, b) => b[key] - a[key]);
-  const rows = all.filter(matchA).slice(0, 10), max = all.length ? all[0][key] : 1;
-  const box = $('#bars'); box.replaceChildren();
-  if (!rows.length) { box.appendChild(el('p', { class: 'help', text: 'Nothing with a published figure matches this filter.' })); return; }
-  const tw = Math.max(200, box.clientWidth - 330);
-  rows.forEach((r) => {
-    const w = Math.max(3, Math.sqrt(r[key] / max) * 100);
-    const bar = el('span', { class: 'bar' + (r.claim_status === 'reported' ? '' : ' cl'), style: `width:calc(${w.toFixed(2)}% - 80px)` });
-    if (!rec && Number(r.funds_recovered_usd)) bar.appendChild(el('span', { class: 'rec', style: `width:${Math.min(100, Number(r.funds_recovered_usd) / r.usd * 100).toFixed(1)}%` }));
-    box.appendChild(el('button', { type: 'button', class: 'brow', onclick: () => openIncident(r) },
-      el('span', { class: 'nm' }, r.victim.replace(/\s*\(.*?\)\s*$/, ''), el('small', { text: GL[r.theme].label + ' · ' + fmtDay(r.date) })),
-      el('span', { class: 'track' }, bar, el('span', { class: 'v num', text: rec ? fmtN(r.people) : fmtUSD(r.usd) }))));
-  });
-  box.appendChild(el('p', { class: 'help', text: 'Bar length uses a square-root scale so smaller breaches stay visible.' }));
 }
 
-// ================= PROOFS =================
+// ================= VERIFICATION =================
 function renderPHero() {
   const v = ST.filter((s) => s.status_class === 'verified'), p = ST.filter((s) => s.status_class === 'partial'), b = ST.filter((s) => s.status_class === 'blank');
+  $('#p-v').textContent = v.length; $('#p-t').textContent = ST.length;
   const box = $('#cov'); box.replaceChildren();
-  const bar = el('div', { class: 'cov-bar', role: 'img', 'aria-label': `${ST.length} components: ${v.length} verified, ${p.length} partly verified, ${b.length} with no published verification` });
-  [[v, 'v', 'verified'], [p, 'p', 'partly verified'], [b, 'b', 'no published verification']].forEach(([list, cls, txt]) => {
-    const key = { v: 'verified', p: 'partial', b: 'blank' }[cls], on = S.status === key;
+  const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${ST.length} components: ${v.length} fully verified, ${p.length} partly verified, ${b.length} with no published verification` });
+  [[v, 'v', 'verified', 'fully verified'], [p, 'p', 'partial', 'partly verified'], [b, 'b', 'blank', 'no published verification']].forEach(([list, cls, key, txt]) => {
+    const on = S.status === key;
     const d = el('button', { type: 'button', class: cls, style: `flex:${list.length} 1 0`, 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ status: on ? null : key }) }, el('strong', { class: 'num', text: list.length }), el('span', { text: txt }));
-    hoverable(d, () => [el('b', { text: list.length + ' ' + txt }), ...list.slice(0, 8).map((s) => el('div', { class: 'm', text: s.component.replace(/\s*\(.*?\)\s*/g, ' ').trim() })), list.length > 8 ? el('div', { class: 'm', text: '+' + (list.length - 8) + ' more' }) : null]);
+    hoverable(d, () => [el('b', { text: list.length + ' ' + txt }), ...list.slice(0, 8).map((s) => el('div', { class: 'm', text: s.component.replace(/\s*\(.*?\)\s*/g, ' ').trim() })), list.length > 8 ? el('div', { class: 'm', text: '+' + (list.length - 8) + ' more · select to highlight below' }) : null]);
     bar.appendChild(d);
   });
-  box.append(el('p', { class: 'lab', style: 'margin:0 0 10px', text: `${ST.length} widely deployed software components · select a segment to highlight it below` }), bar);
-  const full = PR.filter((x) => x.status === 'VERIFIED').length, recent = PR.filter((x) => Number(x.year) >= 2025).length;
-  const f = $('#facts'); f.replaceChildren();
-  const byYear = (a, b) => Number(b.year) - Number(a.year);
-  [[full, 'fully verified projects since ' + d3.min(PR, (x) => Number(x.year)), () => openProofList('Fully verified projects', PR.filter((x) => x.status === 'VERIFIED').sort(byYear))],
-   [PR.length, 'verification efforts tracked', () => openProofList('All verification efforts', [...PR].sort(byYear))],
-   [recent, 'started in 2025–2026', () => openProofList('Started in 2025–2026', PR.filter((x) => Number(x.year) >= 2025).sort(byYear))]]
-    .forEach(([n, t, fn]) => f.appendChild(el('button', { type: 'button', onclick: fn }, el('strong', { class: 'num', text: n }), el('span', { text: t + ' →' }))));
-  $('#p-full2').textContent = full;
+  box.append(bar, el('p', { class: 'help', text: 'Select a segment to highlight those components in the stack below.' }));
 }
 function renderStack() {
   const box = $('#stack'); box.replaceChildren();
@@ -724,57 +600,31 @@ function renderStack() {
     const rows = ST.filter((r) => r.band === band).sort((a, b) => Number(b.usage_log10) - Number(a.usage_log10));
     const blocks = el('div', { class: 'blocks' });
     rows.forEach((r) => {
-      const w = Math.pow(Math.max(0.5, Number(r.usage_log10) - 5), 1.6), nh = Number(r.incidents_3mo) || 0;
+      const w = Math.pow(Math.max(0.5, Number(r.usage_log10) - 5), 1.6);
       const cls = r.share >= 1 ? 'ver' : r.share > 0 ? 'part' : '';
       const b = el('button', { type: 'button', class: 'blk-c ' + cls, style: `flex:${w.toFixed(2)} 1 ${Math.round(110 + w * 10)}px` + (S.status && r.status_class !== S.status ? ';opacity:.22' : ''), onclick: () => openComponent(r) },
         el('span', { class: 'fill', style: `width:${(r.share * 100).toFixed(0)}%` }),
         el('span', { text: short(r.component) }),
-        el('span', { class: 'meta' }, el('span', { text: r.share >= 1 ? 'verified' : r.share > 0 ? `~${Math.round(r.share * 100)}% verified` : 'none published' }), nh ? el('span', { class: 'a', text: nh + (nh > 1 ? ' incidents' : ' incident') }) : null));
+        el('span', { class: 'meta', text: r.share >= 1 ? 'fully verified' : r.share > 0 ? `~${Math.round(r.share * 100)}% verified` : 'none published' }));
       hoverable(b, () => [el('b', { text: r.component }), el('div', { class: 'm', text: r.usage_estimate }), el('div', { text: 'Not covered: ' + r.what_is_unverified })]);
       blocks.appendChild(b);
     });
-    box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', text: band, onclick: () => set({ band: S.band === band ? null : band }) }), blocks));
+    box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', text: bl(band), 'aria-pressed': S.band === band ? 'true' : 'false', onclick: () => set({ band: S.band === band ? null : band }) }), blocks));
   });
-}
-function renderPack() {
-  const box = $('#pack'); const cw = box.clientWidth || 900, narrow = cw < 640;
-  const rows = ST.filter((r) => Number(r.blank_rank) >= 1 && Number(r.blank_rank) <= 20);
-  const S2 = narrow ? cw : Math.min(cw, 760), W = cw, H = S2;
-  const root = d3.hierarchy({ children: rows }).sum((d) => d.reach || 0);
-  d3.pack().size([S2, S2]).padding(narrow ? 3 : 6)(root);
-  const ox = (W - S2) / 2;
-  box.replaceChildren();
-  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Twenty least-verified components sized by install base');
-  const hit = css('--hit'), soft = css('--hit-soft'), ink = css('--ink'), muted = css('--muted'), proof = css('--proof');
-  root.leaves().forEach((n) => {
-    const r = n.data, nh = Number(r.incidents_3mo) || 0, dim = (S.band && S.band !== r.band) || (S.status && r.status_class !== S.status);
-    const g = svg.append('g').attr('transform', `translate(${n.x + ox},${n.y})`).attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${r.component}, ${r.usage_estimate}`).style('cursor', 'pointer').attr('opacity', dim ? 0.25 : 1)
-      .on('click', () => openComponent(r)).on('keydown', (ev) => { if (ev.key === 'Enter') openComponent(r); });
-    g.append('circle').attr('r', n.r).attr('fill', css('--none-soft')).attr('stroke', nh ? hit : css('--rule-2')).attr('stroke-width', nh ? 2.5 : 1.5);
-    if (r.share > 0) g.append('path').attr('d', d3.arc()({ innerRadius: n.r - 6, outerRadius: n.r - 1, startAngle: 0, endAngle: r.share * 2 * Math.PI })).attr('fill', proof);
-    const name = r.component.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
-    if (n.r > 30) {
-      const fs = Math.max(10.5, Math.min(17, n.r / 5));
-      const words = name.split(' '), lines = []; let cur = '';
-      const maxCh = Math.max(6, Math.floor((n.r * 1.5) / (fs * 0.58)));
-      words.forEach((w) => { if ((cur + ' ' + w).trim().length > maxCh && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); });
-      if (cur) lines.push(cur);
-      const ls = lines.slice(0, 3), total = ls.length + 1;
-      ls.forEach((l, i) => g.append('text').attr('text-anchor', 'middle').attr('y', (i - (total - 1) / 2) * fs * 1.15 + fs * 0.35).attr('font-size', fs).attr('font-weight', 600).attr('fill', ink).text(l));
-      g.append('text').attr('text-anchor', 'middle').attr('y', (ls.length - (total - 1) / 2) * fs * 1.15 + fs * 0.35).attr('font-size', Math.max(10.5, fs * 0.78)).attr('fill', muted).text((() => { const s = r.usage_estimate.replace(/\s*incl\..*$/, ''); const mx = Math.floor((n.r * 1.6) / (Math.max(10.5, fs * 0.78) * 0.56)); return s.length > mx ? s.slice(0, mx - 1) + '…' : s; })());
-    }
-    g.on('pointermove', (ev) => showTip(ev, [el('b', { text: r.component }), el('div', { class: 'm', text: r.usage_estimate + ' · blank score ' + Number(r.blank_score).toFixed(1) }), nh ? el('div', { style: 'color:var(--hit)', text: nh + ' incident' + (nh > 1 ? 's' : '') + ' this quarter' }) : null, el('div', { text: 'Not covered: ' + r.what_is_unverified })])).on('pointerleave', hideTip);
-  });
+  $('#stack-src').textContent = `${ST.length} components · data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'} · shares are rough estimates`;
 }
 function renderCum() {
   const box = $('#cum'); const cw = box.clientWidth || 800, narrow = cw < 560;
   const ys = PR.map((p) => Number(p.year)).filter((y) => y > 0), y0 = d3.min(ys), y1 = d3.max(ys);
+  $('#cum-yrs').textContent = `${y0}–${y1}`;
   const years = d3.range(y0, y1 + 1);
   const cum = years.map((y) => ({ y, all: PR.filter((p) => Number(p.year) <= y).length, full: PR.filter((p) => Number(p.year) <= y && p.status === 'VERIFIED').length }));
-  const W = cw, H = narrow ? 260 : 340, m = { t: 20, r: narrow ? 70 : 120, b: 30, l: 34 };
+  const since = PR.filter((p) => Number(p.year) >= y1 - 3).length;
+  $('#cum-d').textContent = `Cumulative count by year: ${PR.length} efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} started in ${y1 - 3}–${y1}. Select a year to list what was added.`;
+  const W = cw, H = narrow ? 250 : 320, m = { t: 26, r: narrow ? 92 : 128, b: 30, l: 34 };
   const x = d3.scaleLinear([y0, y1], [m.l, W - m.r]), y = d3.scaleLinear([0, d3.max(cum, (d) => d.all)], [H - m.b, m.t]).nice();
   box.replaceChildren();
-  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Cumulative verification efforts by year');
+  const svg = d3.select(box).append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Cumulative published verification efforts by year');
   const rule = css('--rule'), muted = css('--muted'), ink = css('--ink'), proof = css('--proof'), soft = css('--proof-soft');
   y.ticks(4).forEach((v) => { svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', rule); svg.append('text').attr('x', m.l - 8).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', muted).text(v); });
   x.ticks(narrow ? 4 : 8).filter(Number.isInteger).forEach((t) => svg.append('text').attr('x', x(t)).attr('y', H - 8).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', muted).text(t));
@@ -783,36 +633,25 @@ function renderCum() {
   svg.append('path').attr('d', area('full')(cum)).attr('fill', proof);
   const last = cum[cum.length - 1];
   svg.append('text').attr('x', W - m.r + 8).attr('y', y(last.all) + 4).attr('font-size', 13).attr('font-weight', 600).attr('fill', ink).text(last.all + ' efforts');
-  svg.append('text').attr('x', W - m.r + 8).attr('y', y(last.full) + 4).attr('font-size', 13).attr('font-weight', 600).attr('fill', proof).text(last.full + ' fully verified');
-  const notes = [[2009, 'seL4 kernel'], [2006, 'CompCert'], [2017, 'HACL* crypto'], [2026, 'AI-assisted proofs']];
-  if (!narrow) notes.forEach(([yr, t], i) => { const d = cum.find((c) => c.y === yr); if (!d) return; const yy = y(d.all) - 14 - (i % 2) * 16; svg.append('line').attr('x1', x(yr)).attr('x2', x(yr)).attr('y1', yy + 4).attr('y2', y(d.all)).attr('stroke', muted); svg.append('text').attr('x', x(yr)).attr('y', yy).attr('text-anchor', yr === y1 ? 'end' : 'middle').attr('font-size', 12.5).attr('fill', ink).text(t); });
-  // hover per year
+  svg.append('text').attr('x', W - m.r + 8).attr('y', Math.max(y(last.full) + 4, y(last.all) + 22)).attr('font-size', 13).attr('font-weight', 600).attr('fill', proof).text(last.full + ' fully verified');
+  if (!narrow) [[2006, 'CompCert'], [2009, 'seL4 kernel'], [2017, 'HACL* crypto']].forEach(([yr, t]) => { const d = cum.find((c) => c.y === yr); if (!d) return; const yy = y(d.all) - 16; svg.append('line').attr('x1', x(yr)).attr('x2', x(yr)).attr('y1', yy + 4).attr('y2', y(d.all)).attr('stroke', muted); svg.append('text').attr('x', x(yr)).attr('y', yy).attr('text-anchor', 'middle').attr('font-size', 12.5).attr('fill', ink).text(t); });
   const bw = (W - m.r - m.l) / years.length;
-  cum.forEach((d) => svg.append('rect').attr('x', x(d.y) - bw / 2).attr('y', m.t).attr('width', bw).attr('height', H - m.b - m.t).attr('fill', 'transparent')
-    .on('pointermove', (ev) => { const added = PR.filter((p) => Number(p.year) === d.y); showTip(ev, [el('b', { text: String(d.y) }), el('div', { class: 'm', text: `${d.all} efforts so far, ${d.full} fully verified` }), ...added.slice(0, 6).map((p) => el('div', { text: '+ ' + p.project })), added.length > 6 ? el('div', { class: 'm', text: '+' + (added.length - 6) + ' more' }) : null]); }).on('pointerleave', hideTip).style('cursor', 'pointer').on('click', () => { const added = PR.filter((p) => Number(p.year) === d.y); if (added.length) openProofList(`Added in ${d.y}`, added); }));
+  cum.forEach((d) => svg.append('rect').attr('x', x(d.y) - bw / 2).attr('y', m.t).attr('width', bw).attr('height', H - m.b - m.t).attr('fill', 'transparent').style('cursor', 'pointer')
+    .on('pointermove', (ev) => { const added = PR.filter((p) => Number(p.year) === d.y); showTip(ev, [el('b', { text: String(d.y) }), el('div', { class: 'm', text: `${d.all} efforts so far, ${d.full} fully verified` }), ...added.slice(0, 6).map((p) => el('div', { text: '+ ' + p.project })), added.length > 6 ? el('div', { class: 'm', text: '+' + (added.length - 6) + ' more' }) : null]); })
+    .on('pointerleave', hideTip).on('click', () => { const added = PR.filter((p) => Number(p.year) === d.y); if (added.length) openProofList(`Added in ${d.y}`, added); }));
+  $('#cum-src').textContent = `Data as of ${gen ? fmtDayY(gen.slice(0, 10)) : '—'}`;
   const AI_RE = /claude|llm|verusage|written by|agents synthesize|llm-guided/i;
   const rb = $('#recent'); rb.replaceChildren();
-  [...PR].filter((p) => Number(p.year) >= 2025).sort((a, b) => Number(b.year) - Number(a.year) || (a.status === 'VERIFIED' ? -1 : 1)).slice(0, 7).forEach((p) => {
-    rb.appendChild(el('button', { type: 'button', class: 'rc', onclick: () => openProof(p) }, el('span', { class: 'y', text: p.year }), el('span', {}, el('div', { class: 't' }, p.project, AI_RE.test(p.what_verified + p.by_whom + p.project) ? el('span', { class: 'ai-b', text: 'AI' }) : null), el('div', { class: 's', text: STATUS[p.status] + ' · ' + (p.by_whom.length > 40 ? p.by_whom.slice(0, 38) + '…' : p.by_whom) }))));
-  });
-}
-function renderGap() {
-  const box = $('#gap'); box.replaceChildren();
-  const m = Math.max(d3.max(BANDS, (b) => INC.filter((r) => r.band === b).length), d3.max(BANDS, (b) => PR.filter((p) => p.band === b).length));
-  BANDS.forEach((b) => {
-    const inc = INC.filter((r) => r.band === b), pr = PR.filter((p) => p.band === b), full = pr.filter((p) => p.status === 'VERIFIED').length;
-    const L = el('div', { class: 'gside l' }, el('span', { class: 'b', style: `width:${(inc.length / m * 100).toFixed(1)}%;background:var(--hit)` }), el('span', { class: 'n' }, el('b', { text: inc.length })));
-    const R = el('div', { class: 'gside r' }, el('span', { class: 'b', style: `width:${(pr.length / m * 100).toFixed(1)}%` }, full ? el('i', { style: `flex:${full};background:var(--proof)` }) : null, pr.length - full ? el('i', { style: `flex:${pr.length - full};background:var(--proof-soft)` }) : null), el('span', { class: 'n' }, el('b', { text: full }), ` fully verified · ${pr.length} total`));
-    const row = el('button', { type: 'button', class: 'grow' + (S.band && S.band !== b ? ' dim' : ''), 'aria-pressed': S.band === b ? 'true' : 'false', onclick: () => set({ band: S.band === b ? null : b }) }, L, el('span', { class: 'nm', text: b }), R);
-    box.appendChild(row);
+  [...PR].filter((p) => Number(p.year) >= y1 - 1).sort((a, b) => Number(b.year) - Number(a.year) || (a.status === 'VERIFIED' ? -1 : 1)).slice(0, 7).forEach((p) => {
+    rb.appendChild(el('button', { type: 'button', class: 'rc', onclick: () => openProof(p) }, el('span', { class: 'y', text: p.year }), el('span', {}, el('div', { class: 't' }, p.project, AI_RE.test(p.what_verified + p.by_whom + p.project) ? el('span', { class: 'ai-b', text: 'AI' }) : null), el('div', { class: 's', text: STATUS[p.status] + ' · ' + clip(p.by_whom, 40) }))));
   });
 }
 
 // ---------- render ----------
 function render() {
   hideTip(); renderFilt(); renderTicker(); renderLive();
-  if (S.view === 'attacks') { renderAHero(); renderFlow(); renderWeeks(); renderTower(); renderBars(); }
-  else { renderPHero(); renderStack(); renderPack(); renderCum(); renderGap(); }
+  if (S.view === 'attacks') { renderHero(); renderFlow(); renderWeeks(); }
+  else { renderPHero(); renderStack(); renderCum(); }
 }
 let lastW = innerWidth, rt = 0;
 addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(render, 150); });

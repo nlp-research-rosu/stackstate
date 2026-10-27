@@ -28,6 +28,7 @@ All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `
 | func | Parsing & input, Auth & access, Crypto & keys, Memory & isolation, Network & remote, Data & storage, Compile & execute, Money & contracts, AI & agents, Supply chain, People, Unknown |
 | theme | dashboard group: ai, supply, cloud, gov, fin, health, edge, other, crypto (rules in `scripts/classify.py`) |
 | people | integer; people, accounts or records exposed if reported, else 0 |
+| code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these appear on the Incidents tab. |
 
 **band values:** People, AI stack, Smart contracts & chains, Applications & data, Cloud & identity, Network appliances, Libraries & supply chain, Crypto & protocols, Compilers & runtimes, Kernels & hypervisors, Firmware, Hardware & ISA.
 
