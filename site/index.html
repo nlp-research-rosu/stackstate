@@ -9027,7 +9027,10 @@ function renderHero() {
     people: 'Sized by people exposed, where a number was reported.',
     usd: 'Sized by money stolen, where a number was reported.',
   };
-  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]} White marks zero-days.`;
+  const inWin = ALL.filter((r) => !isFlaw(r) && r.t >= +WIN.start);
+  const other = S.size === 'people' ? d3.sum(inWin, (r) => r.people) : S.size === 'usd' ? d3.sum(inWin, (r) => r.usd) : 0;
+  const otherTxt = other ? ` Incidents with other causes (phishing, stolen passwords, misconfiguration) ${S.size === 'people' ? `exposed ${fmtN(other)} more people` : `cost another ${fmtUSD(other)}`} in the same weeks; they are not shown here.` : '';
+  $('#dots-sub').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}. ${SIZE_TXT[S.size]} White marks zero-days.${otherTxt}`;
   $('#tree-size').replaceChildren(...[['n', 'Number of incidents'], ['people', 'People exposed'], ['usd', 'Money stolen']].map(([k, label]) =>
     el('button', { type: 'button', 'aria-pressed': S.size === k ? 'true' : 'false', onclick: () => { S.size = k; render(); } }, label)));
 }
