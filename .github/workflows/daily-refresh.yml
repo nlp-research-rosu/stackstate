@@ -21,15 +21,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install anthropic playwright && python -m playwright install --with-deps chromium
+      - run: pip install anthropic playwright
       - name: Refresh data
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python3 scripts/refresh.py
-      - name: Rebuild page and preview image
-        run: |
-          python3 scripts/build_page.py
-          python3 scripts/og_image.py
+      - name: Rebuild page
+        run: python3 scripts/build_page.py
+      - name: Preview image
+        # Uses the Google Chrome preinstalled on GitHub's Ubuntu runners; never blocks the data refresh.
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python3 scripts/og_image.py
       - name: Commit
         run: |
           git config user.name "stackstate-bot"
