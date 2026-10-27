@@ -34,13 +34,13 @@ SAML and XML-signature libraries,Cloud & identity,Over 1B enterprise identities,
 "OAuth, OIDC and JWT token validation",Cloud & identity,Most web logins,9.0,none,,Token parsing and validation libraries,Symbolic analyses of the protocol specs only
 Active Directory and Kerberos,Cloud & identity,Most enterprises,9.0,none,,Directory services and ticket handling,None public
 "Cloud identity providers (Entra ID, Okta, Google)",Cloud & identity,Over 1B enterprise identities,9.0,none,,"Sign-in, token issuance, tenant isolation",None public
-AWS IAM and VPC policy analysis,Cloud & identity,All AWS customers,8.0,full,12;13,Policy evaluation outside these analyses; other clouds,Zelkova and Tiros encode policy and network semantics in SMT
-Cedar authorization language,Cloud & identity,AWS Verified Permissions and open-source users,6.5,major,14;70,Rust implementation (tested against the proven model),Lean proofs of the authorizer and validator; verified SMT analyses
+AWS IAM and VPC policy analysis,Cloud & identity,All AWS customers,8.0,some,12;13,The IAM policy evaluator and VPC networking code themselves; the SMT encodings are not machine-checked,Zelkova and Tiros check customer policies and networks with SMT solvers
+Cedar authorization language,Cloud & identity,AWS Verified Permissions and open-source users,6.5,some,14;70,Rust implementation (tested against the proven model),Lean proofs of the authorizer and validator; verified SMT analyses
 Azure RBAC and Google Cloud IAM,Cloud & identity,Most cloud tenants outside AWS,8.5,none,,Policy evaluation,None public
 Kubernetes RBAC and admission control,Cloud & identity,Over 5M clusters,7.5,none,,Authorization and admission logic,None public
 Kubernetes controllers and operators,Cloud & identity,Over 5M clusters,7.5,none,59,Upstream controllers,Anvil verified research controllers (not upstream)
 "Secrets and key management (Vault, cloud KMS)",Cloud & identity,Most cloud workloads,8.0,none,,Access control and key handling,None public
-Cloudflare authoritative DNS policy,Cloud & identity,Millions of domains,7.5,full,69,Resolver code; other DNS providers,Topaz verifies DNS addressing programs in production
+Cloudflare authoritative DNS policy,Cloud & identity,Millions of domains,7.5,some,69,"The nameserver, the policy evaluator and the checker itself",Topaz checks DNS policy programs for conflicts and overshadowing before deployment
 "DNS servers and resolvers (BIND, Unbound, CoreDNS)",Cloud & identity,Most internet lookups,9.0,none,,Packet parsing and caching,None public
 "SSL-VPN gateways (Ivanti, Fortinet, Citrix, Palo Alto)",Network appliances,Millions of edge devices,7.0,none,,Web interfaces and VPN protocol parsing,None public
 Firewalls and firewall management,Network appliances,Most enterprises,7.0,none,,Management interfaces and rule engines,None public
@@ -58,7 +58,7 @@ Java standard library,Libraries & supply chain,Most enterprise software,9.5,narr
 npm packages,Libraries & supply chain,Over 3M packages,8.5,none,,Package code and install scripts,None public
 PyPI packages,Libraries & supply chain,Most AI and data pipelines,8.0,none,,Package code and install hooks,None public
 CI/CD pipelines and package registries,Libraries & supply chain,About 100M developers,8.0,none,,"Workflow injection, token scope, build integrity","Provenance tooling (Sigstore, SLSA), not verification"
-"Elliptic-curve field arithmetic (BoringSSL, Go, Rust)",Crypto & protocols,All Chrome and Android TLS,9.7,full,8,Other curve code outside these libraries,Fiat-Crypto generates proven field arithmetic
+"Elliptic-curve field arithmetic (BoringSSL, Go, Rust)",Crypto & protocols,All Chrome and Android TLS,9.7,major,8,"Hand-written assembly fast paths, such as P-256 on x86-64 and Arm in BoringSSL and Go",Fiat-Crypto generates proven field arithmetic for the portable code
 "Symmetric ciphers and hashes (AES-GCM, SHA-2/3, ChaCha20)",Crypto & protocols,Over 5B devices,9.7,major,4;5;6;10;11;50,"Implementations outside verified libraries, e.g. OpenSSL","HACL*, EverCrypt, AWS-LC and SymCrypt proofs"
 Post-quantum ML-KEM implementations,Crypto & protocols,"Firefox, OpenSSH, Signal, AWS, Windows",9.0,major,39;40;50;52;53,Implementations outside these libraries,"libcrux, mlkem-native, SymCrypt and libjade proofs"
 TLS handshake and state machines,Crypto & protocols,Over 5B devices,9.7,narrow,9;6;41,Most TLS stacks,"s2n-tls handshake proofs, miTLS; TLS 1.3 design proven in Tamarin"

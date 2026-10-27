@@ -150,6 +150,9 @@ COMPONENT_BY_ID = {str(i): c for c, ids in _C.items() for i in ids}
 
 # Hand corrections where the largest number in the report is not the people count.
 PEOPLE_OVERRIDES = {"Gyazo": 23_620_000}
+# Corrections from source checks, where the text rules get it wrong.
+ZERO_DAY_OVERRIDES = {"78": True, "79": True, "90": True, "105": True, "160": True}
+BUG_CLASS_OVERRIDES = {"27": "Memory safety", "90": "Authentication & access checks", "145": "Path & request handling"}
 
 
 def enrich(r):
@@ -159,6 +162,9 @@ def enrich(r):
     r["zero_day"] = zero_day(r) if r["code_flaw"] else False
     r["flaw_group"] = flaw_group(r) if r["code_flaw"] else ""
     r["component"] = COMPONENT_BY_ID.get(str(r.get("id")), "") if r["code_flaw"] else ""
+    if r["code_flaw"]:
+        r["zero_day"] = ZERO_DAY_OVERRIDES.get(str(r.get("id")), r["zero_day"])
+        r["bug_class"] = BUG_CLASS_OVERRIDES.get(str(r.get("id")), r["bug_class"])
     text = r.get("records_or_loss", "") if r["theme"] == "crypto" else r.get("records_or_loss", "") + " ; " + r.get("impact", "")
     r["people"] = people(text)
     for prefix, n in PEOPLE_OVERRIDES.items():

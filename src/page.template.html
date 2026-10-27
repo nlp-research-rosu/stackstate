@@ -796,7 +796,7 @@ function renderCum() {
   const years = d3.range(y0, y1 + 1);
   const cum = years.map((y) => ({ y, all: PR.filter((p) => Number(p.year) <= y).length, full: PR.filter((p) => Number(p.year) <= y && p.status === 'VERIFIED').length }));
   const since = PR.filter((p) => Number(p.year) >= y1 - 3).length;
-  $('#cum-d').textContent = `Running total by year: ${PR.length} efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} of them came out in ${y1 - 3} or later. Select a year to list what was added.`;
+  $('#cum-d').textContent = `Running total by year: ${PR.length} efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} came out in ${y1 - 3} or later. Select a year to list what was added.`;
   const W = cw, H = narrow ? 250 : 320, m = { t: 26, r: narrow ? 92 : 128, b: 30, l: 34 };
   const x = d3.scaleLinear([y0, y1], [m.l, W - m.r]), y = d3.scaleLinear([0, d3.max(cum, (d) => d.all)], [H - m.b, m.t]).nice();
   box.replaceChildren();
