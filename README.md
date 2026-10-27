@@ -57,4 +57,13 @@ All entries come from public reporting and published research, and every inciden
 
 ## Publishing
 
-The live page is a claude.ai artifact. To publish changes, ask Claude (in a session with this repo) to publish `dist/artifact.html` with `site/data.json` (as `data.json`) to the artifact URL above. The link preview image is an automatic capture of the top of the Incidents tab, so keep the headline and the first chart rows within the first screen.
+There are two copies of the page:
+
+- **Public site (Cloudflare Pages):** https://stackstate.pages.dev, the link to share. Cloudflare Pages deploys the `site/` folder of `main` on every commit, so it updates after each daily refresh. Visitor counts come from Cloudflare Web Analytics (no cookies), turned on in the Pages project under Metrics. Link previews use `site/og.png`, which the daily job re-renders from the page. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
+- **claude.ai artifact:** https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept, republished daily by a scheduled Claude task (see `docs/daily-refresh.md`).
+
+### Setting up Cloudflare Pages (once)
+
+1. In the Cloudflare dashboard, open Workers & Pages, choose Create, then Pages, then Connect to Git, and pick `iamjustoutthere/stackstate` (allow the Cloudflare GitHub app on that repository).
+2. Project name `stackstate`, framework preset None, build command empty, build output directory `site`. Deploy.
+3. In the project, open Metrics and turn on Web Analytics.

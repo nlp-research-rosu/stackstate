@@ -8,9 +8,13 @@ The page embeds a copy of data.json, so it renders even if the live file can't b
 then rereads data.json every five minutes. d3 is bundled so charts draw without network access
 (link previews are rendered without it).
 """
+import os
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+# Public address of the hosted copy (Cloudflare Pages). Link-preview cards need absolute URLs.
+SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.pages.dev").rstrip("/")
+DESC = "Live tracker of security incidents that started with a flaw in code, and of how much widely used software is formally verified. Updated daily."
 
 
 def main():
@@ -21,7 +25,23 @@ def main():
     page = tpl.replace("__D3__", d3).replace("__FONTS__", fonts).replace("__DATA__", data)
     (ROOT / "dist").mkdir(exist_ok=True)
     (ROOT / "dist" / "artifact.html").write_text(page, encoding="utf-8")
-    (ROOT / "site" / "index.html").write_text('<!doctype html>\n<html lang="en">\n' + page + "</html>\n", encoding="utf-8")
+    social = "".join(
+        f'<meta {a}="{k}" content="{v}">\n'
+        for a, k, v in [
+            ("property", "og:type", "website"),
+            ("property", "og:title", "Stack State"),
+            ("property", "og:description", DESC),
+            ("property", "og:url", SITE_URL + "/"),
+            ("property", "og:image", SITE_URL + "/og.png"),
+            ("property", "og:image:width", "1200"),
+            ("property", "og:image:height", "630"),
+            ("name", "twitter:card", "summary_large_image"),
+            ("name", "twitter:title", "Stack State"),
+            ("name", "twitter:description", DESC),
+            ("name", "twitter:image", SITE_URL + "/og.png"),
+        ]
+    )
+    (ROOT / "site" / "index.html").write_text('<!doctype html>\n<html lang="en">\n' + page.replace("</title>\n", "</title>\n" + social, 1) + "</html>\n", encoding="utf-8")
     print(f"wrote site/index.html and dist/artifact.html ({len(page) // 1024} KB)")
 
 
