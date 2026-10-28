@@ -286,6 +286,7 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .join p { margin: 0 0 12px; font-size: 16px; line-height: 1.5; color: var(--ink-2); max-width: 62rem; }
 .join a.btn { display: inline-block; padding: 9px 14px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-size: 15px; }
 .maint { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.big.bold { font-weight: 700; max-width: none; }
 .t-short { display: none; }
 @media (max-width: 600px) { .t-long { display: none; } .t-short { display: inline; } }
 .blk-c > span { position: relative; overflow-wrap: anywhere; }
@@ -366,9 +367,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <!-- ================= VERIFICATION ================= -->
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
-    <p class="lab">How much of the world is verified</p>
-    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used software components are fully verified by machine</h1>
-    <p class="lede">Verified code moves fast, because a machine re-checks every change. NASA has seen the other side, where checking code cost far more than writing it.</p>
+    <h1 class="big bold">How much of the world is verified</h1>
     <div class="cov" id="cov"></div>
   </header>
 
@@ -10884,7 +10883,6 @@ function renderPHero() {
   const STV = ST;
   const hits = hitSet(), by = (k) => STV.filter((s) => stateOf(s, hits) === k);
   const v = by('verified'), p = by('partial'), r = by('hit'), b = by('blank');
-  $('#p-v').textContent = v.length; $('#p-t').textContent = STV.length;
   const box = $('#cov'); box.replaceChildren();
   const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${r.length} with no known verification and a recent incident, ${b.length} with no known verification` });
   [[v, 'v', 'verified', 'fully verified', 'full'], [p, 'p', 'partial', 'partly verified', 'partly'], [r, 'r', 'hit', 'none known, recent incident', 'hit'], [b, 'b', 'blank', 'no known verification', 'none']].forEach(([list, cls, key, txt, sh]) => {
