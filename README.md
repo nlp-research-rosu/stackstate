@@ -2,7 +2,7 @@
 
 **State of the Stack** is a small community project with two incomplete lists. One tracks publicly reported security incidents that started with a flaw in code. The other tracks published formal verification of widely used software, from 1990s safety-critical systems to recent work. Formal verification goes back to the 1960s, and much of it isn't on the list yet: see [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
 
-Live dashboard: https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept (anyone with the link can view it)
+Live dashboard: https://stackstate.vercel.app (also published at https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept)
 
 The page has two tabs.
 
