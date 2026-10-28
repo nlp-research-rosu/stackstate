@@ -1,8 +1,8 @@
 # Daily refresh
 
-Two scheduled jobs keep the dashboard current.
+A scheduled GitHub Action keeps the dashboard current.
 
-**1. GitHub Actions, 05:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
+**GitHub Actions, 05:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
 
 1. reads CISA's Known Exploited Vulnerabilities catalog and the news feeds listed in `NEWS_FEEDS`;
 2. adds each KEV entry from the last 14 days that news coverage mentions, or that CISA marks as used by ransomware, as a code-flaw incident sourced to the news article;
@@ -14,7 +14,7 @@ Without the API key the job still runs: it adds KEV entries and rolls the window
 
 Run it by hand from the Actions tab (Daily refresh, Run workflow), or locally with `python3 scripts/refresh.py --dry-run` to see what it would add.
 
-**2. Scheduled Claude task, 05:41 UTC** ("Proof Gap data refresh") attaches this repository, rebuilds the page from `main` and republishes the claude.ai artifact with the new `data.json`. It does not research or edit data. It reports what the morning's run added.
+A mirror of the page on claude.ai is republished from `main` after each run. That step only rebuilds the page and never edits data.
 
 The repository is the source of truth. To correct an entry, edit `site/data.json` (see `data-schema.md`) and commit; the next publish picks it up.
 

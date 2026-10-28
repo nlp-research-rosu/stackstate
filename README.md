@@ -1,73 +1,58 @@
 # Stack State
 
-**Stack State** is about one idea: ship as fast as the machine can check. Writing code is cheap now, and checking it is the slow part. When machines check every change, teams and their AI agents can push for speed and new ideas and still trust what ships.
+**Ship as fast as the machine can check.**
 
-The site has two tabs. **Incidents** shows what unchecked code cost over the last 13 weeks: incidents that began with a flaw in code, zero-days, money stolen and people exposed. **How much of the world is verified** maps widely used software by the published, machine-checked verification it has, from anyone, and marks in red the components with no known verification that had a public incident in that window. Red records history; it never claims a proof would have prevented an incident. Both lists are incomplete by design, and every entry links to its source. See [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
+Writing code is cheap now, and checking it is the slow part. When a machine checks every change, teams and their agents can move fast and still trust what ships. Stack State tracks how far the world's software is from that.
 
-Live dashboard: https://stackstate.ai (also published at https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept)
+**Live dashboard: [stackstate.ai](https://stackstate.ai)** (updated daily)
 
-The page has two tabs.
+## What's on the page
 
-**Incidents** (dark) covers publicly reported incidents from the last 13 weeks where the attackers got in through a flaw in code: exploited vulnerabilities, injection and bypass bugs, contract logic errors. Phishing, stolen credentials, misconfiguration and malicious packages are left out, and so are smart-contract and blockchain incidents with losses under $10M. The tab opens with a treemap of where the flawed code was, by component, that can be sized by number of incidents, people exposed or money stolen. Below that are a grid of bug type against layer with zero-days marked, a flow from what the flawed code was doing to who got hit, and a weekly bar chart.
+**Incidents** shows what unchecked code cost over the last 13 weeks. It counts publicly reported incidents where attackers got in through a flaw in code, such as an exploited CVE, an injection or a memory-safety bug. You can size the treemap by incidents, people exposed or money stolen. Phishing, stolen credentials, misconfiguration, malicious packages and blockchain losses under $10M are left out.
 
-**Verification** (light) shows how many of the 108 widely deployed components on our list (including avionics, rail, air traffic control, medical devices and spacecraft) have full published formal verification, a stack map of how much of each one is verified (with the evidence behind it), and a running total of published verification work.
+**How much of the world is verified** maps widely used software, from kernels and browsers to avionics and AI inference. Each component shows the published, machine-checked verification it has, by anyone. Red marks components with no known verification that also had a public incident in the window.
 
-The tabs are kept apart on purpose. The page never claims that a proof would have stopped a given incident. Every chart is interactive, and a filter set on one chart applies to the rest of its tab.
+Red records history. The page never claims a proof would have prevented an incident.
 
-## Repository layout
+## Contribute
+
+Both lists are incomplete by design, and every entry links to a public source. If something is missing or wrong, you can help fix it:
+
+- [Open an issue](https://github.com/nlp-research-rosu/stackstate/issues/new/choose) to add an incident or a verification effort, correct an entry, or suggest a new component or category. A link is all we need.
+- Or edit the data directly and open a pull request. [CONTRIBUTING.md](CONTRIBUTING.md) explains how.
+
+Anyone's verification work counts, whatever the tool or method.
+
+## How it works
+
+A GitHub Action runs every day at 05:07 UTC. It pulls CISA's Known Exploited Vulnerabilities catalog and major security news feeds, adds new incidents with their sources, moves anything older than 13 weeks to the archive and rebuilds the page. Vercel deploys each new commit. The details are in [docs/daily-refresh.md](docs/daily-refresh.md).
+
+The page is a single HTML file with [d3](https://d3js.org) bundled in. It needs no build tools beyond Python.
 
 ```
-site/
-  index.html          built page, a complete HTML document
-  data.json           live data the page rereads every five minutes
-dist/                 (git-ignored) artifact.html, the same page for publishing as a claude.ai artifact
-src/
-  page.template.html  page source; __FONTS__ and __DATA__ are filled in by the build
-  fonts.css           embedded font faces (SIL OFL: Newsreader, IBM Plex Mono)
-  vendor/d3.v7.9.0.min.js  bundled so charts render offline and in link previews (ISC license)
-scripts/
-  build_page.py       template + fonts + site/data.json -> site/index.html
-  seed_data.py        data/seed/*.csv -> site/data.json (start over from the snapshot; drops refresh additions)
-  validate.py         checks the CSVs and data.json (runs on every pull request)
-  refresh.py          daily update: CISA KEV + news feeds (+ Claude, if ANTHROPIC_API_KEY is set) -> site/data.json
-  classify.py         rules that assign each incident a group (`theme`) and a people count
-data/seed/            original CSV snapshot, Jul 28 to Oct 26, 2026, plus stack_components.csv (the stack map, editable)
-docs/
-  data-schema.md      every field in data.json
-  daily-refresh.md    how the daily update works (GitHub Actions, then the artifact publish)
-legacy/
-  proof-gap-original.html  the first version of the dashboard, kept for reference
+src/page.template.html        page source
+site/index.html, data.json    the built page and its live data
+data/seed/                    stack_components.csv and dashboard_proofs.csv (the Verification tab)
+data/archive/                 incidents that have aged out of the window
+scripts/refresh.py            the daily update
+scripts/classify.py           rules that group incidents and match them to components
+scripts/validate.py           data checks, run on every pull request
+docs/data-schema.md           every field in data.json
 ```
 
-## Working on it
+## Run it locally
 
-Requires Python 3.9+ and nothing else.
+Requires Python 3.9 or later and no other dependencies.
 
 ```sh
-python3 scripts/build_page.py          # rebuild site/index.html and dist/artifact.html
-python3 -m http.server -d site 8000    # preview at http://localhost:8000 (data.json loads over http)
+python3 scripts/build_page.py          # rebuild the page from the template and data
+python3 scripts/validate.py            # check the data
+python3 -m http.server -d site 8000    # preview at http://localhost:8000
+python3 scripts/refresh.py --dry-run   # see what today's refresh would add
 ```
-
-- **Edit the page**: change `src/page.template.html`, then run `build_page.py`.
-- **Fix or add a data entry**: edit `site/data.json` directly (see `docs/data-schema.md`), then run `build_page.py` so the embedded fallback copy matches.
-- **Change grouping rules**: edit `scripts/classify.py` and keep `docs/daily-refresh.md` in sync, since the daily job follows the written rules.
-
-Opening `site/index.html` straight from disk works; the browser blocks the `data.json` fetch there, so the page uses its embedded copy and the live indicator turns amber.
 
 ## Data
 
-All entries come from public reporting and published research, and every incident and verification effort carries a `source_url`. Groups, layers and the "approximate share verified" figures are editorial estimates; corrections are welcome as pull requests that cite a source.
+All entries come from public reporting and published research. Groups, install bases and verified shares are rough editorial estimates, and corrections that cite a source are welcome.
 
-## Publishing
-
-There are two copies of the page:
-
-- **Public site (Vercel):** https://stackstate.ai, the link to share. Vercel deploys the `site/` folder of `main` on every commit (settings in `vercel.json`, no build step), so it updates after each daily refresh. Visitor counts come from Vercel Web Analytics (no cookies). Link previews use `site/og.png`, which the daily job re-renders. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
-- **claude.ai artifact:** https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept, republished daily by a scheduled Claude task (see `docs/daily-refresh.md`).
-
-### Setting up Vercel (once)
-
-1. At https://vercel.com/new, import `nlp-research-rosu/stackstate` (allow the Vercel GitHub app on that repository).
-2. Name the project `stackstate`. Leave the framework preset as Other; `vercel.json` already sets the output directory to `site` with no build. Deploy.
-3. In the project, open Analytics and enable Web Analytics.
-4. In the project, open Settings, then Domains, and add `stackstate.ai` (and `www.stackstate.ai`), then set the DNS records Vercel shows at your domain registrar.
+Maintained by Intent Computing. Contributions welcome.
