@@ -286,7 +286,7 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .join p { margin: 0 0 12px; font-size: 16px; line-height: 1.5; color: var(--ink-2); max-width: 62rem; }
 .join a.btn { display: inline-block; padding: 9px 14px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-size: 15px; }
 .maint { margin-top: 14px; font-size: 14px; color: var(--muted); }
-.big.bold { font-weight: 700; max-width: none; }
+.big.wide { max-width: none; }
 .t-short { display: none; }
 @media (max-width: 600px) { .t-long { display: none; } .t-short { display: inline; } }
 .blk-c > span { position: relative; overflow-wrap: anywhere; }
@@ -326,9 +326,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <!-- ================= INCIDENTS ================= -->
 <main class="view" id="v-attacks">
   <header class="hero wrap">
-    <h1 class="big">Ship as fast as the machine can check.</h1>
-    <p class="lede">Writing code is cheap now, and checking it is the bottleneck. When a machine checks every change, teams and their agents can move fast and still sleep at night.</p>
-    <p class="lede">What unchecked code cost from <span id="a-range"></span>:</p>
+    <h1 class="big wide">What unchecked code cost in the last 13 weeks</h1>
     <div class="stats" id="a-stats"></div>
     <p class="dots-sub" id="dots-sub"></p>
     <div class="sz" id="tree-size" role="group" aria-label="Size blocks by"></div>
@@ -367,7 +365,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <!-- ================= VERIFICATION ================= -->
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
-    <h1 class="big bold">How much of the world is verified</h1>
+    <h1 class="big wide">How much of the world is verified</h1>
     <div class="cov" id="cov"></div>
   </header>
 
@@ -10659,7 +10657,6 @@ function renderFilt() {
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));
   const nW = Math.ceil(days.length / 7);
-  $('#a-range').textContent = `${fmtDay(iso(WIN.start))} to ${fmtDayY(iso(WIN.end))}`;
   const zd = INC.filter((r) => r.zero_day === true).length, usd = d3.sum(INC, (r) => r.usd), ppl = d3.sum(INC, (r) => r.people);
   $('#a-stats').replaceChildren(...[[String(INC.length), 'incidents began with a flaw in code', 'n'], [String(zd), 'were zero-days, used before any fix existed', 'n'], [fmtUSD(usd), 'stolen, where an amount was reported', 'usd'], [fmtN(ppl), 'people exposed, where a number was reported', 'people']]
     .map(([v, txt, size], i) => el('button', { type: 'button', class: 'stat', 'aria-pressed': i !== 1 && S.size === size ? 'true' : 'false', onclick: () => { S.size = size; render(); } }, el('strong', { class: 'num', text: v }), el('span', { text: txt }))));
