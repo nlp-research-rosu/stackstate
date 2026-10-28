@@ -60,11 +60,11 @@ All entries come from public reporting and published research, and every inciden
 
 There are two copies of the page:
 
-- **Public site (Cloudflare Pages):** https://stackstate.pages.dev, the link to share. Cloudflare Pages deploys the `site/` folder of `main` on every commit, so it updates after each daily refresh. Visitor counts come from Cloudflare Web Analytics (no cookies), turned on in the Pages project under Metrics. Link previews use `site/og.png`, which the daily job re-renders from the page. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
+- **Public site (Vercel):** https://stackstate.vercel.app, the link to share. Vercel deploys the `site/` folder of `main` on every commit (settings in `vercel.json`, no build step), so it updates after each daily refresh. Visitor counts come from Vercel Web Analytics (no cookies). Link previews use `site/og.png`, which the daily job re-renders. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
 - **claude.ai artifact:** https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept, republished daily by a scheduled Claude task (see `docs/daily-refresh.md`).
 
-### Setting up Cloudflare Pages (once)
+### Setting up Vercel (once)
 
-1. In the Cloudflare dashboard, open Workers & Pages, choose Create, then Pages, then Connect to Git, and pick `iamjustoutthere/stackstate` (allow the Cloudflare GitHub app on that repository).
-2. Project name `stackstate`, framework preset None, build command empty, build output directory `site`. Deploy.
-3. In the project, open Metrics and turn on Web Analytics.
+1. At https://vercel.com/new, import `iamjustoutthere/stackstate` (allow the Vercel GitHub app on that repository).
+2. Name the project `stackstate`. Leave the framework preset as Other; `vercel.json` already sets the output directory to `site` with no build. Deploy.
+3. In the project, open Analytics and enable Web Analytics.

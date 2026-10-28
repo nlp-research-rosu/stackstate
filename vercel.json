@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "",
+  "outputDirectory": "site",
+  "headers": [
+    { "source": "/data.json", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }] }
+  ]
+}

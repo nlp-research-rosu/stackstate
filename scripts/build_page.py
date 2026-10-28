@@ -12,8 +12,8 @@ import os
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-# Public address of the hosted copy (Cloudflare Pages). Link-preview cards need absolute URLs.
-SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.pages.dev").rstrip("/")
+# Public address of the hosted copy (Vercel). Link-preview cards need absolute URLs.
+SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.vercel.app").rstrip("/")
 DESC = "Live tracker of security incidents that started with a flaw in code, and of how much widely used software is formally verified. Updated daily."
 
 
@@ -41,7 +41,9 @@ def main():
             ("name", "twitter:image", SITE_URL + "/og.png"),
         ]
     )
-    (ROOT / "site" / "index.html").write_text('<!doctype html>\n<html lang="en">\n' + page.replace("</title>\n", "</title>\n" + social, 1) + "</html>\n", encoding="utf-8")
+    # Vercel Web Analytics (cookieless). The script is served by Vercel; elsewhere it is a harmless 404.
+    analytics = '<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>\n<script defer src="/_vercel/insights/script.js"></script>\n'
+    (ROOT / "site" / "index.html").write_text('<!doctype html>\n<html lang="en">\n' + page.replace("</title>\n", "</title>\n" + social + analytics, 1) + "</html>\n", encoding="utf-8")
     print(f"wrote site/index.html and dist/artifact.html ({len(page) // 1024} KB)")
 
 
