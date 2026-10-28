@@ -55,4 +55,8 @@ python3 scripts/refresh.py --dry-run   # see what today's refresh would add
 
 All entries come from public reporting and published research. Groups, install bases and verified shares are rough editorial estimates, and corrections that cite a source are welcome.
 
+## License
+
+The code is under the [MIT License](LICENSE). The data (`data/` and `site/data.json`) is under [CC BY 4.0](LICENSE-DATA): reuse it freely, with credit to Stack State. Bundled third-party files keep their own licenses: d3 (ISC) and the Newsreader and IBM Plex Mono fonts (SIL Open Font License).
+
 Maintained by Intent Computing. Contributions welcome.
