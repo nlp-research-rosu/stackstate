@@ -13,7 +13,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # Public address of the hosted copy (Vercel). Link-preview cards need absolute URLs.
-SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.vercel.app").rstrip("/")
+SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.ai").rstrip("/")
 DESC = "Live tracker of security incidents that started with a flaw in code, and of how much widely used software is formally verified. Updated daily."
 
 

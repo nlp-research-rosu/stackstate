@@ -2,7 +2,7 @@
 
 **State of the Stack** is a small community project with two incomplete lists. One tracks publicly reported security incidents that started with a flaw in code. The other tracks published formal verification of widely used software, from 1990s safety-critical systems to recent work. Formal verification goes back to the 1960s, and much of it isn't on the list yet: see [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
 
-Live dashboard: https://stackstate.vercel.app (also published at https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept)
+Live dashboard: https://stackstate.ai (also published at https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept)
 
 The page has two tabs.
 
@@ -60,7 +60,7 @@ All entries come from public reporting and published research, and every inciden
 
 There are two copies of the page:
 
-- **Public site (Vercel):** https://stackstate.vercel.app, the link to share. Vercel deploys the `site/` folder of `main` on every commit (settings in `vercel.json`, no build step), so it updates after each daily refresh. Visitor counts come from Vercel Web Analytics (no cookies). Link previews use `site/og.png`, which the daily job re-renders. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
+- **Public site (Vercel):** https://stackstate.ai, the link to share. Vercel deploys the `site/` folder of `main` on every commit (settings in `vercel.json`, no build step), so it updates after each daily refresh. Visitor counts come from Vercel Web Analytics (no cookies). Link previews use `site/og.png`, which the daily job re-renders. If the site lives at another address, set `STACKSTATE_URL` (in the workflow and when running `build_page.py`) so the preview tags point at it.
 - **claude.ai artifact:** https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept, republished daily by a scheduled Claude task (see `docs/daily-refresh.md`).
 
 ### Setting up Vercel (once)
@@ -68,3 +68,4 @@ There are two copies of the page:
 1. At https://vercel.com/new, import `iamjustoutthere/stackstate` (allow the Vercel GitHub app on that repository).
 2. Name the project `stackstate`. Leave the framework preset as Other; `vercel.json` already sets the output directory to `site` with no build. Deploy.
 3. In the project, open Analytics and enable Web Analytics.
+4. In the project, open Settings, then Domains, and add `stackstate.ai` (and `www.stackstate.ai`), then set the DNS records Vercel shows at your domain registrar.
