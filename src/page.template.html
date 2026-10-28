@@ -2,7 +2,7 @@
 <title>Stack State</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="State of the Stack: incidents traced to flaws in code, and published formal verification across widely used software.">
+<meta name="description" content="Ship as fast as the machine can check. What unchecked code costs today, and how much of the world's software is verified. Updated daily.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <script>__D3__</script>
 <style>
@@ -15,6 +15,7 @@ __FONTS__
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
   --hit: #f08a5d; --hit-soft: #6e3a26;
   --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
+  --risk: #f08a5d; --risk-soft: #4a2a22;
   --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea; --grey-dot: #4a4345; --empty-dot: #2f2a2b;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
@@ -27,6 +28,7 @@ __FONTS__
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
   --hit: #b5532a; --hit-soft: #f3e2d8;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
+  --risk: #b8322b; --risk-soft: #f7dcd8;
   --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e; --grey-dot: #c9ccd2; --empty-dot: #e3e6ea;
   --shadow: 0 12px 32px rgba(17,21,29,.14);
 }
@@ -249,6 +251,21 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .blk-c { appearance: none; border: 0; min-width: 0; min-height: 52px; padding: 7px 10px; font-size: 13.5px; font-weight: 500; line-height: 1.25; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; position: relative; text-align: left; cursor: pointer; background: #fff; box-shadow: inset 0 0 0 1.5px var(--none); overflow: hidden; }
 .blk-c .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--proof-soft); border-bottom: 5px solid var(--proof); }
 .blk-c.ver .fill { background: var(--proof); border: 0; }
+.blk-c.red { background: var(--risk-soft) !important; box-shadow: inset 0 0 0 1.5px var(--risk) !important; }
+.cov-bar .r { background: var(--risk-soft); box-shadow: inset 0 0 0 1.5px var(--risk); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0 8px; }
+.stat { appearance: none; text-align: left; border: 1px solid var(--rule-2); background: var(--bg-2); color: var(--ink); padding: 14px 16px; cursor: pointer; font: inherit; }
+.stat:hover, .stat[aria-pressed="true"] { border-color: var(--ink); }
+.stat strong { display: block; font-family: var(--f-serif); font-weight: 400; font-size: clamp(30px, 4vw, 44px); line-height: 1; color: var(--hit); }
+.stat span { display: block; margin-top: 6px; font-size: 14px; line-height: 1.35; color: var(--ink-2); }
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.join { margin-top: 26px; padding: 18px 20px; border: 1px solid var(--rule-2); background: var(--bg-2); }
+.join h3 { font-family: var(--f-serif); font-weight: 400; font-size: 24px; margin: 0 0 8px; color: var(--ink); }
+.join p { margin: 0 0 10px; font-size: 15px; line-height: 1.55; color: var(--ink-2); max-width: 46rem; }
+.join a.btn { display: inline-block; padding: 9px 14px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-size: 15px; }
+.maint { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.t-short { display: none; }
+@media (max-width: 600px) { .t-long { display: none; } .t-short { display: inline; } }
 .blk-c > span { position: relative; overflow-wrap: anywhere; }
 .blk-c.part .meta { color: var(--proof); font-weight: 600; }
 .blk-c.ver { color: #fff; }
@@ -274,7 +291,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="brand">Stack <i>State</i></div>
     <div class="mode" role="group" aria-label="View">
       <button type="button" data-v="attacks" aria-pressed="true"><span class="sw" aria-hidden="true"></span>Incidents</button>
-      <button type="button" data-v="proofs" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Verification</button>
+      <button type="button" data-v="proofs" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span class="t-long">How much of the world is verified</span><span class="t-short">Verified</span></button>
     </div>
     <a class="contrib" href="https://github.com/iamjustoutthere/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
@@ -286,7 +303,10 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <!-- ================= INCIDENTS ================= -->
 <main class="view" id="v-attacks">
   <header class="hero wrap">
-    <h1 class="big"><span class="hit num" id="a-n"></span> incidents in <span id="a-weeks">13</span> weeks began with a flaw in code</h1>
+    <h1 class="big">Ship as fast as the machine can check.</h1>
+    <p class="lede">Writing code is cheap now. Checking it is the slow part, and most of it still happens by hand. When a machine checks every change, teams and their AI agents can chase speed and bold ideas, trust what ships, and sleep at night.</p>
+    <p class="lede">Until then, unchecked code has a cost. Over the last <span id="a-weeks">13</span> weeks:</p>
+    <div class="stats" id="a-stats"></div>
     <p class="dots-sub" id="dots-sub"></p>
     <div class="sz" id="tree-size" role="group" aria-label="Size blocks by"></div>
     <div class="chart" id="tree"></div>
@@ -310,24 +330,31 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>A small community project, and an incomplete list. Every incident links to its public source; layers and categories are our judgment. Missing something? <a href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer" style="color:inherit">Suggest it on GitHub</a>.</p>
-    <p>Formal verification is tracked separately on the <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">Verification tab</button>. We don't claim any proof would have stopped any incident.</p>
+    <p>Every incident links to its public source. Layers and categories are our judgment, and the list is incomplete by design. These records show what broke; they do not claim that any proof would have prevented a given incident. See <button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">how much of the world is verified</button>.</p>
+    <div class="join">
+      <h3>Help fill the map</h3>
+      <p>Suggest software that should be checked, report a bug, or point us to software that is already verified. You don't need to be a verification expert, and any tool counts, our prover included. Or just tell us what to check, and we'll check it.</p>
+      <a class="btn" href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+    </div>
+    <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
   </footer>
 </main>
 
 <!-- ================= VERIFICATION ================= -->
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
-    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used components on our list have full published formal verification</h1>
-    <p class="lede">Formal verification goes back to the 1960s, and this list misses a lot of it. It is a community effort: <a href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">suggest a project, a correction or a new category</a>.</p>
+    <p class="lab">How much of the world is verified</p>
+    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used components on our list are fully verified by machine</h1>
+    <p class="lede">Verified code can move fast. A machine re-checks every change, so people spend their time on speed and new ideas instead of review. Grigore Roșu saw the other side at NASA, where most of a project's budget went to checking code, far more than to writing it. Automatic checking gives that budget back. Few of the components the world runs on are there yet.</p>
     <div class="cov" id="cov"></div>
   </header>
 
   <section class="blk wrap" id="p-stack">
     <figure class="fig" style="margin:0">
-      <h2 class="fig-h">Formal verification across the software stack</h2>
-      <p class="fig-d">Each block is a widely used component, sized by install base. Green shows how much of it is formally verified.</p>
-      <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (shading = rough share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No published verification</span></div>
+      <h2 class="fig-h">Where the world's software stands</h2>
+      <p class="fig-d">Each block is a widely used component, sized by install base. Green shows published, machine-checked verification, by anyone. Red marks components with no known verification that had a public incident in the last 13 weeks. Select any block for what was verified, by whom, and the sources.</p>
+      <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (shading = rough share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No known verification</span><span><i style="background:var(--risk-soft);box-shadow:inset 0 0 0 1.5px var(--risk)"></i>No known verification, and a public incident in the last 13 weeks</span></div>
+      <p class="fig-d" style="margin-top:-6px">Red records history. It does not claim that a proof would have prevented any incident.</p>
       <div class="stack" id="stack"></div>
     </figure>
   </section>
@@ -344,7 +371,13 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>Published, machine-checked verification that we know of. Install bases and verified shares are rough estimates. Every entry links to its source. To add or fix something, open an issue or a pull request on <a href="https://github.com/iamjustoutthere/stackstate" target="_blank" rel="noopener noreferrer" style="color:inherit">GitHub</a>.</p>
+    <p>Published, machine-checked verification that we know of, by anyone. Install bases and verified shares are rough estimates, and the list is incomplete by design. Every entry links to its source.</p>
+    <div class="join">
+      <h3>Help fill the map</h3>
+      <p>Suggest software that should be checked, report a bug, or point us to software that is already verified. You don't need to be a verification expert, and any tool counts, our prover included. Or just tell us what to check, and we'll check it.</p>
+      <a class="btn" href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+    </div>
+    <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
   </footer>
 </main>
 
@@ -505,12 +538,13 @@ function openProofList(title, list) {
 function openComponent(c) {
   const prs = PR.filter((p) => p.band === c.band);
   openDrawer(bl(c.band), c.component, [
-    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Fully verified' : c.share > 0 ? (COVER_TXT[c.coverage] || 'Partly verified').replace(/^./, (m) => m.toUpperCase()) : 'No published verification' }),
+    el('p', { class: 'dr-big', style: `color:${c.share > 0 ? 'var(--proof)' : hitSet().has(c.component) ? 'var(--risk)' : 'var(--muted)'}`, text: c.share >= 1 ? 'Fully verified' : c.share > 0 ? (COVER_TXT[c.coverage] || 'Partly verified').replace(/^./, (m) => m.toUpperCase()) : 'No known verification' }),
     dl([['Install base', c.usage_estimate], ['Layer', bl(c.band)]]),
     sec('Not covered', el('p', { class: 'dr-p', text: c.what_is_unverified })),
     sec('Closest existing work', el('p', { class: 'dr-p', text: c.closest_existing_work })),
     sec(`Evidence (${c.evidence.length})`, c.evidence.length ? el('ul', { class: 'mini' }, c.evidence.map((id) => PR.find((p) => String(p.id) === String(id))).filter(Boolean).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: p.year + ' · ' + STATUS[p.status] })))) : el('p', { class: 'help', text: 'No published verification found.' })),
     sec(`All verification efforts in this layer (${prs.length})`, prs.length ? el('ul', { class: 'mini' }, prs.slice(0, 12).map((p) => el('li', {}, el('button', { type: 'button', text: p.project, onclick: () => openProof(p) }), el('span', { class: 'd', text: STATUS[p.status] })))) : el('p', { class: 'help', text: 'None on record.' })),
+    (() => { const inc = INC.filter((r) => r.component === c.component).sort((a, b) => b.t - a.t); return inc.length ? sec(`Public incidents in the last 13 weeks (${inc.length})`, el('ul', { class: 'mini' }, inc.map((r) => el('li', {}, el('button', { type: 'button', text: clip(r.victim, 60), onclick: () => openIncident(r) }), el('span', { class: 'd', text: fmtDay(r.date) })))), el('p', { class: 'dr-p', text: 'This records history. It does not claim that a proof would have prevented these incidents.' })) : null; })(),
     suggest('Know of verification work on this? Suggest it', 'add-verification.yml', `Verification: ${c.component}`),
   ]);
 }
@@ -559,7 +593,10 @@ function renderFilt() {
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));
   const nW = Math.ceil(days.length / 7);
-  $('#a-n').textContent = INC.length; $('#a-weeks').textContent = Math.round(days.length / 7);
+  $('#a-weeks').textContent = Math.round(days.length / 7);
+  const zd = INC.filter((r) => r.zero_day === true).length, usd = d3.sum(INC, (r) => r.usd), ppl = d3.sum(INC, (r) => r.people);
+  $('#a-stats').replaceChildren(...[[String(INC.length), 'incidents began with a flaw in code', 'n'], [String(zd), 'were zero-days, used before any fix existed', 'n'], [fmtUSD(usd), 'stolen, where an amount was reported', 'usd'], [fmtN(ppl), 'people exposed, where a number was reported', 'people']]
+    .map(([v, txt, size], i) => el('button', { type: 'button', class: 'stat', 'aria-pressed': i !== 1 && S.size === size ? 'true' : 'false', onclick: () => { S.size = size; render(); } }, el('strong', { class: 'num', text: v }), el('span', { text: txt }))));
   $('#method-p').textContent = `We count an incident when the reports say the attackers got in through a defect in software: an exploited CVE, a zero-day, an injection, an authentication bypass, a memory-safety bug, or a logic bug in a contract or protocol. Of the ${ALL.length} incidents we tracked in this period, we left out ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes (phishing, stolen passwords, misconfiguration, malicious packages, or no stated cause) and ${SMALL_CHAIN.length} smart-contract and blockchain incidents with losses under $10M. Components and layers match the Verification tab. The exact rules are in scripts/classify.py in the project repository.`;
   const SIZE_TXT = {
     n: ($('#tree').clientWidth || 1000) < 640 ? 'Each row is a kind of software, ranked by incidents.' : 'Each block is a kind of software. Bigger blocks had more incidents.',
@@ -777,13 +814,16 @@ function renderWeeks() {
 }
 
 // ================= VERIFICATION =================
+function hitSet() { return new Set(INC.filter((r) => r.component).map((r) => r.component)); }
+function stateOf(s, hits) { return s.share >= 1 ? 'verified' : s.share > 0 ? 'partial' : hits.has(s.component) ? 'hit' : 'blank'; }
 function renderPHero() {
   const STV = ST;
-  const v = STV.filter((s) => s.status_class === 'verified'), p = STV.filter((s) => s.status_class === 'partial'), b = STV.filter((s) => s.status_class === 'blank');
+  const hits = hitSet(), by = (k) => STV.filter((s) => stateOf(s, hits) === k);
+  const v = by('verified'), p = by('partial'), r = by('hit'), b = by('blank');
   $('#p-v').textContent = v.length; $('#p-t').textContent = STV.length;
   const box = $('#cov'); box.replaceChildren();
-  const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${b.length} with no published verification` });
-  [[v, 'v', 'verified', 'fully verified', 'full'], [p, 'p', 'partial', 'partly verified', 'partly'], [b, 'b', 'blank', 'no published verification', 'none']].forEach(([list, cls, key, txt, sh]) => {
+  const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${r.length} with no known verification and a recent incident, ${b.length} with no known verification` });
+  [[v, 'v', 'verified', 'fully verified', 'full'], [p, 'p', 'partial', 'partly verified', 'partly'], [r, 'r', 'hit', 'none known, recent incident', 'hit'], [b, 'b', 'blank', 'no known verification', 'none']].forEach(([list, cls, key, txt, sh]) => {
     const on = S.status === key;
     const d = el('button', { type: 'button', class: cls, style: `flex:${list.length} 1 0`, 'aria-pressed': on ? 'true' : 'false', onclick: () => set({ status: on ? null : key }) }, el('strong', { class: 'num', text: list.length }), el('span', { class: 'long', text: txt }), el('span', { class: 'short', text: sh }));
     hoverable(d, () => [el('b', { text: list.length + ' ' + txt }), ...list.slice(0, 8).map((s) => el('div', { class: 'm', text: s.component.replace(/\s*\(.*?\)\s*/g, ' ').trim() })), list.length > 8 ? el('div', { class: 'm', text: '+' + (list.length - 8) + ' more · select to highlight below' }) : null]);
@@ -792,15 +832,15 @@ function renderPHero() {
   box.append(bar);
 }
 function renderStack() {
-  const box = $('#stack'); box.replaceChildren();
+  const box = $('#stack'); box.replaceChildren(); const hits = hitSet();
   const short = (s) => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+\+\s+/g, ' + ').trim();
   BANDS.filter((b) => ST.some((r) => r.band === b)).forEach((band) => {
     const rows = ST.filter((r) => r.band === band).sort((a, b) => Number(b.usage_log10) - Number(a.usage_log10));
     const blocks = el('div', { class: 'blocks' });
     rows.forEach((r) => {
       const w = Math.pow(Math.max(0.5, Number(r.usage_log10) - 5), 1.6);
-      const cls = r.share >= 1 ? 'ver' : r.share > 0 ? 'part' : '';
-      const b = el('button', { type: 'button', class: 'blk-c ' + cls, style: `flex:${w.toFixed(2)} 1 ${Math.round(96 + w * 8)}px` + (S.status && r.status_class !== S.status ? ';opacity:.22' : ''), onclick: () => openComponent(r) },
+      const cls = r.share >= 1 ? 'ver' : r.share > 0 ? 'part' : hits.has(r.component) ? 'red' : '';
+      const b = el('button', { type: 'button', class: 'blk-c ' + cls, style: `flex:${w.toFixed(2)} 1 ${Math.round(96 + w * 8)}px` + (S.status && stateOf(r, hits) !== S.status ? ';opacity:.22' : ''), onclick: () => openComponent(r) },
         el('span', { class: 'fill', style: `width:${(r.share * 100).toFixed(0)}%` }),
         el('span', { text: short(r.component) }),
         );

@@ -1,6 +1,8 @@
 # Stack State
 
-**State of the Stack** is a small community project with two incomplete lists. One tracks publicly reported security incidents that started with a flaw in code. The other tracks published formal verification of widely used software, from 1990s safety-critical systems to recent work. Formal verification goes back to the 1960s, and much of it isn't on the list yet: see [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
+**Stack State** is about one idea: ship as fast as the machine can check. Writing code is cheap now, and checking it is the slow part. When machines check every change, teams and their AI agents can push for speed and new ideas and still trust what ships.
+
+The site has two tabs. **Incidents** shows what unchecked code cost over the last 13 weeks: incidents that began with a flaw in code, zero-days, money stolen and people exposed. **How much of the world is verified** maps widely used software by the published, machine-checked verification it has, from anyone, and marks in red the components with no known verification that had a public incident in that window. Red records history; it never claims a proof would have prevented an incident. Both lists are incomplete by design, and every entry links to its source. See [CONTRIBUTING.md](CONTRIBUTING.md) to add or fix something.
 
 Live dashboard: https://stackstate.ai (also published at https://claude.ai/artifact/KsHnYSQutEAXduLsAfJept)
 
