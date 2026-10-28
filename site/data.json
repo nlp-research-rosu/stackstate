@@ -1,71 +1,7 @@
 {
  "schema": 1,
- "generated_at": "2026-10-27T20:31:00Z",
+ "generated_at": "2026-10-28T11:13:05Z",
  "incidents": [
-  {
-   "id": "2",
-   "date": "2026-07-29",
-   "victim": "UK Department for Education (help desk and Turing Scheme portal)",
-   "sector": "government/education",
-   "country": "UK",
-   "attack_type": "data theft/extortion",
-   "initial_vector": "misconfigured Power Pages portal or social engineering (disputed)",
-   "root_cause": "",
-   "band": "Cloud & identity",
-   "layer": "saas_cloud",
-   "product": "Microsoft Power Pages portal",
-   "cve": "unknown",
-   "threat_actor": "ExfilSquad",
-   "impact": "Contact data of officials, school leaders, parents stolen; systems taken offline",
-   "records_or_loss": "~607,000 records",
-   "amount_lost_usd": "",
-   "funds_recovered_usd": "",
-   "audited_by": "",
-   "formally_verified": "none found",
-   "claim_status": "reported",
-   "source_url": "https://www.publictechnology.net/2026/07/30/news/dfe-and-police-organisation-hit-by-cyberattack/",
-   "lang": "Not disclosed",
-   "func": "People",
-   "theme": "gov",
-   "code_flaw": false,
-   "bug_class": "",
-   "zero_day": false,
-   "flaw_group": "",
-   "component": "",
-   "people": 607000
-  },
-  {
-   "id": "3",
-   "date": "2026-07-29",
-   "victim": "Analog Devices",
-   "sector": "semiconductors",
-   "country": "US",
-   "attack_type": "data breach (exfiltration)",
-   "initial_vector": "unknown",
-   "root_cause": "",
-   "band": "Applications & data",
-   "layer": "application",
-   "product": "Internal corporate systems",
-   "cve": "unknown",
-   "threat_actor": "unknown (separate ExfilSquad claim under assessment)",
-   "impact": "8-K: unauthorized access found 2026-06-23, certain files exfiltrated, operations not interrupted; separate ExfilSquad claim of 570,000+ records (claimed)",
-   "records_or_loss": "unknown; 570,000+ records (claimed)",
-   "amount_lost_usd": "",
-   "funds_recovered_usd": "",
-   "audited_by": "",
-   "formally_verified": "none found",
-   "claim_status": "claimed/unconfirmed",
-   "source_url": "https://www.boardroomalpha.com/sec/adi-8-k-2026-07-29-0001193125-26-324223",
-   "lang": "Not disclosed",
-   "func": "Data & storage",
-   "theme": "other",
-   "code_flaw": false,
-   "bug_class": "",
-   "zero_day": false,
-   "flaw_group": "",
-   "component": "",
-   "people": 570000
-  },
   {
    "id": "4",
    "date": "2026-07-30",
@@ -6945,6 +6881,38 @@
    "zero_day": true,
    "flaw_group": "CVE-2026-12569",
    "people": 0
+  },
+  {
+   "id": "219",
+   "date": "2026-10-27",
+   "victim": "Adobe Commerce and Magento users",
+   "sector": "multiple",
+   "country": "global",
+   "attack_type": "exploited vulnerability",
+   "initial_vector": "Adobe Commerce and Magento contain an unrestricted upload of file with dangerous type vulnerability that could result in arbitrary code execution in the context of the current user, potentially gaining elevated access or control over the victim's account or session.",
+   "root_cause": "Adobe Commerce and Magento Unrestricted Upload of File with Dangerous Type Vulnerability",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "Adobe Commerce and Magento",
+   "cve": "CVE-2026-48356",
+   "threat_actor": "unknown",
+   "impact": "Added to CISA KEV. Reported: Adobe Commerce PolyShell Attacks Breach Hundreds of Stores as Brotli Exploit Traffic Emerges",
+   "records_or_loss": "",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://thehackernews.com/2026/10/adobe-commerce-polyshell-attacks-breach.html",
+   "lang": "Not disclosed",
+   "func": "Parsing & input",
+   "component": "E-commerce and CMS platforms (Magento, WordPress)",
+   "theme": "other",
+   "code_flaw": true,
+   "bug_class": "Injection & code execution",
+   "zero_day": false,
+   "flaw_group": "CVE-2026-48356",
+   "people": 0
   }
  ],
  "proofs": [
@@ -9653,6 +9621,176 @@
    "what_is_unverified": "Speculation, microcode, security monitors",
    "closest_existing_work": "Intel execution-engine verification; ACL2 x86 model; AMD K5 division proof",
    "status_class": "partial"
+  },
+  {
+   "component": "Arm application cores",
+   "band": "Hardware & ISA",
+   "usage_estimate": "Over 10B chips",
+   "usage_log10": 10.0,
+   "coverage": "some",
+   "evidence": [
+    "33",
+    "34"
+   ],
+   "what_is_unverified": "Third-party cores and speculation",
+   "closest_existing_work": "Machine-readable Arm spec used to verify Arm cores",
+   "status_class": "partial"
+  },
+  {
+   "component": "Confidential computing monitors (SGX, TDX, SEV)",
+   "band": "Hardware & ISA",
+   "usage_estimate": "Most cloud confidential VMs",
+   "usage_log10": 8.0,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Security monitors end to end",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Custom and third-party web applications",
+   "band": "Applications & data",
+   "usage_estimate": "Most organizations",
+   "usage_log10": 9.0,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Application code, uploads, plugins",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Infrastructure management consoles (vCenter)",
+   "band": "Applications & data",
+   "usage_estimate": "Most enterprise data centers",
+   "usage_log10": 7.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Management web services",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "VoIP and PBX systems",
+   "band": "Applications & data",
+   "usage_estimate": "Most business phone systems",
+   "usage_log10": 7.0,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Web interfaces and call handling",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Web frameworks (Starlette, Django, Express)",
+   "band": "Libraries & supply chain",
+   "usage_estimate": "Most web applications",
+   "usage_log10": 9.0,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Routing, request parsing, middleware",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "OS services and file handlers (Windows Shell, macOS daemons)",
+   "band": "Kernels & hypervisors",
+   "usage_estimate": "Billions of desktops and phones",
+   "usage_log10": 9.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Network services and file-format handling",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Avionics flight control software",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Most large airliners",
+   "usage_log10": 8.0,
+   "coverage": "some",
+   "evidence": [
+    "78",
+    "79"
+   ],
+   "what_is_unverified": "Full functional correctness against flight requirements; most other avionics",
+   "closest_existing_work": "Astrée proves no run-time errors in Airbus A340 and A380 flight control; Airbus replaces some unit tests with proofs",
+   "status_class": "partial"
+  },
+  {
+   "component": "Air traffic control systems",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Millions of flights a year",
+   "usage_log10": 7.0,
+   "coverage": "some",
+   "evidence": [
+    "81"
+   ],
+   "what_is_unverified": "Functional behavior against requirements; most systems outside the UK",
+   "closest_existing_work": "NATS iFACTS: over 200,000 lines of SPARK proved free of run-time errors",
+   "status_class": "partial"
+  },
+  {
+   "component": "Railway signalling and train control",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Billions of rail trips a year",
+   "usage_log10": 9.0,
+   "coverage": "some",
+   "evidence": [
+    "80"
+   ],
+   "what_is_unverified": "Most signalling software worldwide; hardware and integration",
+   "closest_existing_work": "Paris Métro Line 14 train control developed and proved in the B method (1998)",
+   "status_class": "partial"
+  },
+  {
+   "component": "Spacecraft flight software",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Thousands of active spacecraft",
+   "usage_log10": 3.5,
+   "coverage": "narrow",
+   "evidence": [
+    "83"
+   ],
+   "what_is_unverified": "Flight code as flown on most missions",
+   "closest_existing_work": "Model checking of NASA Deep Space 1 Remote Agent found concurrency bugs before flight",
+   "status_class": "partial"
+  },
+  {
+   "component": "Cardiac devices (pacemakers, ICDs)",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Over 1M implanted a year",
+   "usage_log10": 6.0,
+   "coverage": "none",
+   "evidence": [
+    "84"
+   ],
+   "what_is_unverified": "Shipped device firmware",
+   "closest_existing_work": "Pacemaker Formal Methods Challenge models of a Boston Scientific specification",
+   "status_class": "blank"
+  },
+  {
+   "component": "Infusion pumps",
+   "band": "Safety-critical systems",
+   "usage_estimate": "Millions in hospitals",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [
+    "85"
+   ],
+   "what_is_unverified": "Shipped pump software",
+   "closest_existing_work": "FDA generic PCA pump model checked against FDA safety requirements",
+   "status_class": "blank"
+  },
+  {
+   "component": "Enterprise business applications (PTC Windchill, Oracle EBS, SAP)",
+   "band": "Applications & data",
+   "usage_estimate": "Most large manufacturers and enterprises",
+   "usage_log10": 7.0,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Business logic, web interfaces and integrations",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
   }
  ]
 }
