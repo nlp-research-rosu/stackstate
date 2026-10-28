@@ -1,5 +1,5 @@
 component,band,usage_estimate,usage_log10,coverage,evidence,what_is_unverified,closest_existing_work
-"Training frameworks (PyTorch, JAX)",AI stack,Most AI training and inference,8.0,none,,"Tensor operations, autograd, distributed training",None public for the frameworks; TorchLean is a research prototype
+"Training frameworks (PyTorch, JAX)",AI stack,Most AI training and inference,8.0,none,68,"Tensor operations, autograd, distributed training",None public for the frameworks; TorchLean is a research prototype
 "GPU kernel libraries (CUDA, cuDNN, cuBLAS)",AI stack,Most AI training and inference,8.0,none,,Vendor kernels and their numerics,None public
 Collective communication (NCCL),AI stack,Most multi-GPU training,7.5,none,,Distributed communication and synchronization,None public
 "Model file loaders (pickle, torch.load, GGUF)",AI stack,Most model downloads,8.0,none,,Deserializing untrusted model files,None public
@@ -7,7 +7,7 @@ ML compiler graph rewrites (XLA),AI stack,All TPU and many GPU workloads,8.0,som
 "ML kernel code generation (Triton, TVM, TensorRT)",AI stack,Most GPU inference,7.5,none,67,Kernel generation and numerics,"ATL verified tensor compiler is research, not deployed"
 "LLM inference servers (vLLM, TGI, llama.cpp, Ollama)",AI stack,Most open-weight deployments,7.5,none,,"Request parsing, batching, model loading",None public
 Tokenizers,AI stack,Every LLM request,7.5,none,,Encoding and decoding of untrusted text,None public
-AI gateways and proxies (LiteLLM and similar),Applications & data,Many enterprise LLM deployments,6.5,none,,"Authentication, routing and API-key handling",None public
+AI gateways and proxies (LiteLLM and similar),AI stack,Many enterprise LLM deployments,6.5,none,,"Authentication, routing and API-key handling",None public
 "Agent frameworks (LangChain, LangGraph)",AI stack,Millions of agent deployments,7.5,none,,"Tool-call parsing, permission boundaries, sandboxing",None public
 MCP servers and SDKs,AI stack,Fast-growing; most agent tooling,7.0,none,,"Tool exposure, authorization, input handling",None public
 "DeFi lending and exchange contracts (Aave, Compound, Uniswap)",Smart contracts & chains,~$100B total value locked,7.0,some,21;20,Most contracts; oracle and economic assumptions,Certora rule sets on major protocols; audits
@@ -118,3 +118,5 @@ Spacecraft flight software,Safety-critical systems,Thousands of active spacecraf
 "Cardiac devices (pacemakers, ICDs)",Safety-critical systems,Over 1M implanted a year,6.0,none,84,Shipped device firmware,Pacemaker Formal Methods Challenge models of a Boston Scientific specification
 Infusion pumps,Safety-critical systems,Millions in hospitals,6.5,none,85,Shipped pump software,FDA generic PCA pump model checked against FDA safety requirements
 "Enterprise business applications (PTC Windchill, Oracle EBS, SAP)",Applications & data,Most large manufacturers and enterprises,7.0,none,,"Business logic, web interfaces and integrations",None public
+RL environments and reward graders,AI stack,Most frontier model training runs,6.5,none,,"Reward correctness (no reward hacking), sandbox isolation, determinism",None public
+Evaluation harnesses and benchmarks,AI stack,Every published model score,6.5,none,,"Scoring logic, test isolation and contamination checks",None public

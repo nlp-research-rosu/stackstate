@@ -266,6 +266,7 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 @media (max-width: 600px) { .srow { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 0; } .srow .sband { padding: 4px 0; font-weight: 600; } }
 .sband { appearance: none; border: 0; background: none; padding: 4px 0 0; text-align: left; font-size: 14px; font-weight: 500; color: var(--ink-2); cursor: pointer; line-height: 1.25; align-self: start; }
 .sband:hover { color: var(--ink); text-decoration: underline; }
+.sband small { display: block; font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 3px; }
 .blocks { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
 .blk-c { appearance: none; border: 0; min-width: 0; min-height: 52px; padding: 7px 10px; font-size: 13.5px; font-weight: 500; line-height: 1.25; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; position: relative; text-align: left; cursor: pointer; background: #fff; box-shadow: inset 0 0 0 1.5px var(--none); overflow: hidden; }
 .blk-c .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--proof-soft); border-bottom: 5px solid var(--proof); }
@@ -8954,7 +8955,9 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    "usage_estimate": "Most AI training and inference",
    "usage_log10": 8.0,
    "coverage": "none",
-   "evidence": [],
+   "evidence": [
+    "68"
+   ],
    "what_is_unverified": "Tensor operations, autograd, distributed training",
    "closest_existing_work": "None public for the frameworks; TorchLean is a research prototype",
    "status_class": "blank"
@@ -9042,7 +9045,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   },
   {
    "component": "AI gateways and proxies (LiteLLM and similar)",
-   "band": "Applications & data",
+   "band": "AI stack",
    "usage_estimate": "Many enterprise LLM deployments",
    "usage_log10": 6.5,
    "coverage": "none",
@@ -10393,6 +10396,28 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    "what_is_unverified": "Business logic, web interfaces and integrations",
    "closest_existing_work": "None public",
    "status_class": "blank"
+  },
+  {
+   "component": "RL environments and reward graders",
+   "band": "AI stack",
+   "usage_estimate": "Most frontier model training runs",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Reward correctness (no reward hacking), sandbox isolation, determinism",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Evaluation harnesses and benchmarks",
+   "band": "AI stack",
+   "usage_estimate": "Every published model score",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Scoring logic, test isolation and contamination checks",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
   }
  ]
 }
@@ -10422,8 +10447,8 @@ const dayAgo = (date) => { const d = Math.round((d3.utcDay.floor(new Date()) - D
 const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 
 const BANDS = ['People', 'AI stack', 'Safety-critical systems', 'Smart contracts & chains', 'Applications & data', 'Cloud & identity', 'Network appliances', 'Libraries & supply chain', 'Crypto & protocols', 'Compilers & runtimes', 'Kernels & hypervisors', 'Firmware', 'Hardware & ISA'];
-const BAND_LABEL = { 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
-const BAND_SUB = { 'AI stack': 'Model gateways, agent frameworks', 'Safety-critical systems': 'Avionics, rail, medical devices, space', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
+const BAND_LABEL = { 'AI stack': 'AI training & inference', 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
+const BAND_SUB = { 'AI stack': 'Training, inference, agents, RL environments', 'Safety-critical systems': 'Avionics, rail, medical devices, space', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
 const bl = (b) => BAND_LABEL[b] || b;
 const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
 const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
@@ -10457,7 +10482,6 @@ function ingest(data) {
   ALL.forEach((r) => { r.usd = Number(r.amount_lost_usd) || 0; r.people = Number(r.people) || 0; r.t = Date.parse(r.date + 'T12:00:00Z'); if (!GL[r.theme]) r.theme = 'other'; if (!FUNC_LABEL[r.func]) r.func = 'Unknown'; });
   const compBand = new Map(data.stack.map((s) => [s.component, s.band]));
   ALL.forEach((r) => { r.vband = r.band; if (r.component && compBand.has(r.component)) r.band = compBand.get(r.component); if (r.band === 'AI stack') r.band = 'Applications & data'; });
-  ST = ST.filter((s) => s.band !== 'AI stack');
   const isChainBand = (r) => r.band === 'Smart contracts & chains';
   SMALL_CHAIN = ALL.filter((r) => isFlaw(r) && isChainBand(r) && (Number(r.amount_lost_usd) || 0) < CHAIN_MIN_USD);
   INC = ALL.filter((r) => isFlaw(r) && !(isChainBand(r) && (Number(r.amount_lost_usd) || 0) < CHAIN_MIN_USD));
@@ -10849,7 +10873,7 @@ function renderStack() {
       hoverable(b, () => [el('b', { text: r.component }), el('div', { class: 'm', text: r.usage_estimate + ' · ' + (COVER_TXT[r.coverage] || '') }), r.coverage !== 'none' ? el('div', { text: 'Verified: ' + r.closest_existing_work }) : null, el('div', { text: 'Not covered: ' + r.what_is_unverified })]);
       blocks.appendChild(b);
     });
-    box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', text: bl(band), 'aria-pressed': S.band === band ? 'true' : 'false', onclick: () => set({ band: S.band === band ? null : band }) }), blocks));
+    box.appendChild(el('div', { class: 'srow' + (S.band && S.band !== band ? ' dim' : '') }, el('button', { type: 'button', class: 'sband', 'aria-pressed': S.band === band ? 'true' : 'false', onclick: () => set({ band: S.band === band ? null : band }) }, bl(band), el('small', { text: (() => { const n = PR.filter((p) => p.band === band).length; return n ? `${n} verification effort${n > 1 ? 's' : ''}` : 'no published efforts'; })() })), blocks));
   });
 }
 function renderCum() {

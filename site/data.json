@@ -8576,7 +8576,9 @@
    "usage_estimate": "Most AI training and inference",
    "usage_log10": 8.0,
    "coverage": "none",
-   "evidence": [],
+   "evidence": [
+    "68"
+   ],
    "what_is_unverified": "Tensor operations, autograd, distributed training",
    "closest_existing_work": "None public for the frameworks; TorchLean is a research prototype",
    "status_class": "blank"
@@ -8664,7 +8666,7 @@
   },
   {
    "component": "AI gateways and proxies (LiteLLM and similar)",
-   "band": "Applications & data",
+   "band": "AI stack",
    "usage_estimate": "Many enterprise LLM deployments",
    "usage_log10": 6.5,
    "coverage": "none",
@@ -10013,6 +10015,28 @@
    "coverage": "none",
    "evidence": [],
    "what_is_unverified": "Business logic, web interfaces and integrations",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "RL environments and reward graders",
+   "band": "AI stack",
+   "usage_estimate": "Most frontier model training runs",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Reward correctness (no reward hacking), sandbox isolation, determinism",
+   "closest_existing_work": "None public",
+   "status_class": "blank"
+  },
+  {
+   "component": "Evaluation harnesses and benchmarks",
+   "band": "AI stack",
+   "usage_estimate": "Every published model score",
+   "usage_log10": 6.5,
+   "coverage": "none",
+   "evidence": [],
+   "what_is_unverified": "Scoring logic, test isolation and contamination checks",
    "closest_existing_work": "None public",
    "status_class": "blank"
   }
