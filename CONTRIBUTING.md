@@ -4,7 +4,7 @@ Stack State is a small community project, and both of its lists are incomplete. 
 
 ## The quick way: open an issue
 
-Pick a form on the [new issue page](https://github.com/iamjustoutthere/stackstate/issues/new/choose):
+Pick a form on the [new issue page](https://github.com/nlp-research-rosu/stackstate/issues/new/choose):
 
 - **Add a verification project.** A link to the paper, report or repository is all we need.
 - **Add an incident.** It should be publicly reported, and the way in should be a flaw in code.

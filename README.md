@@ -67,7 +67,7 @@ There are two copies of the page:
 
 ### Setting up Vercel (once)
 
-1. At https://vercel.com/new, import `iamjustoutthere/stackstate` (allow the Vercel GitHub app on that repository).
+1. At https://vercel.com/new, import `nlp-research-rosu/stackstate` (allow the Vercel GitHub app on that repository).
 2. Name the project `stackstate`. Leave the framework preset as Other; `vercel.json` already sets the output directory to `site` with no build. Deploy.
 3. In the project, open Analytics and enable Web Analytics.
 4. In the project, open Settings, then Domains, and add `stackstate.ai` (and `www.stackstate.ai`), then set the DNS records Vercel shows at your domain registrar.

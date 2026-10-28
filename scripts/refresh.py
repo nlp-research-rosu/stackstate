@@ -51,7 +51,7 @@ NEWS_FEEDS = [
 ]
 ARXIV_FEEDS = ["https://rss.arxiv.org/rss/cs.LO", "https://rss.arxiv.org/rss/cs.PL", "https://rss.arxiv.org/rss/cs.CR"]
 MODEL = "claude-opus-5-5"
-UA = "StackStateRefresh/1.0 (+https://github.com/iamjustoutthere/stackstate)"
+UA = "StackStateRefresh/1.0 (+https://github.com/nlp-research-rosu/stackstate)"
 
 INCIDENT_KEYS = [
     "id", "date", "victim", "sector", "country", "attack_type", "initial_vector", "root_cause", "band", "layer",

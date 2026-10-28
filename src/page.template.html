@@ -293,7 +293,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
       <button type="button" data-v="attacks" aria-pressed="true"><span class="sw" aria-hidden="true"></span>Incidents</button>
       <button type="button" data-v="proofs" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span class="t-long">How much of the world is verified</span><span class="t-short">Verified</span></button>
     </div>
-    <a class="contrib" href="https://github.com/iamjustoutthere/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
+    <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
     <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Updated daily</b> <span id="live-t"></span></span></div>
   </div>
@@ -335,7 +335,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="join">
       <h3>Help fill the map</h3>
       <p>Tell us what software to check, report a bug, or point us to verified work. No expertise needed: use any tool, ours included, or just ask and we'll check it.</p>
-      <a class="btn" href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+      <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
     </div>
     <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
   </footer>
@@ -376,7 +376,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="join">
       <h3>Help fill the map</h3>
       <p>Tell us what software to check, report a bug, or point us to verified work. No expertise needed: use any tool, ours included, or just ask and we'll check it.</p>
-      <a class="btn" href="https://github.com/iamjustoutthere/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+      <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
     </div>
     <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
   </footer>
@@ -510,7 +510,7 @@ document.addEventListener('keydown', (e) => {
 });
 const dl = (pairs) => el('dl', { class: 'dl' }, pairs.filter(([, v]) => v != null && v !== '' && v !== 'unknown').flatMap(([k, v]) => [el('dt', { text: k }), el('dd', {}, v)]));
 const sec = (h, ...c) => el('div', { class: 'dr-sec' }, el('h4', { class: 'lab', text: h }), ...c);
-const REPO = 'https://github.com/iamjustoutthere/stackstate';
+const REPO = 'https://github.com/nlp-research-rosu/stackstate';
 const suggest = (text, template, title) => el('p', { class: 'sug' }, el('a', { href: `${REPO}/issues/new?template=${template}&title=${encodeURIComponent(title)}`, target: '_blank', rel: 'noopener noreferrer', text }));
 const srcLink = (u) => { const s = safeUrl(u); if (!s) return null; let host = 'Source'; try { host = new URL(s).hostname.replace(/^www\./, ''); } catch (e) { /* keep */ } return el('a', { href: s, target: '_blank', rel: 'noopener noreferrer', text: host + ' ↗' }); };
 function openIncident(r) {
