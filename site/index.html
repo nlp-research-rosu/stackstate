@@ -352,7 +352,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>Every incident links to its public source, and the list is incomplete by design. We record what broke and make no claim about what a proof would have prevented.</p>
+    <p>Every incident links to its public source, and the list is incomplete by design. It records what broke and makes no claim about what a proof would have prevented.</p>
     <p><button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">See how much of the world is verified</button></p>
     <div class="join">
       <h3>Help fill the map</h3>
@@ -367,7 +367,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
     <p class="lab">How much of the world is verified</p>
-    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used components on our list are fully verified by machine</h1>
+    <h1 class="big"><span class="pv num" id="p-v"></span> of <span class="num" id="p-t"></span> widely used software components are fully verified by machine</h1>
     <p class="lede">Verified code moves fast, because a machine re-checks every change. NASA has seen the other side, where checking code cost far more than writing it.</p>
     <div class="cov" id="cov"></div>
   </header>
@@ -385,7 +385,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <section class="blk wrap" id="p-time">
     <div class="time-note">
       <figure class="fig" style="margin:0">
-        <h2 class="fig-h">Verification efforts on our list, <span id="cum-yrs"></span></h2>
+        <h2 class="fig-h">Published verification efforts, <span id="cum-yrs"></span></h2>
         <p class="fig-d" id="cum-d"></p>
         <div class="chart" id="cum"></div>
       </figure>
@@ -394,7 +394,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <footer class="foot wrap">
-    <p>Published, machine-checked verification we know of, by anyone, each linked to its source. Install bases and verified shares are rough estimates, and the list is incomplete by design.</p>
+    <p>Published, machine-checked verification by anyone, each linked to its source. Install bases and verified shares are rough estimates, and the list is incomplete by design.</p>
     <div class="join">
       <h3>Help fill the map</h3>
       <p>Tell us what software to check, report a bug, or point us to verified work. No expertise needed: use any tool, ours included, or just ask and we'll check it.</p>
@@ -10664,7 +10664,7 @@ function renderHero() {
   const zd = INC.filter((r) => r.zero_day === true).length, usd = d3.sum(INC, (r) => r.usd), ppl = d3.sum(INC, (r) => r.people);
   $('#a-stats').replaceChildren(...[[String(INC.length), 'incidents began with a flaw in code', 'n'], [String(zd), 'were zero-days, used before any fix existed', 'n'], [fmtUSD(usd), 'stolen, where an amount was reported', 'usd'], [fmtN(ppl), 'people exposed, where a number was reported', 'people']]
     .map(([v, txt, size], i) => el('button', { type: 'button', class: 'stat', 'aria-pressed': i !== 1 && S.size === size ? 'true' : 'false', onclick: () => { S.size = size; render(); } }, el('strong', { class: 'num', text: v }), el('span', { text: txt }))));
-  $('#method-p').textContent = `We count an incident when attackers got in through a software defect, such as an exploited CVE, an injection or a memory-safety bug. Of ${ALL.length} incidents tracked, ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes and ${SMALL_CHAIN.length} blockchain losses under $10M are left out.`;
+  $('#method-p').textContent = `An incident counts when attackers got in through a software defect, such as an exploited CVE, an injection or a memory-safety bug. Of ${ALL.length} incidents tracked, ${ALL.length - INC.length - SMALL_CHAIN.length} with other causes and ${SMALL_CHAIN.length} blockchain losses under $10M are left out.`;
   const narrowTree = ($('#tree').clientWidth || 1000) < 640;
   const inWin = ALL.filter((r) => !isFlaw(r) && r.t >= +WIN.start);
   const other = S.size === 'people' ? d3.sum(inWin, (r) => r.people) : S.size === 'usd' ? d3.sum(inWin, (r) => r.usd) : 0;
