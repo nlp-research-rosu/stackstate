@@ -307,6 +307,7 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .rc .s { font-size: 13.5px; color: var(--muted); }
 
 /* ---------- OUR CONTRIBUTIONS ---------- */
+.ins { color: var(--ink); font-weight: 500; margin-top: 8px; }
 .cstats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 22px 0 0; }
 .cstat { border: 1px solid var(--rule-2); background: var(--bg-2); padding: 14px 16px; }
 .cstat strong { display: block; font-family: var(--f-serif); font-weight: 400; font-size: clamp(30px, 4vw, 44px); line-height: 1; color: var(--proof); }
@@ -317,7 +318,9 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 @media (max-width: 640px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
 .vcard { border: 1px solid var(--rule-2); background: var(--fig); padding: 16px 18px 18px; min-width: 0; }
 .vcard h3 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(18px, 1.85vw, 22px); line-height: 1.15; margin: 0; }
-.vcard .scan { font-size: 13.5px; color: var(--muted); margin: 4px 0 14px; }
+.vcard .take { font-size: 14.5px; color: var(--ink); margin: 6px 0 0; line-height: 1.35; }
+.vcard .scan { font-size: 13px; color: var(--muted); margin: 2px 0 14px; }
+.mixk li.top, .mixk li.top b { font-weight: 600; color: var(--ink); }
 .vcard { display: flex; flex-direction: column; }
 .vcard .fn { margin-bottom: 18px; }
 .fn { display: grid; grid-template-columns: minmax(0, 6.6rem) minmax(0, 1fr) 3.2ch; gap: 4px 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); }
@@ -456,7 +459,9 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <header class="hero wrap">
     <h1 class="big wide">Our contributions</h1>
     <p class="lede">We read open-source AI and infrastructure code, find bugs, propose verified fixes, and report them upstream.</p>
+    <p class="lede ins" id="c-insight"></p>
     <div class="cstats" id="c-stats"></div>
+    <p class="help" id="c-note"></p>
   </header>
 
   <section class="blk wrap" id="c-verts">
@@ -11467,17 +11472,22 @@ const BSTATUS = { reported: 'Reported', acknowledged: 'Acknowledged', 'pr-open':
 const CF = { v: '', s: '' };
 const cn = (v, stage) => d3.sum(CT.counts.filter((c) => c.vertical === v && c.stage === stage), (c) => Number(c.n));
 function renderContrib() {
-  $('#c-stats').replaceChildren(...[['findings', 'findings'], ['verified', 'verified'], ['fix_proposed', 'fixes proposed'], ['reported', 'reported upstream'], ['fixed', 'fixed upstream']]
-    .map(([k, t]) => el('div', { class: 'cstat' }, el('strong', { class: 'num', text: String(d3.sum(VERTS, ([v]) => cn(v, k))) }), el('span', { text: t }))));
+  const tot = (k) => d3.sum(VERTS, ([v]) => cn(v, k));
+  const rw = cn('rl-training', 'type_reward-pays-wrong-answer') + cn('rl-envs', 'type_reward-pays-wrong-answer'), rf = cn('rl-training', 'findings') + cn('rl-envs', 'findings');
+  $('#c-insight').textContent = rf ? `${rw} of ${rf} findings in RL training frameworks and RL environments are cases where the reward pays for a wrong answer.` : '';
+  $('#c-note').textContent = 'Fix proposed means a fix that passed our checks: the reproduction flips from fail to pass, the fix holds up under fuzzing against an independent spec, and it was reviewed.';
+  $('#c-stats').replaceChildren(...[['findings', 'findings'], ['verified', `verified, of ${tot('findings')} findings`], ['fix_proposed', 'fixes proposed'], ['reported', 'reported upstream'], ['fixed', `fixed upstream, of ${tot('reported')} reported`]]
+    .map(([k, t]) => el('div', { class: 'cstat' }, el('strong', { class: 'num', text: String(tot(k)) }), el('span', { text: t }))));
   $('#c-grid').replaceChildren(...VERTS.map(([v, label]) => {
     const top = cn(v, 'findings') || 1, scanned = cn(v, 'scanned');
-    const mix = BTYPES.map(([k, l, c]) => [l, c, cn(v, 'type_' + k)]).filter((m) => m[2] > 0);
+    const mix = BTYPES.map(([k, l, c]) => [l, c, cn(v, 'type_' + k)]).filter((m) => m[2] > 0).sort((a, b) => b[2] - a[2]);
     return el('div', { class: 'vcard' },
       el('h3', { text: label }),
+      el('p', { class: 'take', text: mix.length ? (mix[0][0] === 'Other' ? `Most are other kinds of bug (${mix[0][2]} of ${cn(v, 'findings')})` : `Most common: ${mix[0][0].toLowerCase()} (${mix[0][2]} of ${cn(v, 'findings')})`) : 'No findings yet' }),
       el('p', { class: 'scan num', text: `${scanned} ${scanned === 1 ? 'project' : 'projects'} with findings` }),
       el('div', { class: 'fn' }, FUNNEL.map(([k, l]) => { const n = cn(v, k); return [el('span', { text: l }), el('span', { class: 'tr' }, el('i', { style: `width:${Math.round(100 * n / top)}%` })), el('b', { class: 'num', text: String(n) })]; }).flat()),
       el('div', { class: 'mix', role: 'img', 'aria-label': 'Kinds of bug found' }, mix.map(([l, c, n]) => el('i', { style: `flex:${n};background:${c}`, title: `${l}: ${n}` }))),
-      el('ul', { class: 'mixk' }, mix.map(([l, c, n]) => el('li', {}, el('i', { style: `background:${c}` }), el('span', { text: l }), el('b', { class: 'num', text: String(n) })))));
+      el('ul', { class: 'mixk' }, mix.map(([l, c, n], i) => el('li', { class: i ? '' : 'top' }, el('i', { style: `background:${c}` }), el('span', { text: l }), el('b', { class: 'num', text: String(n) })))));
   }));
   const sel = (key, label, opts) => el('label', {}, label, el('select', { onchange: (e) => { CF[key] = e.target.value; renderBugs(); } }, [['', 'All'], ...opts].map(([k, l]) => el('option', { value: k, text: l, selected: CF[key] === k }))));
   $('#c-filt').replaceChildren(sel('v', 'Area', VERTS), sel('s', 'Status', Object.entries(BSTATUS)));
