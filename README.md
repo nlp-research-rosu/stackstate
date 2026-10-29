@@ -10,7 +10,7 @@ Writing code is cheap now, and checking it is the slow part. When a machine chec
 
 **Incidents** shows what unchecked code cost over the last 13 weeks. It counts publicly reported incidents where attackers got in through a flaw in code, such as an exploited CVE, an injection or a memory-safety bug. You can size the treemap by incidents, people exposed or money stolen. Phishing, stolen credentials, misconfiguration, malicious packages and blockchain losses under $10M are left out.
 
-**How much of the world is verified** maps widely used software, from kernels and browsers to avionics and AI inference. Each component shows the published, machine-checked verification it has, by anyone. Red marks components with no known verification that also had a public incident in the window.
+**How much of the world is verified** maps widely used software, from kernels and browsers to avionics and smart contracts. Each component shows the published, machine-checked verification it has, by anyone. Red marks components with no known verification that also had a public incident in the window.
 
 Red records history. The page never claims a proof would have prevented an incident.
 
