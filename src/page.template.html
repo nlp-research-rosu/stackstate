@@ -8,14 +8,14 @@
 <style>
 __FONTS__
 
-/* Two tabs behind one switch. Incidents: charcoal ground, one coral. Verification: paper ground, green against neutral grey. Serif for statements, sans for reading, mono for small data labels. */
+/* Two tabs behind one switch. Incidents: charcoal ground, one red. Verification: paper ground, green against neutral grey. Serif for statements, sans for reading, mono for small data labels. */
 :root {
   color-scheme: dark;
   --bg: #1b1819; --bg-2: #252122; --bg-3: #302b2c; --rule: #3b3537; --rule-2: #4d4648;
   --ink: #f5f0ea; --ink-2: #ddd5cd; --muted: #b1a79f;
-  --hit: #f08a5d; --hit-soft: #6e3a26;
-  --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffb162; --live: #5fd497;
-  --risk: #f08a5d; --risk-soft: #4a2a22;
+  --hit: #ff5468; --hit-soft: #5c1f29;
+  --proof: #5fd497; --proof-soft: #2c5a43; --accent: #ffd23f; --live: #5fd497;
+  --risk: #ff5468; --risk-soft: #45202a;
   --none: #8f8682; --none-soft: #2a2627; --fig: #1f1c1d; --zd: #f5f0ea; --grey-dot: #4a4345; --empty-dot: #2f2a2b;
   --shadow: 0 12px 32px rgba(0,0,0,.5);
   --f-serif: 'PG Serif', 'Newsreader', Georgia, serif;
@@ -26,7 +26,7 @@ __FONTS__
   color-scheme: light;
   --bg: #f4f5f7; --bg-2: #e8ebef; --bg-3: #dde1e7; --rule: #d0d5dc; --rule-2: #b4bbc5;
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
-  --hit: #b5532a; --hit-soft: #f3e2d8;
+  --hit: #c0283e; --hit-soft: #f8dce0;
   --proof: #13784a; --proof-soft: #b9e0cb; --accent: #13784a; --live: #13784a;
   --risk: #b8322b; --risk-soft: #f7dcd8;
   --none: #8b939f; --none-soft: #e6e9ee; --fig: #ffffff; --zd: #12161e; --grey-dot: #c9ccd2; --empty-dot: #e3e6ea;
@@ -59,7 +59,7 @@ a { color: var(--accent); }
 .mode { display: inline-flex; border: 1px solid var(--rule-2); padding: 3px; gap: 3px; }
 .mode button { appearance: none; border: 0; background: transparent; padding: 7px 14px 7px 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .mode .sw { width: 13px; height: 13px; flex: none; border: 1px solid var(--rule-2); }
-.mode button[data-v="attacks"] .sw { background: #1b1819; box-shadow: inset 0 0 0 3px #1b1819, inset 0 0 0 7px #f08a5d; }
+.mode button[data-v="attacks"] .sw { background: #1b1819; box-shadow: inset 0 0 0 3px #1b1819, inset 0 0 0 7px #ff5468; }
 .mode button[data-v="proofs"] .sw { background: #f4f5f7; box-shadow: inset 0 0 0 3px #f4f5f7, inset 0 0 0 7px #13784a; }
 .mode button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .mode button:hover:not([aria-pressed="true"]) { color: var(--ink); }
@@ -291,8 +291,8 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <div class="wrap bar-in">
     <div class="brand">Stack <i>State</i></div>
     <div class="mode" role="group" aria-label="View">
-      <button type="button" data-v="attacks" aria-pressed="true" title="Incidents" aria-label="Dark mode: incidents"><span class="sw" aria-hidden="true"></span>Dark</button>
-      <button type="button" data-v="proofs" aria-pressed="false" title="How much of the world is verified" aria-label="Light mode: how much of the world is verified"><span class="sw" aria-hidden="true"></span>Light</button>
+      <button type="button" data-v="attacks" aria-pressed="true" title="Incidents" aria-label="Attack: incidents"><span class="sw" aria-hidden="true"></span>Attack</button>
+      <button type="button" data-v="proofs" aria-pressed="false" title="How much of the world is verified" aria-label="Defense: how much of the world is verified"><span class="sw" aria-hidden="true"></span>Defense</button>
     </div>
     <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
