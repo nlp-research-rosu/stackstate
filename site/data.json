@@ -10029,7 +10029,7 @@
    {
     "vertical": "rl-training",
     "stage": "fix_proposed",
-    "n": 6
+    "n": 15
    },
    {
     "vertical": "rl-training",
@@ -10059,7 +10059,7 @@
    {
     "vertical": "rl-envs",
     "stage": "fix_proposed",
-    "n": 0
+    "n": 5
    },
    {
     "vertical": "rl-envs",
@@ -10089,7 +10089,7 @@
    {
     "vertical": "evals",
     "stage": "fix_proposed",
-    "n": 6
+    "n": 10
    },
    {
     "vertical": "evals",
@@ -10179,7 +10179,7 @@
    {
     "vertical": "infra",
     "stage": "fix_proposed",
-    "n": 0
+    "n": 2
    },
    {
     "vertical": "infra",
