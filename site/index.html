@@ -11483,7 +11483,7 @@ function renderContrib() {
     const mix = BTYPES.map(([k, l, c]) => [l, c, cn(v, 'type_' + k)]).filter((m) => m[2] > 0).sort((a, b) => b[2] - a[2]);
     return el('div', { class: 'vcard' },
       el('h3', { text: label }),
-      el('p', { class: 'take', text: mix.length ? (mix[0][0] === 'Other' ? `Most are other kinds of bug (${mix[0][2]} of ${cn(v, 'findings')})` : `Most common: ${mix[0][0].toLowerCase()} (${mix[0][2]} of ${cn(v, 'findings')})`) : 'No findings yet' }),
+      el('p', { class: 'take', text: mix.length ? (mix[0][0] === 'Other' ? `Largest group: other kinds of bug (${mix[0][2]} of ${cn(v, 'findings')})` : `Most common: ${mix[0][0].toLowerCase()} (${mix[0][2]} of ${cn(v, 'findings')})`) : 'No findings yet' }),
       el('p', { class: 'scan num', text: `${scanned} ${scanned === 1 ? 'project' : 'projects'} with findings` }),
       el('div', { class: 'fn' }, FUNNEL.map(([k, l]) => { const n = cn(v, k); return [el('span', { text: l }), el('span', { class: 'tr' }, el('i', { style: `width:${Math.round(100 * n / top)}%` })), el('b', { class: 'num', text: String(n) })]; }).flat()),
       el('div', { class: 'mix', role: 'img', 'aria-label': 'Kinds of bug found' }, mix.map(([l, c, n]) => el('i', { style: `flex:${n};background:${c}`, title: `${l}: ${n}` }))),
