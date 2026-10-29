@@ -10029,7 +10029,7 @@
    {
     "vertical": "rl-training",
     "stage": "fix_proposed",
-    "n": 1
+    "n": 6
    },
    {
     "vertical": "rl-training",
@@ -10089,7 +10089,7 @@
    {
     "vertical": "evals",
     "stage": "fix_proposed",
-    "n": 3
+    "n": 6
    },
    {
     "vertical": "evals",
@@ -10400,7 +10400,7 @@
     "repo": "etcd-io/etcd",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "A Txn that mixes an open-ended delete with an ignore-value put panics every member at apply and crash-loops on replay",
+    "title": "A Txn mixing an open-ended delete with an ignore-value put panics every member and crash-loops on replay",
     "status": "reported",
     "issue_url": "https://github.com/etcd-io/etcd/issues/22645",
     "fix_url": "",
@@ -10411,7 +10411,7 @@
     "repo": "etcd-io/etcd",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "Force-new-cluster recovery panics the surviving member after a crash leaves the consistent index ahead of the WAL",
+    "title": "Force-new-cluster recovery panics the surviving member when a crash leaves the consistent index ahead of the WAL",
     "status": "pr-open",
     "issue_url": "https://github.com/etcd-io/etcd/issues/22646",
     "fix_url": "https://github.com/etcd-io/etcd/pull/22655",
@@ -10422,7 +10422,7 @@
     "repo": "langchain-ai/langgraph",
     "vertical": "agents",
     "bug_type": "other",
-    "title": "retry_policy on a node that calls two subgraphs resumes the second one into the first one's checkpoint",
+    "title": "retry_policy on a node that calls two subgraphs resumes the second into the first one's checkpoint",
     "status": "reported",
     "issue_url": "https://github.com/langchain-ai/langgraph/issues/9253",
     "fix_url": "",
@@ -10433,7 +10433,7 @@
     "repo": "langchain-ai/langgraph",
     "vertical": "agents",
     "bug_type": "other",
-    "title": "One transient checkpoint save error under async durability drops saved channel values from the thread",
+    "title": "A single failed checkpoint save under async durability drops saved channel values from the thread",
     "status": "fixed",
     "issue_url": "https://github.com/langchain-ai/langgraph/issues/9245",
     "fix_url": "https://github.com/langchain-ai/langgraph/pull/9235",
@@ -10444,7 +10444,7 @@
     "repo": "redis/redis",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "ARGREP caps pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",
+    "title": "ARGREP limits pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",
     "status": "reported",
     "issue_url": "https://github.com/redis/redis/issues/16084",
     "fix_url": "",
@@ -10466,7 +10466,7 @@
     "repo": "valkey-io/valkey",
     "vertical": "infra",
     "bug_type": "other",
-    "title": "A module getkeys callback runs on an I/O thread and touches main-thread-only state, a data race",
+    "title": "A module getkeys callback runs on an I/O thread and touches main-thread state, causing a data race",
     "status": "reported",
     "issue_url": "https://github.com/valkey-io/valkey/issues/5054",
     "fix_url": "",

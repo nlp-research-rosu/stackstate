@@ -316,16 +316,19 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 @media (max-width: 1000px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
 .vcard { border: 1px solid var(--rule-2); background: var(--fig); padding: 16px 18px 18px; min-width: 0; }
-.vcard h3 { font-family: var(--f-serif); font-weight: 400; font-size: 22px; line-height: 1.15; margin: 0; }
-.vcard .scan { font-size: 13.5px; color: var(--muted); margin: 4px 0 12px; }
+.vcard h3 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(18px, 1.85vw, 22px); line-height: 1.15; margin: 0; }
+.vcard .scan { font-size: 13.5px; color: var(--muted); margin: 4px 0 14px; }
+.vcard { display: flex; flex-direction: column; }
+.vcard .fn { margin-bottom: 18px; }
 .fn { display: grid; grid-template-columns: minmax(0, 6.6rem) minmax(0, 1fr) 3.2ch; gap: 4px 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); }
 .fn .tr { height: 10px; background: var(--none-soft); }
 .fn .tr i { display: block; height: 100%; background: var(--proof); }
 .fn b { font-weight: 600; color: var(--ink); text-align: right; }
-.mix { display: flex; height: 10px; gap: 2px; margin: 16px 0 8px; background: var(--none-soft); }
+.mix { display: flex; height: 10px; gap: 2px; margin: 0 0 10px; background: var(--none-soft); }
 .mix i { display: block; min-width: 2px; }
-.mixk { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 13px; color: var(--ink-2); margin: 0; padding: 0; list-style: none; }
-.mixk li { display: inline-flex; gap: 6px; align-items: center; }
+.mixk { display: grid; gap: 3px; font-size: 13.5px; color: var(--ink-2); margin: 0; padding: 0; list-style: none; }
+.mixk li { display: grid; grid-template-columns: 10px minmax(0, 1fr) 3.2ch; gap: 10px; align-items: center; }
+.mixk b { text-align: right; font-weight: 600; color: var(--ink); }
 .mixk i { width: 10px; height: 10px; display: inline-block; flex: none; }
 .bfilt { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 14px; }
 .bfilt label { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-2); }
@@ -339,12 +342,14 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .btab a { white-space: nowrap; margin-right: 12px; }
 .pill { display: inline-block; font-size: 13px; padding: 2px 8px; border: 1px solid var(--rule-2); background: var(--bg-2); white-space: nowrap; }
 .pill.fixed { border-color: var(--proof); color: var(--proof); }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .btab thead { display: none; }
   .btab, .btab tbody, .btab tr, .btab td { display: block; width: 100%; }
   .btab tr { padding: 12px 0; border-bottom: 1px solid var(--rule); }
   .btab td { border: 0; padding: 3px 0; }
   .btab .tt { max-width: none; }
+  .btab td[data-l]::before { content: attr(data-l); display: inline-block; min-width: 4.5rem; color: var(--muted); font-size: 13px; }
+  .btab td.lk { padding-top: 6px; }
 }
 footer.foot { margin-top: clamp(48px, 6vw, 80px); padding-block: 18px 44px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
 footer.foot p { max-width: 90ch; margin: 0 0 8px; }
@@ -455,20 +460,20 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </header>
 
   <section class="blk wrap" id="c-verts">
-    <div class="blk-h"><div><h2 class="h2">Six kinds of software we check</h2><p class="dek">Each card follows the findings in one area from first look to fix.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">Where we looked</h2><p class="dek">Findings in each area, from first report to a fix upstream.</p></div></div>
     <div class="vgrid" id="c-grid"></div>
   </section>
 
   <section class="blk wrap" id="c-list">
-    <div class="blk-h"><div><h2 class="h2">Bugs we have reported</h2><p class="dek">Every row links to the issue in the project's own tracker.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2">Reported bugs</h2><p class="dek">Each row links to the issue in the project's own tracker.</p></div></div>
     <div class="bfilt" id="c-filt"></div>
     <table class="btab" id="c-tab"></table>
   </section>
 
   <footer class="foot wrap">
     <div class="join">
-      <h3>Help us check more code</h3>
-      <p>You do not need to be a formal verification expert. Report a bug you have run into, or suggest open-source software you would like checked, by opening an issue on GitHub. To see how the checking works, try the <a href="https://prover-console.intentcomputing.org" target="_blank" rel="noopener noreferrer">prover</a>.</p>
+      <h3>Send us code to check</h3>
+      <p>You do not need to be a verification expert. Open an issue on GitHub to report a bug you have hit, or to suggest open-source software we should check. You can also <a href="https://prover-console.intentcomputing.org" target="_blank" rel="noopener noreferrer">try the prover yourself</a>.</p>
       <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
     </div>
     <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
@@ -10513,7 +10518,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    {
     "vertical": "rl-training",
     "stage": "fix_proposed",
-    "n": 1
+    "n": 6
    },
    {
     "vertical": "rl-training",
@@ -10573,7 +10578,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    {
     "vertical": "evals",
     "stage": "fix_proposed",
-    "n": 3
+    "n": 6
    },
    {
     "vertical": "evals",
@@ -10884,7 +10889,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "etcd-io/etcd",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "A Txn that mixes an open-ended delete with an ignore-value put panics every member at apply and crash-loops on replay",
+    "title": "A Txn mixing an open-ended delete with an ignore-value put panics every member and crash-loops on replay",
     "status": "reported",
     "issue_url": "https://github.com/etcd-io/etcd/issues/22645",
     "fix_url": "",
@@ -10895,7 +10900,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "etcd-io/etcd",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "Force-new-cluster recovery panics the surviving member after a crash leaves the consistent index ahead of the WAL",
+    "title": "Force-new-cluster recovery panics the surviving member when a crash leaves the consistent index ahead of the WAL",
     "status": "pr-open",
     "issue_url": "https://github.com/etcd-io/etcd/issues/22646",
     "fix_url": "https://github.com/etcd-io/etcd/pull/22655",
@@ -10906,7 +10911,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "langchain-ai/langgraph",
     "vertical": "agents",
     "bug_type": "other",
-    "title": "retry_policy on a node that calls two subgraphs resumes the second one into the first one's checkpoint",
+    "title": "retry_policy on a node that calls two subgraphs resumes the second into the first one's checkpoint",
     "status": "reported",
     "issue_url": "https://github.com/langchain-ai/langgraph/issues/9253",
     "fix_url": "",
@@ -10917,7 +10922,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "langchain-ai/langgraph",
     "vertical": "agents",
     "bug_type": "other",
-    "title": "One transient checkpoint save error under async durability drops saved channel values from the thread",
+    "title": "A single failed checkpoint save under async durability drops saved channel values from the thread",
     "status": "fixed",
     "issue_url": "https://github.com/langchain-ai/langgraph/issues/9245",
     "fix_url": "https://github.com/langchain-ai/langgraph/pull/9235",
@@ -10928,7 +10933,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "redis/redis",
     "vertical": "infra",
     "bug_type": "crash-or-hang",
-    "title": "ARGREP caps pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",
+    "title": "ARGREP limits pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",
     "status": "reported",
     "issue_url": "https://github.com/redis/redis/issues/16084",
     "fix_url": "",
@@ -10950,7 +10955,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     "repo": "valkey-io/valkey",
     "vertical": "infra",
     "bug_type": "other",
-    "title": "A module getkeys callback runs on an I/O thread and touches main-thread-only state, a data race",
+    "title": "A module getkeys callback runs on an I/O thread and touches main-thread state, causing a data race",
     "status": "reported",
     "issue_url": "https://github.com/valkey-io/valkey/issues/5054",
     "fix_url": "",
@@ -11456,7 +11461,7 @@ function renderCum() {
 const VERTS = [['rl-training', 'RL training frameworks'], ['rl-envs', 'RL environments and gyms'], ['evals', 'Eval benchmarks and graders'], ['inference', 'Inference engines'], ['agents', 'Agent frameworks'], ['infra', 'Infrastructure']];
 const VLABEL = Object.fromEntries(VERTS);
 const FUNNEL = [['findings', 'Findings'], ['verified', 'Verified'], ['fix_proposed', 'Fix proposed'], ['reported', 'Reported'], ['fixed', 'Fixed upstream']];
-const BTYPES = [['wrong-score', 'Wrong score', '#2f5d8a'], ['right-answer-marked-wrong', 'Right answer marked wrong', '#6b4a8a'], ['crash-or-hang', 'Crash or hang', '#b5532a'], ['reward-pays-wrong-answer', 'Reward pays a wrong answer', '#8a6d1f'], ['silent-training-bug', 'Silent training bug', '#13784a'], ['other', 'Other', '#8b939f']];
+const BTYPES = [['wrong-score', 'Wrong score', '#2f5d8a'], ['right-answer-marked-wrong', 'Right answer marked wrong', '#6b4a8a'], ['crash-or-hang', 'Crash or hang', '#b5532a'], ['reward-pays-wrong-answer', 'Wrong answer rewarded', '#8a6d1f'], ['silent-training-bug', 'Silent training bug', '#13784a'], ['other', 'Other', '#8b939f']];
 const BTLABEL = Object.fromEntries(BTYPES.map(([k, l]) => [k, l]));
 const BSTATUS = { reported: 'Reported', acknowledged: 'Acknowledged', 'pr-open': 'Fix in review', fixed: 'Fixed' };
 const CF = { v: '', s: '' };
@@ -11469,10 +11474,10 @@ function renderContrib() {
     const mix = BTYPES.map(([k, l, c]) => [l, c, cn(v, 'type_' + k)]).filter((m) => m[2] > 0);
     return el('div', { class: 'vcard' },
       el('h3', { text: label }),
-      el('p', { class: 'scan num', text: `${scanned} ${scanned === 1 ? 'project' : 'projects'} checked` }),
+      el('p', { class: 'scan num', text: `${scanned} ${scanned === 1 ? 'project' : 'projects'} with findings` }),
       el('div', { class: 'fn' }, FUNNEL.map(([k, l]) => { const n = cn(v, k); return [el('span', { text: l }), el('span', { class: 'tr' }, el('i', { style: `width:${Math.round(100 * n / top)}%` })), el('b', { class: 'num', text: String(n) })]; }).flat()),
       el('div', { class: 'mix', role: 'img', 'aria-label': 'Kinds of bug found' }, mix.map(([l, c, n]) => el('i', { style: `flex:${n};background:${c}`, title: `${l}: ${n}` }))),
-      el('ul', { class: 'mixk' }, mix.map(([l, c, n]) => el('li', {}, el('i', { style: `background:${c}` }), `${l} ${n}`))));
+      el('ul', { class: 'mixk' }, mix.map(([l, c, n]) => el('li', {}, el('i', { style: `background:${c}` }), el('span', { text: l }), el('b', { class: 'num', text: String(n) })))));
   }));
   const sel = (key, label, opts) => el('label', {}, label, el('select', { onchange: (e) => { CF[key] = e.target.value; renderBugs(); } }, [['', 'All'], ...opts].map(([k, l]) => el('option', { value: k, text: l, selected: CF[key] === k }))));
   $('#c-filt').replaceChildren(sel('v', 'Area', VERTS), sel('s', 'Status', Object.entries(BSTATUS)));
@@ -11486,10 +11491,10 @@ function renderBugs() {
     el('thead', {}, el('tr', {}, ['Bug', 'Area', 'Kind', 'Status', 'Links'].map((h) => el('th', { text: h })))),
     el('tbody', {}, rows.length ? rows.map((b) => el('tr', {},
       el('td', { class: 'tt' }, b.title, el('small', { text: b.repo })),
-      el('td', { text: VLABEL[b.vertical] }),
-      el('td', { text: BTLABEL[b.bug_type] }),
-      el('td', {}, el('span', { class: 'pill' + (b.status === 'fixed' ? ' fixed' : ''), text: BSTATUS[b.status] }), b.fix_by ? el('small', { text: 'Fix by ' + (b.fix_by === 'us' ? 'us' : 'the maintainers') }) : null),
-      el('td', {}, link(b.issue_url, 'Issue ' + num(b.issue_url)), link(b.fix_url, 'Fix ' + num(b.fix_url))))) : [el('tr', {}, el('td', { text: 'No bugs match these filters.' }))]));
+      el('td', { 'data-l': 'Area', text: VLABEL[b.vertical] }),
+      el('td', { 'data-l': 'Kind', text: BTLABEL[b.bug_type] }),
+      el('td', { 'data-l': 'Status' }, el('span', { class: 'pill' + (b.status === 'fixed' ? ' fixed' : ''), text: BSTATUS[b.status] }), b.fix_by ? el('small', { text: 'Fix written by ' + (b.fix_by === 'us' ? 'us' : 'the maintainers') }) : null),
+      el('td', { class: 'lk' }, link(b.issue_url, 'Issue ' + num(b.issue_url)), link(b.fix_url, 'Fix ' + num(b.fix_url))))) : [el('tr', {}, el('td', { text: 'No reported bugs match. Try another area or status.' }))]));
 }
 
 // ---------- render ----------

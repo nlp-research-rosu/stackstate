@@ -2,7 +2,7 @@ kind,id,repo,vertical,bug_type,title,status,issue_url,fix_url,fix_by,stage,n
 count,,,rl-training,,,,,,,scanned,35
 count,,,rl-training,,,,,,,findings,65
 count,,,rl-training,,,,,,,verified,31
-count,,,rl-training,,,,,,,fix_proposed,1
+count,,,rl-training,,,,,,,fix_proposed,6
 count,,,rl-training,,,,,,,reported,0
 count,,,rl-training,,,,,,,fixed,0
 count,,,rl-envs,,,,,,,scanned,17
@@ -14,7 +14,7 @@ count,,,rl-envs,,,,,,,fixed,0
 count,,,evals,,,,,,,scanned,71
 count,,,evals,,,,,,,findings,130
 count,,,evals,,,,,,,verified,55
-count,,,evals,,,,,,,fix_proposed,3
+count,,,evals,,,,,,,fix_proposed,6
 count,,,evals,,,,,,,reported,0
 count,,,evals,,,,,,,fixed,0
 count,,,inference,,,,,,,scanned,7
@@ -73,10 +73,10 @@ count,,,infra,,,,,,,type_silent-training-bug,0
 count,,,infra,,,,,,,type_other,5
 bug,AP-11,langchain-ai/langgraph,agents,crash-or-hang,Sync threads.stream() ignores run_start_timeout,reported,https://github.com/langchain-ai/langgraph/issues/9208,,,,
 bug,AP-12,langchain-ai/langgraph,agents,other,Sync thread stream reports a gate timeout instead of the real error when run.start fails,reported,https://github.com/langchain-ai/langgraph/issues/9209,,,,
-bug,ETCD-01,etcd-io/etcd,infra,crash-or-hang,A Txn that mixes an open-ended delete with an ignore-value put panics every member at apply and crash-loops on replay,reported,https://github.com/etcd-io/etcd/issues/22645,,,,
-bug,ETCD-03,etcd-io/etcd,infra,crash-or-hang,Force-new-cluster recovery panics the surviving member after a crash leaves the consistent index ahead of the WAL,pr-open,https://github.com/etcd-io/etcd/issues/22646,https://github.com/etcd-io/etcd/pull/22655,maintainers,,
-bug,FN-09,langchain-ai/langgraph,agents,other,retry_policy on a node that calls two subgraphs resumes the second one into the first one's checkpoint,reported,https://github.com/langchain-ai/langgraph/issues/9253,,,,
-bug,PS-13,langchain-ai/langgraph,agents,other,One transient checkpoint save error under async durability drops saved channel values from the thread,fixed,https://github.com/langchain-ai/langgraph/issues/9245,https://github.com/langchain-ai/langgraph/pull/9235,maintainers,,
-bug,REDIS-06,redis/redis,infra,crash-or-hang,"ARGREP caps pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",reported,https://github.com/redis/redis/issues/16084,,,,
+bug,ETCD-01,etcd-io/etcd,infra,crash-or-hang,A Txn mixing an open-ended delete with an ignore-value put panics every member and crash-loops on replay,reported,https://github.com/etcd-io/etcd/issues/22645,,,,
+bug,ETCD-03,etcd-io/etcd,infra,crash-or-hang,Force-new-cluster recovery panics the surviving member when a crash leaves the consistent index ahead of the WAL,pr-open,https://github.com/etcd-io/etcd/issues/22646,https://github.com/etcd-io/etcd/pull/22655,maintainers,,
+bug,FN-09,langchain-ai/langgraph,agents,other,retry_policy on a node that calls two subgraphs resumes the second into the first one's checkpoint,reported,https://github.com/langchain-ai/langgraph/issues/9253,,,,
+bug,PS-13,langchain-ai/langgraph,agents,other,A single failed checkpoint save under async durability drops saved channel values from the thread,fixed,https://github.com/langchain-ai/langgraph/issues/9245,https://github.com/langchain-ai/langgraph/pull/9235,maintainers,,
+bug,REDIS-06,redis/redis,infra,crash-or-hang,"ARGREP limits pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",reported,https://github.com/redis/redis/issues/16084,,,,
 bug,SGLANG-05,sgl-project/sglang,inference,other,"A retracted request restarts its penalty history from zero, so its output silently changes",reported,https://github.com/sgl-project/sglang/issues/47245,,,,
-bug,VALKEY-02,valkey-io/valkey,infra,other,"A module getkeys callback runs on an I/O thread and touches main-thread-only state, a data race",reported,https://github.com/valkey-io/valkey/issues/5054,,,,
+bug,VALKEY-02,valkey-io/valkey,infra,other,"A module getkeys callback runs on an I/O thread and touches main-thread state, causing a data race",reported,https://github.com/valkey-io/valkey/issues/5054,,,,
