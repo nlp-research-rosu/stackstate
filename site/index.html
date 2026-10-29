@@ -11466,7 +11466,7 @@ function renderCum() {
 const VERTS = [['rl-training', 'RL training frameworks'], ['rl-envs', 'RL environments and gyms'], ['evals', 'Eval benchmarks and graders'], ['inference', 'Inference engines'], ['agents', 'Agent frameworks'], ['infra', 'Infrastructure']];
 const VLABEL = Object.fromEntries(VERTS);
 const FUNNEL = [['findings', 'Findings'], ['verified', 'Verified'], ['fix_proposed', 'Fix proposed'], ['reported', 'Reported'], ['fixed', 'Fixed upstream']];
-const BTYPES = [['wrong-score', 'Wrong score', '#2f5d8a'], ['right-answer-marked-wrong', 'Right answer marked wrong', '#6b4a8a'], ['crash-or-hang', 'Crash or hang', '#b5532a'], ['reward-pays-wrong-answer', 'Wrong answer rewarded', '#8a6d1f'], ['silent-training-bug', 'Silent training bug', '#13784a'], ['other', 'Other', '#8b939f']];
+const BTYPES = [['wrong-score', 'Wrong score', '#2f5d8a'], ['right-answer-marked-wrong', 'Right answer marked wrong', '#6b4a8a'], ['crash-or-hang', 'Crash or hang', '#c0283e'], ['reward-pays-wrong-answer', 'Wrong answer rewarded', '#8a6d1f'], ['silent-training-bug', 'Silent training bug', '#13784a'], ['other', 'Other', '#8b939f']];
 const BTLABEL = Object.fromEntries(BTYPES.map(([k, l]) => [k, l]));
 const BSTATUS = { reported: 'Reported', acknowledged: 'Acknowledged', 'pr-open': 'Fix in review', fixed: 'Fixed' };
 const CF = { v: '', s: '' };
