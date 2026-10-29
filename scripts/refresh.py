@@ -387,8 +387,8 @@ def main():
 
     today = dt.date.fromisoformat(a.today) if a.today else dt.datetime.now(dt.timezone.utc).date()
     data = json.loads(DATA.read_text())
-    # The Verification tab comes from the CSVs, so edits merged there show up on the next run.
-    data["proofs"], data["stack"] = seed_data.proofs(), seed_data.stack()
+    # The Verification and Our contributions tabs come from the CSVs, so edits merged there show up on the next run.
+    data["proofs"], data["stack"], data["contrib"] = seed_data.proofs(), seed_data.stack(), seed_data.contrib()
     STACK_BAND.update({s["component"]: s["band"] for s in data["stack"]})
     log = {"run_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "today": today.isoformat(), "feeds": {}, "kev_skipped": [], "errors": [],
            "added_incidents": [], "added_proofs": [], "archived": 0}

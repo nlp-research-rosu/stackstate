@@ -10008,5 +10008,470 @@
    "closest_existing_work": "None public",
    "status_class": "blank"
   }
- ]
+ ],
+ "contrib": {
+  "counts": [
+   {
+    "vertical": "rl-training",
+    "stage": "scanned",
+    "n": 35
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "findings",
+    "n": 65
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "verified",
+    "n": 31
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "fix_proposed",
+    "n": 1
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "reported",
+    "n": 0
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "fixed",
+    "n": 0
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "scanned",
+    "n": 17
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "findings",
+    "n": 34
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "verified",
+    "n": 12
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "fix_proposed",
+    "n": 0
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "reported",
+    "n": 0
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "fixed",
+    "n": 0
+   },
+   {
+    "vertical": "evals",
+    "stage": "scanned",
+    "n": 71
+   },
+   {
+    "vertical": "evals",
+    "stage": "findings",
+    "n": 130
+   },
+   {
+    "vertical": "evals",
+    "stage": "verified",
+    "n": 55
+   },
+   {
+    "vertical": "evals",
+    "stage": "fix_proposed",
+    "n": 3
+   },
+   {
+    "vertical": "evals",
+    "stage": "reported",
+    "n": 0
+   },
+   {
+    "vertical": "evals",
+    "stage": "fixed",
+    "n": 0
+   },
+   {
+    "vertical": "inference",
+    "stage": "scanned",
+    "n": 7
+   },
+   {
+    "vertical": "inference",
+    "stage": "findings",
+    "n": 9
+   },
+   {
+    "vertical": "inference",
+    "stage": "verified",
+    "n": 4
+   },
+   {
+    "vertical": "inference",
+    "stage": "fix_proposed",
+    "n": 0
+   },
+   {
+    "vertical": "inference",
+    "stage": "reported",
+    "n": 1
+   },
+   {
+    "vertical": "inference",
+    "stage": "fixed",
+    "n": 0
+   },
+   {
+    "vertical": "agents",
+    "stage": "scanned",
+    "n": 4
+   },
+   {
+    "vertical": "agents",
+    "stage": "findings",
+    "n": 7
+   },
+   {
+    "vertical": "agents",
+    "stage": "verified",
+    "n": 4
+   },
+   {
+    "vertical": "agents",
+    "stage": "fix_proposed",
+    "n": 0
+   },
+   {
+    "vertical": "agents",
+    "stage": "reported",
+    "n": 4
+   },
+   {
+    "vertical": "agents",
+    "stage": "fixed",
+    "n": 1
+   },
+   {
+    "vertical": "infra",
+    "stage": "scanned",
+    "n": 5
+   },
+   {
+    "vertical": "infra",
+    "stage": "findings",
+    "n": 8
+   },
+   {
+    "vertical": "infra",
+    "stage": "verified",
+    "n": 7
+   },
+   {
+    "vertical": "infra",
+    "stage": "fix_proposed",
+    "n": 0
+   },
+   {
+    "vertical": "infra",
+    "stage": "reported",
+    "n": 4
+   },
+   {
+    "vertical": "infra",
+    "stage": "fixed",
+    "n": 0
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_wrong-score",
+    "n": 2
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 7
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_crash-or-hang",
+    "n": 9
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 34
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_silent-training-bug",
+    "n": 13
+   },
+   {
+    "vertical": "rl-training",
+    "stage": "type_other",
+    "n": 0
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_wrong-score",
+    "n": 2
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 2
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_crash-or-hang",
+    "n": 6
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 22
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_silent-training-bug",
+    "n": 2
+   },
+   {
+    "vertical": "rl-envs",
+    "stage": "type_other",
+    "n": 0
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_wrong-score",
+    "n": 72
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 8
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_crash-or-hang",
+    "n": 12
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 0
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_silent-training-bug",
+    "n": 0
+   },
+   {
+    "vertical": "evals",
+    "stage": "type_other",
+    "n": 38
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_wrong-score",
+    "n": 2
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 1
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_crash-or-hang",
+    "n": 3
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 0
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_silent-training-bug",
+    "n": 0
+   },
+   {
+    "vertical": "inference",
+    "stage": "type_other",
+    "n": 3
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_wrong-score",
+    "n": 0
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 2
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_crash-or-hang",
+    "n": 2
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 0
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_silent-training-bug",
+    "n": 0
+   },
+   {
+    "vertical": "agents",
+    "stage": "type_other",
+    "n": 3
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_wrong-score",
+    "n": 0
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_right-answer-marked-wrong",
+    "n": 0
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_crash-or-hang",
+    "n": 3
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_reward-pays-wrong-answer",
+    "n": 0
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_silent-training-bug",
+    "n": 0
+   },
+   {
+    "vertical": "infra",
+    "stage": "type_other",
+    "n": 5
+   }
+  ],
+  "bugs": [
+   {
+    "id": "AP-11",
+    "repo": "langchain-ai/langgraph",
+    "vertical": "agents",
+    "bug_type": "crash-or-hang",
+    "title": "Sync threads.stream() ignores run_start_timeout",
+    "status": "reported",
+    "issue_url": "https://github.com/langchain-ai/langgraph/issues/9208",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "AP-12",
+    "repo": "langchain-ai/langgraph",
+    "vertical": "agents",
+    "bug_type": "other",
+    "title": "Sync thread stream reports a gate timeout instead of the real error when run.start fails",
+    "status": "reported",
+    "issue_url": "https://github.com/langchain-ai/langgraph/issues/9209",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "ETCD-01",
+    "repo": "etcd-io/etcd",
+    "vertical": "infra",
+    "bug_type": "crash-or-hang",
+    "title": "A Txn that mixes an open-ended delete with an ignore-value put panics every member at apply and crash-loops on replay",
+    "status": "reported",
+    "issue_url": "https://github.com/etcd-io/etcd/issues/22645",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "ETCD-03",
+    "repo": "etcd-io/etcd",
+    "vertical": "infra",
+    "bug_type": "crash-or-hang",
+    "title": "Force-new-cluster recovery panics the surviving member after a crash leaves the consistent index ahead of the WAL",
+    "status": "pr-open",
+    "issue_url": "https://github.com/etcd-io/etcd/issues/22646",
+    "fix_url": "https://github.com/etcd-io/etcd/pull/22655",
+    "fix_by": "maintainers"
+   },
+   {
+    "id": "FN-09",
+    "repo": "langchain-ai/langgraph",
+    "vertical": "agents",
+    "bug_type": "other",
+    "title": "retry_policy on a node that calls two subgraphs resumes the second one into the first one's checkpoint",
+    "status": "reported",
+    "issue_url": "https://github.com/langchain-ai/langgraph/issues/9253",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "PS-13",
+    "repo": "langchain-ai/langgraph",
+    "vertical": "agents",
+    "bug_type": "other",
+    "title": "One transient checkpoint save error under async durability drops saved channel values from the thread",
+    "status": "fixed",
+    "issue_url": "https://github.com/langchain-ai/langgraph/issues/9245",
+    "fix_url": "https://github.com/langchain-ai/langgraph/pull/9235",
+    "fix_by": "maintainers"
+   },
+   {
+    "id": "REDIS-06",
+    "repo": "redis/redis",
+    "vertical": "infra",
+    "bug_type": "crash-or-hang",
+    "title": "ARGREP caps pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",
+    "status": "reported",
+    "issue_url": "https://github.com/redis/redis/issues/16084",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "SGLANG-05",
+    "repo": "sgl-project/sglang",
+    "vertical": "inference",
+    "bug_type": "other",
+    "title": "A retracted request restarts its penalty history from zero, so its output silently changes",
+    "status": "reported",
+    "issue_url": "https://github.com/sgl-project/sglang/issues/47245",
+    "fix_url": "",
+    "fix_by": ""
+   },
+   {
+    "id": "VALKEY-02",
+    "repo": "valkey-io/valkey",
+    "vertical": "infra",
+    "bug_type": "other",
+    "title": "A module getkeys callback runs on an I/O thread and touches main-thread-only state, a data race",
+    "status": "reported",
+    "issue_url": "https://github.com/valkey-io/valkey/issues/5054",
+    "fix_url": "",
+    "fix_by": ""
+   }
+  ]
+ }
 }

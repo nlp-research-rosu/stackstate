@@ -22,7 +22,7 @@ __FONTS__
   --f-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono: 'PG Mono', 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
 }
-:root[data-view="proofs"] {
+:root[data-view="proofs"], :root[data-view="contrib"] {
   color-scheme: light;
   --bg: #f4f5f7; --bg-2: #e8ebef; --bg-3: #dde1e7; --rule: #d0d5dc; --rule-2: #b4bbc5;
   --ink: #12161e; --ink-2: #2f3642; --muted: #59616d;
@@ -61,6 +61,7 @@ a { color: var(--accent); }
 .mode .sw { width: 13px; height: 13px; flex: none; border: 1px solid var(--rule-2); }
 .mode button[data-v="attacks"] .sw { background: #1b1819; box-shadow: inset 0 0 0 3px #1b1819, inset 0 0 0 7px #ff5468; }
 .mode button[data-v="proofs"] .sw { background: #f4f5f7; box-shadow: inset 0 0 0 3px #f4f5f7, inset 0 0 0 7px #13784a; }
+.mode button[data-v="contrib"] .sw { background: #f4f5f7; box-shadow: inset 0 0 0 3px #f4f5f7, inset 0 0 0 7px #2f5d8a; }
 .mode button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .mode button:hover:not([aria-pressed="true"]) { color: var(--ink); }
 .live { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; min-width: 0; }
@@ -82,6 +83,7 @@ a { color: var(--accent); }
 .ticker:hover .tk-track, .ticker:focus-within .tk-track { animation-play-state: paused; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .tk { appearance: none; border: 0; background: none; padding: 0; cursor: pointer; display: inline-flex; gap: 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); white-space: nowrap; }
+a.tk { text-decoration: none; }
 .tk:hover b { text-decoration: underline; text-underline-offset: 3px; }
 .tk .when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 .tk i { width: 7px; height: 7px; border-radius: 50%; background: var(--hit); flex: none; }
@@ -282,6 +284,46 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .rc .t { font-weight: 500; line-height: 1.3; }
 .rc .s { font-size: 13.5px; color: var(--muted); }
 
+/* ---------- OUR CONTRIBUTIONS ---------- */
+.cstats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 22px 0 0; }
+.cstat { border: 1px solid var(--rule-2); background: var(--bg-2); padding: 14px 16px; }
+.cstat strong { display: block; font-family: var(--f-serif); font-weight: 400; font-size: clamp(30px, 4vw, 44px); line-height: 1; color: var(--proof); }
+.cstat span { display: block; margin-top: 6px; font-size: 14px; line-height: 1.35; color: var(--ink-2); }
+@media (max-width: 760px) { .cstats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cstat:last-child { grid-column: 1 / -1; } }
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
+.vcard { border: 1px solid var(--rule-2); background: var(--fig); padding: 16px 18px 18px; min-width: 0; }
+.vcard h3 { font-family: var(--f-serif); font-weight: 400; font-size: 22px; line-height: 1.15; margin: 0; }
+.vcard .scan { font-size: 13.5px; color: var(--muted); margin: 4px 0 12px; }
+.fn { display: grid; grid-template-columns: minmax(0, 6.6rem) minmax(0, 1fr) 3.2ch; gap: 4px 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); }
+.fn .tr { height: 10px; background: var(--none-soft); }
+.fn .tr i { display: block; height: 100%; background: var(--proof); }
+.fn b { font-weight: 600; color: var(--ink); text-align: right; }
+.mix { display: flex; height: 10px; gap: 2px; margin: 16px 0 8px; background: var(--none-soft); }
+.mix i { display: block; min-width: 2px; }
+.mixk { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 13px; color: var(--ink-2); margin: 0; padding: 0; list-style: none; }
+.mixk li { display: inline-flex; gap: 6px; align-items: center; }
+.mixk i { width: 10px; height: 10px; display: inline-block; flex: none; }
+.bfilt { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 14px; }
+.bfilt label { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-2); }
+.bfilt select { font: inherit; font-size: 14px; color: var(--ink); background: var(--bg-2); border: 1px solid var(--rule-2); padding: 6px 8px; max-width: 100%; }
+.bfilt label { max-width: 100%; } .bfilt select { min-width: 0; flex: 1; text-overflow: ellipsis; }
+.btab { width: 100%; border-collapse: collapse; font-size: 14px; }
+.btab th { text-align: left; font-family: var(--f-mono); font-size: 13px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 8px 0; border-bottom: 2px solid var(--ink); }
+.btab td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; overflow-wrap: anywhere; }
+.btab td small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.btab .tt { font-weight: 500; color: var(--ink); max-width: 46ch; }
+.btab a { white-space: nowrap; margin-right: 12px; }
+.pill { display: inline-block; font-size: 13px; padding: 2px 8px; border: 1px solid var(--rule-2); background: var(--bg-2); white-space: nowrap; }
+.pill.fixed { border-color: var(--proof); color: var(--proof); }
+@media (max-width: 760px) {
+  .btab thead { display: none; }
+  .btab, .btab tbody, .btab tr, .btab td { display: block; width: 100%; }
+  .btab tr { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .btab td { border: 0; padding: 3px 0; }
+  .btab .tt { max-width: none; }
+}
 footer.foot { margin-top: clamp(48px, 6vw, 80px); padding-block: 18px 44px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
 footer.foot p { max-width: 90ch; margin: 0 0 8px; }
 footer.foot code { font-family: var(--f-mono); font-size: 13px; }
@@ -293,6 +335,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="mode" role="group" aria-label="View">
       <button type="button" data-v="attacks" aria-pressed="true" title="Incidents" aria-label="Attack: incidents"><span class="sw" aria-hidden="true"></span>Attack</button>
       <button type="button" data-v="proofs" aria-pressed="false" title="How much of the world is verified" aria-label="Defense: how much of the world is verified"><span class="sw" aria-hidden="true"></span>Defense</button>
+      <button type="button" data-v="contrib" aria-pressed="false" title="Our contributions" aria-label="Our contributions"><span class="sw" aria-hidden="true"></span>Our contributions</button>
     </div>
     <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
@@ -381,6 +424,35 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </footer>
 </main>
 
+<!-- ================= OUR CONTRIBUTIONS ================= -->
+<main class="view" id="v-contrib" hidden>
+  <header class="hero wrap">
+    <h1 class="big wide">Our contributions</h1>
+    <p class="lede">We read open-source AI and infrastructure code, find bugs, propose verified fixes, and report them upstream.</p>
+    <div class="cstats" id="c-stats"></div>
+  </header>
+
+  <section class="blk wrap" id="c-verts">
+    <div class="blk-h"><div><h2 class="h2">Six kinds of software we check</h2><p class="dek">Each card follows the findings in one area from first look to fix.</p></div></div>
+    <div class="vgrid" id="c-grid"></div>
+  </section>
+
+  <section class="blk wrap" id="c-list">
+    <div class="blk-h"><div><h2 class="h2">Bugs we have reported</h2><p class="dek">Every row links to the issue in the project's own tracker.</p></div></div>
+    <div class="bfilt" id="c-filt"></div>
+    <table class="btab" id="c-tab"></table>
+  </section>
+
+  <footer class="foot wrap">
+    <div class="join">
+      <h3>Help us check more code</h3>
+      <p>You do not need to be a formal verification expert. Report a bug you have run into, or suggest open-source software you would like checked, by opening an issue on GitHub. To see how the checking works, try the <a href="https://prover-console.intentcomputing.org" target="_blank" rel="noopener noreferrer">prover</a>.</p>
+      <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+    </div>
+    <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
+  </footer>
+</main>
+
 <div class="tip" id="tip" hidden></div>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-t" aria-hidden="true">
@@ -432,12 +504,14 @@ const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Micr
 // ---------- data: embedded copy first, then data.json ----------
 const CHAIN_MIN_USD = 10e6;
 let SMALL_CHAIN = [];
+let CT = { counts: [], bugs: [] };
 let ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
 let seen = null; try { seen = new Set(JSON.parse(localStorage.getItem('pg-seen') || 'null') || []); } catch (e) { seen = null; }
 const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
 const COVER = { full: 1, major: 0.6, some: 0.3, narrow: 0.1, none: 0 };
 const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some: 'some parts verified', narrow: 'narrow parts verified', none: 'none published' };
 function ingest(data) {
+  CT = data.contrib || CT;
   ALL = data.incidents; PR = data.proofs.filter((p) => p.status !== 'TESTING_ONLY'); ST = data.stack.filter((s) => s.band !== 'AI stack'); gen = data.generated_at || null;
   // No separate AI categories: fold them into the general ones.
   const funcByFlaw = new Map(ALL.filter((r) => r.func !== 'AI & agents' && r.flaw_group).map((r) => [r.flaw_group, r.func]));
@@ -550,7 +624,7 @@ function openComponent(c) {
 }
 
 // ---------- view switch ----------
-const views = { attacks: $('#v-attacks'), proofs: $('#v-proofs') };
+const views = { attacks: $('#v-attacks'), proofs: $('#v-proofs'), contrib: $('#v-contrib') };
 function setView(v, scroll) {
   if (!views[v]) v = 'attacks';
   S.view = v; document.documentElement.setAttribute('data-view', v);
@@ -577,7 +651,9 @@ function renderLive() {
 function renderTicker() {
   const tk = $('#tk'); tk.replaceChildren();
   const isNew = (r) => freshIds.has(String(r.id)) || (seen && seen.size && !seen.has(String(r.id)));
-  const items = S.view === 'attacks'
+  const items = S.view === 'contrib'
+    ? CT.bugs.map((b) => el('a', { class: 'tk p', href: safeUrl(b.issue_url) || '#', target: '_blank', rel: 'noopener noreferrer' }, el('i'), el('span', { class: 'when', text: b.repo.split('/')[1] }), el('b', { text: clip(b.title, 70) })))
+    : S.view === 'attacks'
     ? [...INC].filter((r) => r.band !== 'Smart contracts & chains').sort((a, b) => b.t - a.t || Number(b.id) - Number(a.id)).slice(0, 14).map((r) => el('button', { type: 'button', class: 'tk', onclick: () => openIncident(r) }, el('i'), el('span', { class: 'when', text: fmtDay(r.date) }), el('b', { text: r.victim.replace(/\s*\(.*?\)\s*/g, ' ').trim() }), el('span', { text: clip(r.initial_vector || r.attack_type, 60) }), isNew(r) ? el('span', { class: 'new', text: 'NEW' }) : null))
     : PR.filter((p) => p.status !== 'TESTING_ONLY').sort((a, b) => Number(b.year) - Number(a.year) || Number(b.id) - Number(a.id)).slice(0, 14).map((p) => el('button', { type: 'button', class: 'tk p', onclick: () => openProof(p) }, el('i'), el('span', { class: 'when', text: p.year }), el('b', { text: p.project }), el('span', { text: STATUS[p.status] })));
   tk.append(...items, ...items.map((n) => { const c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; c.addEventListener('click', () => n.click()); return c; }));
@@ -585,7 +661,7 @@ function renderTicker() {
 function renderFilt() {
   const f = $('#filt');
   const p = S.view === 'attacks' ? [S.band && bl(S.band), S.cls, S.func && FUNC_LABEL[S.func], S.group && GL[S.group].label, S.week != null && 'Week of ' + fmtDay(iso(d3.utcDay.offset(WIN.start, S.week * 7)))] : [S.band && bl(S.band), S.status && { verified: 'Fully verified', partial: 'Partly verified', blank: 'No published verification' }[S.status]];
-  const parts = p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
+  const parts = S.view === 'contrib' ? [] : p.filter(Boolean); f.hidden = !parts.length; f.replaceChildren();
   if (parts.length) f.append(el('span', { text: parts.join(' · ') }), el('button', { type: 'button', 'aria-label': 'Clear filter', text: '×', onclick: () => set({ group: null, week: null, band: null, func: null, cls: null, cause: null, status: null }) }));
 }
 
@@ -877,15 +953,56 @@ function renderCum() {
   });
 }
 
+// ================= OUR CONTRIBUTIONS =================
+const VERTS = [['rl-training', 'RL training frameworks'], ['rl-envs', 'RL environments and gyms'], ['evals', 'Eval benchmarks and graders'], ['inference', 'Inference engines'], ['agents', 'Agent frameworks'], ['infra', 'Infrastructure']];
+const VLABEL = Object.fromEntries(VERTS);
+const FUNNEL = [['findings', 'Findings'], ['verified', 'Verified'], ['fix_proposed', 'Fix proposed'], ['reported', 'Reported'], ['fixed', 'Fixed upstream']];
+const BTYPES = [['wrong-score', 'Wrong score', '#2f5d8a'], ['right-answer-marked-wrong', 'Right answer marked wrong', '#6b4a8a'], ['crash-or-hang', 'Crash or hang', '#b5532a'], ['reward-pays-wrong-answer', 'Reward pays a wrong answer', '#8a6d1f'], ['silent-training-bug', 'Silent training bug', '#13784a'], ['other', 'Other', '#8b939f']];
+const BTLABEL = Object.fromEntries(BTYPES.map(([k, l]) => [k, l]));
+const BSTATUS = { reported: 'Reported', acknowledged: 'Acknowledged', 'pr-open': 'Fix in review', fixed: 'Fixed' };
+const CF = { v: '', s: '' };
+const cn = (v, stage) => d3.sum(CT.counts.filter((c) => c.vertical === v && c.stage === stage), (c) => Number(c.n));
+function renderContrib() {
+  $('#c-stats').replaceChildren(...[['findings', 'findings'], ['verified', 'verified'], ['fix_proposed', 'fixes proposed'], ['reported', 'reported upstream'], ['fixed', 'fixed upstream']]
+    .map(([k, t]) => el('div', { class: 'cstat' }, el('strong', { class: 'num', text: String(d3.sum(VERTS, ([v]) => cn(v, k))) }), el('span', { text: t }))));
+  $('#c-grid').replaceChildren(...VERTS.map(([v, label]) => {
+    const top = cn(v, 'findings') || 1, scanned = cn(v, 'scanned');
+    const mix = BTYPES.map(([k, l, c]) => [l, c, cn(v, 'type_' + k)]).filter((m) => m[2] > 0);
+    return el('div', { class: 'vcard' },
+      el('h3', { text: label }),
+      el('p', { class: 'scan num', text: `${scanned} ${scanned === 1 ? 'project' : 'projects'} checked` }),
+      el('div', { class: 'fn' }, FUNNEL.map(([k, l]) => { const n = cn(v, k); return [el('span', { text: l }), el('span', { class: 'tr' }, el('i', { style: `width:${Math.round(100 * n / top)}%` })), el('b', { class: 'num', text: String(n) })]; }).flat()),
+      el('div', { class: 'mix', role: 'img', 'aria-label': 'Kinds of bug found' }, mix.map(([l, c, n]) => el('i', { style: `flex:${n};background:${c}`, title: `${l}: ${n}` }))),
+      el('ul', { class: 'mixk' }, mix.map(([l, c, n]) => el('li', {}, el('i', { style: `background:${c}` }), `${l} ${n}`))));
+  }));
+  const sel = (key, label, opts) => el('label', {}, label, el('select', { onchange: (e) => { CF[key] = e.target.value; renderBugs(); } }, [['', 'All'], ...opts].map(([k, l]) => el('option', { value: k, text: l, selected: CF[key] === k }))));
+  $('#c-filt').replaceChildren(sel('v', 'Area', VERTS), sel('s', 'Status', Object.entries(BSTATUS)));
+  renderBugs();
+}
+function renderBugs() {
+  const rows = CT.bugs.filter((b) => (!CF.v || b.vertical === CF.v) && (!CF.s || b.status === CF.s));
+  const link = (u, t) => (safeUrl(u) ? el('a', { href: u, target: '_blank', rel: 'noopener noreferrer', text: t }) : null);
+  const num = (u) => '#' + String(u).split('/').pop();
+  $('#c-tab').replaceChildren(
+    el('thead', {}, el('tr', {}, ['Bug', 'Area', 'Kind', 'Status', 'Links'].map((h) => el('th', { text: h })))),
+    el('tbody', {}, rows.length ? rows.map((b) => el('tr', {},
+      el('td', { class: 'tt' }, b.title, el('small', { text: b.repo })),
+      el('td', { text: VLABEL[b.vertical] }),
+      el('td', { text: BTLABEL[b.bug_type] }),
+      el('td', {}, el('span', { class: 'pill' + (b.status === 'fixed' ? ' fixed' : ''), text: BSTATUS[b.status] }), b.fix_by ? el('small', { text: 'Fix by ' + (b.fix_by === 'us' ? 'us' : 'the maintainers') }) : null),
+      el('td', {}, link(b.issue_url, 'Issue ' + num(b.issue_url)), link(b.fix_url, 'Fix ' + num(b.fix_url))))) : [el('tr', {}, el('td', { text: 'No bugs match these filters.' }))]));
+}
+
 // ---------- render ----------
 function render() {
   hideTip(); renderFilt(); renderTicker(); renderLive();
   if (S.view === 'attacks') { renderHero(); renderTree(); renderMatrix(); renderFlow(); renderWeeks(); }
+  else if (S.view === 'contrib') renderContrib();
   else { renderPHero(); renderStack(); renderCum(); }
 }
 let lastW = innerWidth, rt = 0;
 addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(render, 150); });
-setView(location.hash.slice(1) === 'proofs' ? 'proofs' : 'attacks', false);
+setView(location.hash.slice(1), false);
 poll(true);
 setInterval(() => poll(false), 5 * 60 * 1000);
 setInterval(renderLive, 30 * 1000);

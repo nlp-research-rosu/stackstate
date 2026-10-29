@@ -12,6 +12,8 @@ Writing code is cheap now, and checking it is the slow part. When a machine chec
 
 **How much of the world is verified** maps widely used software, from kernels and browsers to avionics and smart contracts. Each component shows the published, machine-checked verification it has, by anyone. Red marks components with no known verification that also had a public incident in the window.
 
+**Our contributions** shows what we have done about the bugs we found while reading open-source AI and infrastructure code: how many we found, verified, proposed fixes for, reported upstream and saw fixed, across six areas, plus the list of bugs reported in public issue trackers.
+
 Red records history. The page never claims a proof would have prevented an incident.
 
 ## Contribute
@@ -32,7 +34,8 @@ The page is a single HTML file with [d3](https://d3js.org) bundled in. It needs 
 ```
 src/page.template.html        page source
 site/index.html, data.json    the built page and its live data
-data/seed/                    stack_components.csv and dashboard_proofs.csv (the Verification tab)
+data/seed/                    stack_components.csv and dashboard_proofs.csv (the Verification tab),
+                              findings.csv (the Our contributions tab)
 data/archive/                 incidents that have aged out of the window
 scripts/refresh.py            the daily update
 scripts/classify.py           rules that group incidents and match them to components
