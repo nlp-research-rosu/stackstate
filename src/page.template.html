@@ -373,7 +373,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   </section>
 
   <section class="blk wrap" id="a-flow">
-    <div class="blk-h"><div><h2 class="h2" id="flow-h">What the flawed code did, and who was hit</h2><p class="dek">Left, what the flawed code was doing. Right, who was hit. Thicker bands mean more incidents.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2" id="flow-h">What the flawed code did, and who was hit</h2><p class="dek">Each band runs from what the flawed code was doing to who was hit. Thicker bands mean more incidents.</p></div></div>
     <div class="chart" id="flow"></div>
   </section>
 
@@ -387,7 +387,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <p><button type="button" class="link" data-goto="proofs" style="appearance:none;border:0;background:none;display:inline-block;padding:8px 0;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer">See how much of the world is verified</button></p>
     <div class="join">
       <h3>Help fill the map</h3>
-      <p>Tell us what software to check, report a bug, or point us to verified work. No expertise needed: use any tool, ours included, or just ask and we'll check it.</p>
+      <p>Tell us what software to check, report a bug, or point us to verified work. You don't need to be an expert. Use any tool, ours included, or just ask and we'll check it.</p>
       <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
     </div>
     <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
@@ -407,7 +407,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
       <h2 class="fig-h">Where the world's software stands</h2>
       <p class="fig-d">Each block is a widely used component, sized by install base. Select one to see what was verified, by whom, and the sources.</p>
       <div class="fig-k"><span><i style="background:var(--proof)"></i>Fully verified</span><span><i style="background:var(--proof-soft);border-bottom:4px solid var(--proof)"></i>Partly verified (shading = rough share)</span><span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--none)"></i>No known verification</span><span><i style="background:var(--risk-soft);box-shadow:inset 0 0 0 1.5px var(--risk)"></i>None known, and an incident in the last 13 weeks</span></div>
-      <p class="fig-d" style="margin-top:-6px">Red records history. It makes no claim that a proof would have prevented an incident.</p>
+      <p class="fig-d" style="margin-top:-6px">Red marks a recent incident. It does not claim a proof would have prevented it.</p>
       <div class="stack" id="stack"></div>
     </figure>
   </section>
@@ -427,7 +427,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <p>Published, machine-checked verification by anyone, each linked to its source. Install bases and verified shares are rough estimates, and the list is incomplete by design.</p>
     <div class="join">
       <h3>Help fill the map</h3>
-      <p>Tell us what software to check, report a bug, or point us to verified work. No expertise needed: use any tool, ours included, or just ask and we'll check it.</p>
+      <p>Tell us what software to check, report a bug, or point us to verified work. You don't need to be an expert. Use any tool, ours included, or just ask and we'll check it.</p>
       <a class="btn" href="https://github.com/nlp-research-rosu/stackstate/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
     </div>
     <p class="maint">Maintained by Intent Computing. Contributions welcome.</p>
@@ -501,6 +501,7 @@ const BANDS = ['People', 'Safety-critical systems', 'Smart contracts & chains', 
 const BAND_LABEL = { 'Smart contracts & chains': 'Smart contracts & blockchains', 'Crypto & protocols': 'Cryptographic libraries & protocols', 'Network appliances': 'Network appliances (VPNs, firewalls)', 'Libraries & supply chain': 'Libraries & package ecosystems' };
 const BAND_SUB = { 'Safety-critical systems': 'Avionics, rail, medical devices, space', 'Smart contracts & chains': 'Contracts, chains, bridges, wallets', 'Applications & data': 'Web apps, business software, data tools', 'Cloud & identity': 'SaaS, identity, access', 'Network appliances': 'Edge devices', 'Libraries & supply chain': 'Shared libraries, language runtimes', 'Crypto & protocols': 'TLS, cryptographic code', 'Compilers & runtimes': 'Browsers, JITs, interpreters', 'Kernels & hypervisors': 'Operating systems, VMs', 'Firmware': 'Modems, boot code, embedded', 'Hardware & ISA': 'Chips, microcode' };
 const bl = (b) => BAND_LABEL[b] || b;
+const FUNC_DID = { 'Auth & access': 'checked access', 'Memory & isolation': 'managed memory or isolation', 'Parsing & input': 'parsed untrusted input', 'Money & contracts': 'moved money', 'Network & remote': 'ran network services', 'Data & storage': 'stored data', 'Compile & execute': 'compiled or ran code', 'Crypto & keys': 'handled cryptography', 'Supply chain': 'built or shipped software' };
 const FUNC_ORDER = ['Auth & access', 'Memory & isolation', 'Parsing & input', 'Money & contracts', 'Network & remote', 'Data & storage', 'Compile & execute', 'Crypto & keys', 'Supply chain', 'People', 'Unknown'];
 const FUNC_LABEL = { 'Auth & access': 'Authentication & access', 'Memory & isolation': 'Memory & isolation', 'Parsing & input': 'Parsing untrusted input', 'Money & contracts': 'Moving money (contracts)', 'Network & remote': 'Network services', 'Data & storage': 'Data & storage', 'Compile & execute': 'Compiling & executing', 'Crypto & keys': 'Cryptography & keys', 'Supply chain': 'Build & distribution', People: 'Other', Unknown: 'Not disclosed' };
 const GROUPS = [
@@ -775,7 +776,7 @@ function renderMatrix() {
   const base = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.func || r.func === S.func) && (!S.group || r.theme === S.group));
   const zdN = base.filter((r) => r.zero_day === true).length;
   // headlines use the unfiltered data so a filter does not rewrite the finding
-  { const top = d3.greatest(BUG_ORDER.filter((c) => c !== 'Not disclosed'), (c) => INC.filter((r) => r.bug_class === c).length); if (top) $('#bugs-h').textContent = `${top} caused ${INC.filter((r) => r.bug_class === top).length} of ${INC.length} incidents`; }
+  { const top = d3.greatest(BUG_ORDER.filter((c) => c !== 'Not disclosed'), (c) => INC.filter((r) => r.bug_class === c).length); if (top) $('#bugs-h').textContent = `${INC.filter((r) => r.bug_class === top).length} of ${INC.length} incidents were ${top.toLowerCase().replace(' & ', ' and ')} bugs`; }
   $('#bugs-dek').textContent = `Bigger circles mean more incidents. White centers are zero-days (${zdN} of ${base.length}).`;
   const cols = BANDS.filter((b) => base.some((r) => r.band === b)).sort((a, b) => (a === MUTED_BAND) - (b === MUTED_BAND));
   const rows = BUG_ORDER.filter((c) => base.some((r) => r.bug_class === c));
@@ -820,7 +821,7 @@ function renderFlow() {
   const pool = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band) && (!S.cls || r.bug_class === S.cls));
   const L = FUNC_ORDER.map((k) => ({ k, label: FUNC_LABEL[k], n: pool.filter((r) => r.func === k).length })).filter((n) => n.n);
   const Rn = GROUPS.map((g) => ({ ...g, n: pool.filter((r) => r.theme === g.k).length })).filter((n) => n.n);
-  { const t2 = FUNC_ORDER.map((k) => ({ k, n: INC.filter((r) => r.func === k).length })).sort((a, b) => b.n - a.n).slice(0, 2); if (t2.length === 2) $('#flow-h').textContent = `${t2[0].n + t2[1].n} of ${INC.length} started in ${FUNC_LABEL[t2[0].k].toLowerCase()} or ${FUNC_LABEL[t2[1].k].toLowerCase()}`; }
+  { const t2 = FUNC_ORDER.filter((k) => FUNC_DID[k]).map((k) => ({ k, n: INC.filter((r) => r.func === k).length })).sort((a, b) => b.n - a.n).slice(0, 2); if (t2.length === 2) $('#flow-h').textContent = `${t2[0].n + t2[1].n} of ${INC.length} were in code that ${FUNC_DID[t2[0].k]} or ${FUNC_DID[t2[1].k]}`; }
   box.replaceChildren();
   if (!pool.length) { box.appendChild(el('p', { class: 'help', text: 'No incidents match this filter.' })); return; }
   const W = cw, labelW = narrow ? 118 : 240, nodeW = 12, H = narrow ? 400 : 440, gap = narrow ? 8 : 10;
@@ -946,7 +947,7 @@ function renderCum() {
   const cum = years.map((y) => ({ y, all: PR.filter((p) => Number(p.year) <= y).length, full: PR.filter((p) => Number(p.year) <= y && p.status === 'VERIFIED').length }));
   const since = PR.filter((p) => Number(p.year) >= y1 - 3).length;
   $('#cum-h').textContent = `${since} of ${PR.length} published verification efforts came out in ${y1 - 3} or later`;
-  $('#cum-d').textContent = `${y0} to ${y1}. ${PR.length} published efforts, ${cum[cum.length - 1].full} of them fully verified.`;
+  $('#cum-d').textContent = `Counted from ${y0}. ${cum[cum.length - 1].full} of the ${PR.length} are fully verified.`;
   const W = cw, H = narrow ? 250 : 320, m = { t: 26, r: narrow ? 92 : 128, b: 30, l: 34 };
   const x = d3.scaleLinear([y0, y1], [m.l, W - m.r]), y = d3.scaleLinear([0, d3.max(cum, (d) => d.all)], [H - m.b, m.t]).nice();
   box.replaceChildren();
