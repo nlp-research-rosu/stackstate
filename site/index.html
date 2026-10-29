@@ -86,6 +86,7 @@ a { color: var(--accent); }
 .mode button[data-v="contrib"] .sw { background: #f4f5f7; box-shadow: inset 0 0 0 3px #f4f5f7, inset 0 0 0 7px #2f5d8a; }
 .mode button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .mode button:hover:not([aria-pressed="true"]) { color: var(--ink); }
+@media (max-width: 600px) { .mode { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; } .mode button { justify-content: center; padding: 8px 4px; font-size: 13px; } .mode .sw { display: none; } }
 .live { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); white-space: nowrap; min-width: 0; }
 .live > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .live .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--live); position: relative; flex: none; }
@@ -365,7 +366,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="mode" role="group" aria-label="View">
       <button type="button" data-v="attacks" aria-pressed="true" title="Incidents" aria-label="Attack: incidents"><span class="sw" aria-hidden="true"></span>Attack</button>
       <button type="button" data-v="proofs" aria-pressed="false" title="How much of the world is verified" aria-label="Defense: how much of the world is verified"><span class="sw" aria-hidden="true"></span>Defense</button>
-      <button type="button" data-v="contrib" aria-pressed="false" title="Our contributions" aria-label="Our contributions"><span class="sw" aria-hidden="true"></span>Our contributions</button>
+      <button type="button" data-v="contrib" aria-pressed="false" title="Our contributions" aria-label="Our contributions"><span class="sw" aria-hidden="true"></span><span class="t-long">Our contributions</span><span class="t-short">Contributions</span></button>
     </div>
     <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
@@ -379,7 +380,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <header class="hero wrap">
     <h1 class="big wide">Ship as fast as the machine can check</h1>
     <p class="lede">Formal verification is a means to an end and should disappear beneath the surface, freeing agents to generate optimized code cheaply and prove it meets agreed requirements.</p>
-    <p class="lede">What unchecked code cost in the last few months</p>
+    <p class="lede" id="atk-lede">What unchecked code cost in the last few months</p>
     <div class="stats" id="a-stats"></div>
     <p class="dots-sub" id="dots-sub"></p>
     <div class="sz" id="tree-size" role="group" aria-label="Size blocks by"></div>
@@ -389,17 +390,17 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 
 
   <section class="blk wrap" id="a-bugs">
-    <div class="blk-h"><div><h2 class="h2">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
+    <div class="blk-h"><div><h2 class="h2" id="bugs-h">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
     <div class="mx-scroll"><div class="chart" id="matrix"></div></div>
   </section>
 
   <section class="blk wrap" id="a-flow">
-    <div class="blk-h"><div><h2 class="h2">What the flawed code did, and who was hit</h2><p class="dek">What the flawed code was for, and who got hit. Thicker bands mean more incidents.</p></div></div>
+    <div class="blk-h"><div><h2 class="h2" id="flow-h">What the flawed code did, and who was hit</h2><p class="dek">Left, what the flawed code was doing. Right, who was hit. Thicker bands mean more incidents.</p></div></div>
     <div class="chart" id="flow"></div>
   </section>
 
   <section class="blk wrap" id="a-time">
-    <div class="blk-h"><div><h2 class="h2">Incidents by week</h2><p class="dek" id="weeks-dek"></p></div></div>
+    <div class="blk-h"><div><h2 class="h2" id="weeks-h">Incidents by week</h2><p class="dek" id="weeks-dek"></p></div></div>
     <div class="chart" id="weeks"></div>
   </section>
 
@@ -419,6 +420,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 <main class="view" id="v-proofs" hidden>
   <header class="hero wrap">
     <h1 class="big wide">How much of the world is verified</h1>
+    <p class="lede" id="def-lede"></p>
     <div class="cov" id="cov"></div>
   </header>
 
@@ -435,7 +437,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
   <section class="blk wrap" id="p-time">
     <div class="time-note">
       <figure class="fig" style="margin:0">
-        <h2 class="fig-h">Published verification efforts, <span id="cum-yrs"></span></h2>
+        <h2 class="fig-h" id="cum-h">Published verification efforts</h2>
         <p class="fig-d" id="cum-d"></p>
         <div class="chart" id="cum"></div>
       </figure>
@@ -11271,6 +11273,8 @@ function renderMatrix() {
   const box = $('#matrix'); const cw = box.parentElement.clientWidth || 1000, narrow = cw < 700;
   const base = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.func || r.func === S.func) && (!S.group || r.theme === S.group));
   const zdN = base.filter((r) => r.zero_day === true).length;
+  // headlines use the unfiltered data so a filter does not rewrite the finding
+  { const top = d3.greatest(BUG_ORDER.filter((c) => c !== 'Not disclosed'), (c) => INC.filter((r) => r.bug_class === c).length); if (top) $('#bugs-h').textContent = `${top} caused ${INC.filter((r) => r.bug_class === top).length} of ${INC.length} incidents`; }
   $('#bugs-dek').textContent = `Bigger circles mean more incidents. White centers are zero-days (${zdN} of ${base.length}).`;
   const cols = BANDS.filter((b) => base.some((r) => r.band === b)).sort((a, b) => (a === MUTED_BAND) - (b === MUTED_BAND));
   const rows = BUG_ORDER.filter((c) => base.some((r) => r.bug_class === c));
@@ -11315,6 +11319,7 @@ function renderFlow() {
   const pool = INC.filter((r) => (S.week == null || weekOf(r) === S.week) && (!S.band || r.band === S.band) && (!S.cls || r.bug_class === S.cls));
   const L = FUNC_ORDER.map((k) => ({ k, label: FUNC_LABEL[k], n: pool.filter((r) => r.func === k).length })).filter((n) => n.n);
   const Rn = GROUPS.map((g) => ({ ...g, n: pool.filter((r) => r.theme === g.k).length })).filter((n) => n.n);
+  { const t2 = FUNC_ORDER.map((k) => ({ k, n: INC.filter((r) => r.func === k).length })).sort((a, b) => b.n - a.n).slice(0, 2); if (t2.length === 2) $('#flow-h').textContent = `${t2[0].n + t2[1].n} of ${INC.length} started in ${FUNC_LABEL[t2[0].k].toLowerCase()} or ${FUNC_LABEL[t2[1].k].toLowerCase()}`; }
   box.replaceChildren();
   if (!pool.length) { box.appendChild(el('p', { class: 'help', text: 'No incidents match this filter.' })); return; }
   const W = cw, labelW = narrow ? 118 : 240, nodeW = 12, H = narrow ? 400 : 440, gap = narrow ? 8 : 10;
@@ -11359,7 +11364,9 @@ function renderWeeks() {
   const data = d3.range(n).map((i) => { const s = d3.utcDay.offset(WIN.start, i * 7), all = INC.filter((r) => weekOf(r) === i); return { i, s, e: d3.utcDay.offset(s, 6), all, sel: all.filter((r) => match(r, 'week')) }; });
   const narrowed = !!(S.group || S.func || S.band || S.cls);
   const days = (WIN.end - WIN.start) / 864e5 + 1;
-  $('#weeks-dek').textContent = `About one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours.`;
+  $('#weeks-h').textContent = `About one incident every ${Math.round((days * 24) / Math.max(1, INC.length))} hours`;
+  $('#weeks-dek').textContent = `Incidents by week, ${fmtDay(iso(WIN.start))} to ${fmtDay(iso(WIN.end))}.`;
+  $('#atk-lede').textContent = `What unchecked code cost from ${fmtDay(iso(WIN.start))} to ${fmtDay(iso(WIN.end))}`;
   const annH = narrow ? 0 : 64, W = cw, H = (narrow ? 220 : 280) + annH, m = { t: annH, r: 6, b: 34, l: 6 };
   const x = d3.scaleBand(data.map((d) => d.i), [m.l, W - m.r]).paddingInner(0.18);
   const y = d3.scaleLinear([0, d3.max(data, (d) => d.all.length) || 1], [H - m.b, m.t + 26]);
@@ -11401,6 +11408,7 @@ function renderPHero() {
   const STV = ST;
   const hits = hitSet(), by = (k) => STV.filter((s) => stateOf(s, hits) === k);
   const v = by('verified'), p = by('partial'), r = by('hit'), b = by('blank');
+  $('#def-lede').textContent = `Only ${v.length} of ${STV.length} widely used components are fully verified. Another ${r.length} have no known verification and had an incident in the last 13 weeks.`;
   const box = $('#cov'); box.replaceChildren();
   const bar = el('div', { class: 'cov-bar', role: 'group', 'aria-label': `${STV.length} components: ${v.length} fully verified, ${p.length} partly verified, ${r.length} with no known verification and a recent incident, ${b.length} with no known verification` });
   [[v, 'v', 'verified', 'fully verified', 'full'], [p, 'p', 'partial', 'partly verified', 'partly'], [r, 'r', 'hit', 'none known, recent incident', 'hit'], [b, 'b', 'blank', 'no known verification', 'none']].forEach(([list, cls, key, txt, sh]) => {
@@ -11433,11 +11441,11 @@ function renderStack() {
 function renderCum() {
   const box = $('#cum'); const cw = box.clientWidth || 800, narrow = cw < 560;
   const ys = PR.map((p) => Number(p.year)).filter((y) => y > 0), y0 = d3.min(ys), y1 = d3.max(ys);
-  $('#cum-yrs').textContent = `${y0} to ${y1}`;
   const years = d3.range(y0, y1 + 1);
   const cum = years.map((y) => ({ y, all: PR.filter((p) => Number(p.year) <= y).length, full: PR.filter((p) => Number(p.year) <= y && p.status === 'VERIFIED').length }));
   const since = PR.filter((p) => Number(p.year) >= y1 - 3).length;
-  $('#cum-d').textContent = `${PR.length} published efforts, ${cum[cum.length - 1].full} of them fully verified. ${since} came out in ${y1 - 3} or later.`;
+  $('#cum-h').textContent = `${since} of ${PR.length} published verification efforts came out in ${y1 - 3} or later`;
+  $('#cum-d').textContent = `${y0} to ${y1}. ${PR.length} published efforts, ${cum[cum.length - 1].full} of them fully verified.`;
   const W = cw, H = narrow ? 250 : 320, m = { t: 26, r: narrow ? 92 : 128, b: 30, l: 34 };
   const x = d3.scaleLinear([y0, y1], [m.l, W - m.r]), y = d3.scaleLinear([0, d3.max(cum, (d) => d.all)], [H - m.b, m.t]).nice();
   box.replaceChildren();
