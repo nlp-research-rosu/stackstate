@@ -48,7 +48,7 @@ function pageHarness(data) {
   };
   let script = template.slice(template.lastIndexOf('<script>') + '<script>'.length, template.lastIndexOf('</script>'));
   // Suppress startup rendering/polling, not the functions being exercised.
-  script = script.replace("setView(location.hash.slice(1) === 'proofs' ? 'proofs' : 'attacks', false);", '').replace('poll(true);', '');
+  script = script.replace('setView(location.hash.slice(1), false);', '').replace('poll(true);', '');
   const end = script.lastIndexOf('})();');
   script = script.slice(0, end) + `globalThis.page = {
     ingest, renderHero, render,

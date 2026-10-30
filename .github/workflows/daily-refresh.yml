@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install anthropic playwright
+      - run: pip install playwright
       - name: Refresh data
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python3 scripts/refresh.py
       - name: Rebuild page
         run: python3 scripts/build_page.py
@@ -41,3 +41,14 @@ jobs:
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -m "Daily refresh $(date -u +%F)"
           git push
+      - name: Check the refresh was complete
+        # Runs after the commit, so KEV updates still land; a red run emails the repo admins.
+        run: |
+          python3 - <<'EOF'
+          import json, sys
+          log = json.load(open("data/last-refresh.json"))
+          problems = log["errors"] + ([] if log["llm"] else ["OPENROUTER_API_KEY is not set: no news incidents (Attack) or papers (Defense) were added"])
+          for p in problems:
+              print(f"::error::{p}")
+          sys.exit(1 if problems else 0)
+          EOF

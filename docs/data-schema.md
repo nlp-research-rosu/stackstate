@@ -1,7 +1,7 @@
 # data.json schema (version 1)
 
 ```json
-{ "schema": 1, "generated_at": "2026-10-27T06:51:00Z", "incidents": [], "proofs": [], "stack": [] }
+{ "schema": 1, "generated_at": "2026-10-27T06:51:00Z", "incidents": [], "proofs": [], "stack": [], "contrib": {} }
 ```
 
 All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `cve` and `threat_actor`.
@@ -54,3 +54,12 @@ Coverage levels are editorial estimates of how much of the deployed component is
 ## archive
 
 Incidents older than 13 weeks move to `archive/incidents.json` (same fields) when the twice-daily job runs.
+
+## contrib
+
+Built from `data/seed/findings.csv`, exported from our findings tracker; only publicly reported bugs are listed. One file, two row kinds, columns `kind,id,repo,vertical,bug_type,title,status,issue_url,fix_url,fix_by,stage,n`. There is no severity column.
+
+- `kind=count`: `vertical`, `stage` and `n` (a whole number). `vertical` is one of `rl-training`, `rl-envs`, `evals`, `inference`, `agents`, `infra`. `stage` is `scanned` (projects with a finding), `findings`, `verified`, `fix_proposed` (only fixes that passed checking), `reported` or `fixed`, or `type_<bug_type>` for the mix of bug kinds. Every vertical needs every stage.
+- `kind=bug`: one row per bug reported in a public issue tracker. `bug_type` is `wrong-score`, `right-answer-marked-wrong`, `crash-or-hang`, `reward-pays-wrong-answer`, `silent-training-bug` or `other`. `status` is `reported`, `acknowledged`, `pr-open` or `fixed`. `issue_url` is a github.com issue link, `fix_url` a github.com pull request link or blank, `fix_by` is `us`, `maintainers` or blank. `title` is one plain line.
+
+In `data.json` the rows become `contrib.counts` (`vertical`, `stage`, `n`) and `contrib.bugs` (the bug columns).

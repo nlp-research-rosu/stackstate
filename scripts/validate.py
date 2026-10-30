@@ -16,6 +16,11 @@ BANDS = {
 METHODS = {"proof_assistant", "proof_assistant+refinement", "smt_deductive", "abstract_interpretation", "symbolic_protocol", "bounded_model_checking", "model_checking", "testing_only"}
 STATUSES = {"VERIFIED", "PARTIAL", "SPEC_ONLY", "TESTING_ONLY", "IN_PROGRESS"}
 COVERAGE = {"full", "major", "some", "narrow", "none"}
+VERTICALS = {"rl-training", "rl-envs", "evals", "inference", "agents", "infra"}
+COUNT_STAGES = {"scanned", "findings", "verified", "fix_proposed", "reported", "fixed"}
+BUG_TYPES = {"wrong-score", "right-answer-marked-wrong", "crash-or-hang", "reward-pays-wrong-answer", "silent-training-bug", "other"}
+BUG_STATUSES = {"reported", "acknowledged", "pr-open", "fixed"}
+FINDINGS_COLS = ["kind", "id", "repo", "vertical", "bug_type", "title", "status", "issue_url", "fix_url", "fix_by", "stage", "n"]
 errors = []
 
 
@@ -71,6 +76,68 @@ for i, s in enumerate(stack, start=2):
         if e not in ids:
             err(w, f"evidence id {e} is not in dashboard_proofs.csv")
 
+findings = rows("findings.csv")
+with open(SEED / "findings.csv", encoding="utf-8", newline="") as f:
+    if next(csv.reader(f)) != FINDINGS_COLS:
+        err("findings.csv", f"columns must be exactly {FINDINGS_COLS}")
+        findings = []  # the row checks below assume the right columns
+GH_ISSUE = r"https://github\.com/[\w.-]+/[\w.-]+/issues/\d+"
+GH_PR = r"https://github\.com/[\w.-]+/[\w.-]+/pull/\d+"
+counted, bug_ids = set(), set()
+for i, b in enumerate(findings, start=2):
+    w = f"findings.csv line {i}"
+    if b["vertical"] not in VERTICALS:
+        err(w, f"unknown vertical {b['vertical']!r}")
+    if b["kind"] == "count":
+        stage = b["stage"][5:] if b["stage"].startswith("type_") else b["stage"]
+        if (b["stage"] not in COUNT_STAGES) and stage not in BUG_TYPES:
+            err(w, f"unknown stage {b['stage']!r}")
+        if not b.get("n", "").isdigit():
+            err(w, "n must be a whole number")
+        if (b["vertical"], b["stage"]) in counted:
+            err(w, "duplicate count row")
+        counted.add((b["vertical"], b["stage"]))
+    elif b["kind"] == "bug":
+        for k in ("id", "repo", "title"):
+            if not b[k].strip():
+                err(w, f"{k} is empty")
+        if b["id"] in bug_ids:
+            err(w, f"duplicate id {b['id']}")
+        bug_ids.add(b["id"])
+        if not re.fullmatch(r"[\w.-]+/[\w.-]+", b["repo"]):
+            err(w, "repo must be owner/name")
+        if b["bug_type"] not in BUG_TYPES:
+            err(w, f"unknown bug_type {b['bug_type']!r}")
+        if b["status"] not in BUG_STATUSES:
+            err(w, f"unknown status {b['status']!r}")
+        if not re.fullmatch(GH_ISSUE, b["issue_url"]):
+            err(w, "issue_url must be a github.com issue link")
+        if b["fix_url"] and not re.fullmatch(GH_PR, b["fix_url"]):
+            err(w, "fix_url must be a github.com pull request link")
+        if b["status"] in ("pr-open", "fixed") and not b["fix_url"]:
+            err(w, f"status {b['status']} needs a fix_url")
+        if b["fix_by"] not in ("us", "maintainers", ""):
+            err(w, "fix_by must be us, maintainers or blank")
+        if re.search(r"[\u2013\u2014]|security audit|vulnerab|exploit", b["title"], re.I):
+            err(w, "title has a dash or a word the page does not use")
+    else:
+        err(w, f"kind must be count or bug, not {b['kind']!r}")
+for v in VERTICALS:
+    for st in COUNT_STAGES:
+        if (v, st) not in counted:
+            err("findings.csv", f"missing count row {v}/{st}")
+
+if findings:
+    cnt = {(b["vertical"], b["stage"]): int(b["n"]) for b in findings if b["kind"] == "count" and b["n"].isdigit()}
+    for v in VERTICALS:
+        c = lambda st: cnt.get((v, st), 0)
+        if not (c("fixed") <= c("reported") <= c("verified") <= c("findings")):
+            err("findings.csv", f"{v}: need fixed <= reported <= verified <= findings")
+        if sum(c("type_" + t) for t in BUG_TYPES) != c("findings"):
+            err("findings.csv", f"{v}: the type_* counts must add up to findings")
+    if sum(cnt.get((v, "reported"), 0) for v in VERTICALS) != len(bug_ids):
+        err("findings.csv", f"total reported must equal the number of bug rows ({len(bug_ids)})")
+
 data = json.loads((ROOT / "site" / "data.json").read_text(encoding="utf-8"))
 seen = set()
 for r in data["incidents"]:
@@ -96,4 +163,4 @@ if errors:
     print(f"{len(errors)} problem(s):")
     print("\n".join("  " + e for e in errors))
     sys.exit(1)
-print(f"OK: {len(proofs)} verification efforts, {len(stack)} components, {len(data['incidents'])} incidents")
+print(f"OK: {len(proofs)} verification efforts, {len(stack)} components, {len(data['incidents'])} incidents, {len(bug_ids)} reported bugs")
