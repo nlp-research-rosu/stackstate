@@ -225,9 +225,16 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .method { margin-top: 22px; font-size: 13.5px; color: var(--ink-2); }
 .method summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .method p { max-width: 80ch; margin: 8px 0 0; }
-.investigation li { flex-wrap: wrap; align-items: baseline; }
-.investigation li > div { flex: 1 1 320px; min-width: 0; }
-.investigation .help { margin: 4px 0 0; }
+.incident-highlight { margin-top: 24px; padding: 16px 20px; border: 1px solid var(--rule); border-left: 3px solid var(--hit); background: var(--bg-2); }
+.spotlight-list { list-style: none; margin: 0; padding: 0; }
+.spotlight-list li + li { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
+.spotlight-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.spotlight-label { color: var(--hit); text-transform: uppercase; letter-spacing: .06em; }
+.spotlight-title { margin: 8px 0 6px; font-family: var(--f-serif); font-size: clamp(21px, 2.3vw, 27px); font-weight: 400; line-height: 1.2; overflow-wrap: anywhere; }
+.spotlight-title button { appearance: none; padding: 0; border: 0; background: none; font: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+.spotlight-title button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.spotlight-summary { margin: 0; max-width: 85ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.spotlight-note { margin: 8px 0 0; font-size: 12px; line-height: 1.4; color: var(--muted); }
 
 /* ---------- VERIFICATION ---------- */
 .cov { margin-top: 22px; }
@@ -311,17 +318,14 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <p class="lede">Formal verification is a means to an end and should disappear beneath the surface, freeing agents to generate optimized code cheaply and prove it meets agreed requirements.</p>
     <p class="lede">What unchecked code cost in the last few months</p>
     <div class="stats" id="a-stats"></div>
+    <aside class="incident-highlight" id="a-investigation" aria-label="Incident spotlight" hidden>
+      <ul class="spotlight-list" id="investigation-list"></ul>
+    </aside>
     <p class="dots-sub" id="dots-sub"></p>
     <div class="sz" id="tree-size" role="group" aria-label="Size blocks by"></div>
     <div class="chart" id="tree"></div>
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
-
-
-  <section class="blk wrap" id="a-investigation" aria-labelledby="investigation-title" hidden>
-    <div class="blk-h"><div><h2 class="h2" id="investigation-title">Under investigation</h2><p class="dek">Reported incidents with an unconfirmed cause. Not included in the code-flaw charts or totals.</p></div></div>
-    <ul class="mini investigation" id="investigation-list"></ul>
-  </section>
 
   <section class="blk wrap" id="a-bugs">
     <div class="blk-h"><div><h2 class="h2">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
@@ -602,9 +606,11 @@ function renderInvestigation() {
   const rows = ALL.filter((r) => r.under_investigation === true && !isFlaw(r)).sort((a, b) => b.t - a.t);
   $('#a-investigation').hidden = !rows.length;
   $('#investigation-list').replaceChildren(...rows.map((r) => el('li', {},
-    el('div', {}, el('button', { type: 'button', text: `${r.victim} · ${fmtDayY(r.date)}`, onclick: () => openIncident(r) }),
-      el('p', { class: 'help', text: r.impact })),
-    srcLink(r.source_url))));
+    el('div', { class: 'spotlight-meta' }, el('span', { class: 'spotlight-label', text: 'In focus' }),
+      el('span', { text: fmtDayY(r.date) }), srcLink(r.source_url)),
+    el('h2', { class: 'spotlight-title' }, el('button', { type: 'button', text: `${r.victim} incident: what we know so far`, onclick: () => openIncident(r) })),
+    el('p', { class: 'spotlight-summary', text: r.impact }),
+    el('p', { class: 'spotlight-note', text: 'Cause unconfirmed · Excluded from code-flaw totals' }))));
 }
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));

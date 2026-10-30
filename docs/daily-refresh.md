@@ -22,7 +22,7 @@ The repository is the source of truth. To correct an entry, edit `site/data.json
 
 Every new incident gets `code_flaw`: true when the reported way in was a defect in software (a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol). Phishing, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access and incidents with no stated cause get false. Only `code_flaw: true` incidents feed the code-flaw charts and totals, but all are kept in the data.
 
-Selected non-code-flaw reports can be marked manually with `under_investigation: true` for the separate **Under investigation** section. This is display-only: the twice-daily schedule does not enable news extraction or add automatic incident updates.
+Selected non-code-flaw reports can be marked manually with `under_investigation: true` for a compact incident highlight above the main chart caption. This is display-only: the twice-daily schedule does not enable news extraction or add automatic incident updates.
 
 ## Grouping rules (first match wins)
 

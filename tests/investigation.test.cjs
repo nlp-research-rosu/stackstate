@@ -73,19 +73,25 @@ const fixture = (extra = {}) => ({
   source_url: 'https://example.com/incident', amount_lost_usd: '', people: 0, ...extra,
 });
 
-test('marked unknown-cause incidents have an Attack section, source, and existing drawer', () => {
+test('marked incidents have a headline highlight directly above the treemap caption, source, and drawer', () => {
   const data = readData();
   data.incidents = [fixture(), fixture({id: 'unmarked', victim: 'Binance', under_investigation: false})];
   const {page, nodes, template} = pageHarness(data);
-  assert.match(template, /<main[^>]+id="v-attacks"[\s\S]*?<section[^>]+id="a-investigation"[\s\S]*?Under investigation[\s\S]*?<\/main>/);
+  const hero = template.match(/<header class="hero wrap">([\s\S]*?)<\/header>/)[1];
+  assert.ok(/<aside[^>]+id="a-investigation"[\s\S]*?<\/aside>\s*<p[^>]+id="dots-sub"/.test(hero),
+    'the incident highlight must be directly before the treemap caption inside the hero');
+  assert.ok(!/<section[^>]+id="a-investigation"/.test(template), 'no separate investigation section');
+  assert.ok(!/>Under investigation</.test(template), 'no standalone Under investigation heading');
   assert.equal(typeof page.renderInvestigation, 'function');
-  assert.match(page.render.toString(), /renderInvestigation\(\)/, 'the normal render path must include the section');
+  assert.match(page.render.toString(), /renderInvestigation\(\)/, 'the normal render path must include the highlight');
   page.renderInvestigation();
   const section = nodes.get('a-investigation'), list = nodes.get('investigation-list');
   assert.equal(section.hidden, false);
   const buttons = descendants(list, 'button');
   assert.equal(buttons.length, 1);
-  assert.match(buttons[0].textContent, /Example exchange/);
+  assert.equal(buttons[0].textContent, 'Example exchange incident: what we know so far');
+  assert.match(list.textContent, /Cause unconfirmed/);
+  assert.match(list.textContent, /Excluded from code-flaw totals/);
   const links = descendants(list, 'a');
   assert.equal(links.length, 1);
   assert.equal(links[0].attributes.href, 'https://example.com/incident');
