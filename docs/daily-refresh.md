@@ -2,15 +2,15 @@
 
 A scheduled GitHub Action keeps the dashboard current.
 
-**GitHub Actions, 05:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
+**GitHub Actions, 05:07 and 17:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
 
 1. reads CISA's Known Exploited Vulnerabilities catalog and the news feeds listed in `NEWS_FEEDS`;
 2. adds each KEV entry from the last 14 days that news coverage mentions, or that CISA marks as used by ransomware, as a code-flaw incident sourced to the news article;
-3. if the repository secret `ANTHROPIC_API_KEY` is set, asks Claude to pick incidents with a named victim out of the news items, and new machine-checked verification papers out of arXiv (cs.LO, cs.PL, cs.CR), and adds those too;
+3. if the repository secret `OPENROUTER_API_KEY` is set, asks Claude through OpenRouter to pick incidents with a named victim out of the news items, and new machine-checked verification papers out of arXiv (cs.LO, cs.PL, cs.CR), and adds those too;
 4. moves incidents older than 91 days to `data/archive/incidents.json`;
 5. writes `site/data.json` and a run log, `data/last-refresh.json`, listing what was added, skipped and any errors.
 
-Without the API key the job still runs: it adds KEV entries and rolls the window, but no breaches or verification papers.
+Without the key the job still adds KEV entries and rolls the window, but adds no breaches or verification papers, and the run fails so the gap is visible.
 
 Run it by hand from the Actions tab (Daily refresh, Run workflow), or locally with `python3 scripts/refresh.py --dry-run` to see what it would add.
 

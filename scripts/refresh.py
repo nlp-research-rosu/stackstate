@@ -4,7 +4,7 @@ Steps:
   1. Read CISA's Known Exploited Vulnerabilities (KEV) catalog and recent security news feeds.
   2. Add each new KEV entry from the last two weeks that news coverage mentions (or that CISA
      marks as used by ransomware). These need no API key.
-  3. If ANTHROPIC_API_KEY is set, ask Claude to pick real incidents out of the news items and
+  3. If OPENROUTER_API_KEY is set, ask Claude (through OpenRouter) to pick real incidents out of the news items and
      new formal verification papers out of arXiv, and add those too.
   4. Move incidents older than 91 days to data/archive/incidents.json.
   5. Write site/data.json and data/last-refresh.json (what changed, for the run log).
@@ -50,7 +50,8 @@ NEWS_FEEDS = [
     "https://rekt.news/rss.xml",
 ]
 ARXIV_FEEDS = ["https://rss.arxiv.org/rss/cs.LO", "https://rss.arxiv.org/rss/cs.PL", "https://rss.arxiv.org/rss/cs.CR"]
-MODEL = "claude-opus-5-5"
+MODEL = "anthropic/claude-opus-5.5"
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 UA = "StackStateRefresh/1.0 (+https://github.com/nlp-research-rosu/stackstate)"
 
 INCIDENT_KEYS = [
@@ -274,29 +275,29 @@ Papers:
 
 
 def ask_claude(prompt, schema, log):
-    import anthropic  # only needed when an API key is set
-
-    client = anthropic.Anthropic()
+    body = {
+        "model": MODEL,
+        "max_tokens": 16000,
+        "reasoning": {"effort": "medium"},
+        "response_format": {"type": "json_schema", "json_schema": {"name": "result", "strict": True, "schema": schema}},
+        "messages": [{"role": "user", "content": prompt}],
+    }
+    req = urllib.request.Request(OPENROUTER_URL, data=json.dumps(body).encode(), headers={
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json", "User-Agent": UA})
     try:
-        resp = client.beta.messages.create(
-            model=MODEL,
-            max_tokens=16000,
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-            output_config={"effort": "medium", "format": {"type": "json_schema", "schema": schema}},
-            messages=[{"role": "user", "content": prompt}],
-        )
-    except anthropic.APIStatusError as e:
-        log["errors"].append(f"Claude API {e.status_code}: {e.message}")
+        with urllib.request.urlopen(req, timeout=600) as r:
+            resp = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        log["errors"].append(f"OpenRouter {e.code}: {e.read()[:300].decode(errors='replace')}")
         return None
-    except anthropic.APIConnectionError as e:
-        log["errors"].append(f"Claude API connection: {e}")
+    except (urllib.error.URLError, TimeoutError) as e:
+        log["errors"].append(f"OpenRouter connection: {e}")
         return None
-    if resp.stop_reason in ("refusal", "max_tokens"):
-        log["errors"].append(f"Claude stopped: {resp.stop_reason}")
+    choice = (resp.get("choices") or [{}])[0]
+    if choice.get("finish_reason") not in ("stop", "end_turn"):
+        log["errors"].append(f"Model stopped: {choice.get('finish_reason') or resp.get('error')}")
         return None
-    text = next((b.text for b in resp.content if b.type == "text"), "")
-    return json.loads(text)
+    return json.loads(choice["message"]["content"])
 
 
 def llm_incidents(news, data, since, next_id, log):
@@ -403,7 +404,7 @@ def main():
         log["errors"].append(str(e))
         new = []
 
-    use_llm = not a.no_llm and os.environ.get("ANTHROPIC_API_KEY")
+    use_llm = not a.no_llm and os.environ.get("OPENROUTER_API_KEY")
     log["llm"] = bool(use_llm)
     new_proofs = []
     if use_llm:

@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install anthropic playwright
+      - run: pip install playwright
       - name: Refresh data
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python3 scripts/refresh.py
       - name: Rebuild page
         run: python3 scripts/build_page.py
@@ -47,7 +47,7 @@ jobs:
           python3 - <<'EOF'
           import json, sys
           log = json.load(open("data/last-refresh.json"))
-          problems = log["errors"] + ([] if log["llm"] else ["ANTHROPIC_API_KEY is not set: no news incidents (Attack) or papers (Defense) were added"])
+          problems = log["errors"] + ([] if log["llm"] else ["OPENROUTER_API_KEY is not set: no news incidents (Attack) or papers (Defense) were added"])
           for p in problems:
               print(f"::error::{p}")
           sys.exit(1 if problems else 0)
