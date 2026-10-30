@@ -14,7 +14,7 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # Public address of the hosted copy (Vercel). Link-preview cards need absolute URLs.
 SITE_URL = os.environ.get("STACKSTATE_URL", "https://stackstate.ai").rstrip("/")
-DESC = "Ship as fast as the machine can check. What unchecked code costs today, and how much of the world's software is verified. Updated daily."
+DESC = "Ship as fast as the machine can check. What unchecked code costs today, and how much of the world's software is verified. Updated twice daily."
 
 
 def main():

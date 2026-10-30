@@ -29,7 +29,7 @@ The Verification tab comes from two CSV files. You can edit them on GitHub in th
   - `evidence` lists the ids of rows in the proofs file that support it, separated by semicolons.
   - `usage_log10` is a rough size of the install base. For example, 9.0 means about a billion devices or users.
 
-Incidents live in `site/data.json`. A daily job adds them, and you can fix one by editing its entry there. The field list is in `docs/data-schema.md`.
+Incidents live in `site/data.json`. A twice-daily job adds them, and you can fix one by editing its entry there. The field list is in `docs/data-schema.md`.
 
 Before you open the pull request, run:
 
@@ -37,7 +37,7 @@ Before you open the pull request, run:
 python3 scripts/validate.py
 ```
 
-The same check runs automatically on every pull request. Once a change is merged, it shows up on the site after the next daily refresh.
+The same check runs automatically on every pull request. Once a change is merged, it shows up on the site after the next twice-daily refresh.
 
 ## What we ask
 
