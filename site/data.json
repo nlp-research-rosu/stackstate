@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-10-29T11:25:47Z",
+ "generated_at": "2026-10-30T01:23:41Z",
  "incidents": [
   {
    "id": "6",
@@ -7105,6 +7105,39 @@
    "zero_day": true,
    "flaw_group": "CVE-2026-41709",
    "people": 0
+  },
+  {
+   "id": "228",
+   "date": "2026-10-29",
+   "victim": "Binance",
+   "sector": "cryptocurrency exchange",
+   "country": "",
+   "attack_type": "security incident",
+   "initial_vector": "",
+   "root_cause": "",
+   "band": "Smart contracts & chains",
+   "layer": "unknown",
+   "product": "",
+   "cve": "unknown",
+   "threat_actor": "unknown",
+   "impact": "A Binance spokesperson confirmed a security incident and said withdrawals on multiple networks were temporarily suspended as a precaution. The cause and final amount lost remain unconfirmed.",
+   "records_or_loss": "",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://techcrunch.com/2026/10/29/binance-pauses-withdrawals-as-hackers-suspected-of-stealing-billions-in-crypto/",
+   "lang": "Not disclosed",
+   "func": "Unknown",
+   "component": "",
+   "theme": "crypto",
+   "code_flaw": false,
+   "bug_class": "Not disclosed",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0,
+   "under_investigation": true
   }
  ],
  "proofs": [

@@ -2,7 +2,7 @@
 <title>Stack State</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Ship as fast as the machine can check. What unchecked code costs today, and how much of the world's software is verified. Updated daily.">
+<meta name="description" content="Ship as fast as the machine can check. What unchecked code costs today, and how much of the world's software is verified. Updated twice daily.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <script>__D3__</script>
 <style>
@@ -225,6 +225,9 @@ section.blk { padding-block: clamp(40px, 5vw, 64px) 0; scroll-margin-top: 110px;
 .method { margin-top: 22px; font-size: 13.5px; color: var(--ink-2); }
 .method summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .method p { max-width: 80ch; margin: 8px 0 0; }
+.investigation li { flex-wrap: wrap; align-items: baseline; }
+.investigation li > div { flex: 1 1 320px; min-width: 0; }
+.investigation .help { margin: 4px 0 0; }
 
 /* ---------- VERIFICATION ---------- */
 .cov { margin-top: 22px; }
@@ -296,7 +299,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     </div>
     <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
-    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Updated daily</b> <span id="live-t"></span></span></div>
+    <div class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span><b>Updated twice daily</b> <span id="live-t"></span></span></div>
   </div>
   <div class="ticker" id="ticker" aria-label="Latest entries"><div class="tk-track" id="tk"></div></div>
 </div>
@@ -314,6 +317,11 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <details class="method"><summary>What counts as a flaw in code</summary><p id="method-p"></p></details>
   </header>
 
+
+  <section class="blk wrap" id="a-investigation" aria-labelledby="investigation-title" hidden>
+    <div class="blk-h"><div><h2 class="h2" id="investigation-title">Under investigation</h2><p class="dek">Reported incidents with an unconfirmed cause. Not included in the code-flaw charts or totals.</p></div></div>
+    <ul class="mini investigation" id="investigation-list"></ul>
+  </section>
 
   <section class="blk wrap" id="a-bugs">
     <div class="blk-h"><div><h2 class="h2">What kind of bug, in which layer</h2><p class="dek" id="bugs-dek"></p></div></div>
@@ -590,6 +598,14 @@ function renderFilt() {
 }
 
 // ================= INCIDENTS =================
+function renderInvestigation() {
+  const rows = ALL.filter((r) => r.under_investigation === true && !isFlaw(r)).sort((a, b) => b.t - a.t);
+  $('#a-investigation').hidden = !rows.length;
+  $('#investigation-list').replaceChildren(...rows.map((r) => el('li', {},
+    el('div', {}, el('button', { type: 'button', text: `${r.victim} · ${fmtDayY(r.date)}`, onclick: () => openIncident(r) }),
+      el('p', { class: 'help', text: r.impact })),
+    srcLink(r.source_url))));
+}
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));
   const nW = Math.ceil(days.length / 7);
@@ -880,7 +896,7 @@ function renderCum() {
 // ---------- render ----------
 function render() {
   hideTip(); renderFilt(); renderTicker(); renderLive();
-  if (S.view === 'attacks') { renderHero(); renderTree(); renderMatrix(); renderFlow(); renderWeeks(); }
+  if (S.view === 'attacks') { renderHero(); renderTree(); renderInvestigation(); renderMatrix(); renderFlow(); renderWeeks(); }
   else { renderPHero(); renderStack(); renderCum(); }
 }
 let lastW = innerWidth, rt = 0;

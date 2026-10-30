@@ -2,7 +2,7 @@ name: Daily refresh
 
 on:
   schedule:
-    - cron: "7 5 * * *" # 05:07 UTC every day
+    - cron: "7 5,17 * * *" # 05:07 and 17:07 UTC (every 12 hours)
   workflow_dispatch: {}
 
 permissions:

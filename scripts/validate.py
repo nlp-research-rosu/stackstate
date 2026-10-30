@@ -75,8 +75,11 @@ data = json.loads((ROOT / "site" / "data.json").read_text(encoding="utf-8"))
 seen = set()
 for r in data["incidents"]:
     w = f"site/data.json incident {r.get('id')}"
-    if len(r) != 30:
-        err(w, f"has {len(r)} fields, expected 30")
+    expected_fields = 30 + ("under_investigation" in r)
+    if len(r) != expected_fields:
+        err(w, f"has {len(r)} fields, expected {expected_fields}")
+    if "under_investigation" in r and not isinstance(r["under_investigation"], bool):
+        err(w, "under_investigation must be true or false")
     if r.get("id") in seen:
         err(w, "duplicate id")
     seen.add(r.get("id"))

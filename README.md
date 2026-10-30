@@ -4,11 +4,13 @@
 
 Writing code is cheap now, and checking it is the slow part. When a machine checks every change, teams and their agents can move fast and still trust what ships. Stack State tracks how far the world's software is from that.
 
-**Live dashboard: [stackstate.ai](https://stackstate.ai)** (updated daily)
+**Live dashboard: [stackstate.ai](https://stackstate.ai)** (updated twice daily)
 
 ## What's on the page
 
 **Incidents** shows what unchecked code cost over the last 13 weeks. It counts publicly reported incidents where attackers got in through a flaw in code, such as an exploited CVE, an injection or a memory-safety bug. You can size the treemap by incidents, people exposed or money stolen. Phishing, stolen credentials, misconfiguration, malicious packages and blockchain losses under $10M are left out.
+
+Selected reports with an unconfirmed cause appear separately under **Under investigation** on the Attack tab, outside the code-flaw charts and totals.
 
 **How much of the world is verified** maps widely used software, from kernels and browsers to avionics and smart contracts. Each component shows the published, machine-checked verification it has, by anyone. Red marks components with no known verification that also had a public incident in the window.
 
@@ -25,7 +27,7 @@ Anyone's verification work counts, whatever the tool or method.
 
 ## How it works
 
-A GitHub Action runs every day at 05:07 UTC. It pulls CISA's Known Exploited Vulnerabilities catalog and major security news feeds, adds new incidents with their sources, moves anything older than 13 weeks to the archive and rebuilds the page. Vercel deploys each new commit. The details are in [docs/daily-refresh.md](docs/daily-refresh.md).
+A GitHub Action is scheduled twice daily at 05:07 and 17:07 UTC (every 12 hours). It pulls CISA's Known Exploited Vulnerabilities catalog and major security news feeds, adds new incidents with their sources, moves anything older than 13 weeks to the archive and rebuilds the page. Vercel deploys each new commit. The details are in [docs/daily-refresh.md](docs/daily-refresh.md).
 
 The page is a single HTML file with [d3](https://d3js.org) bundled in. It needs no build tools beyond Python.
 
@@ -34,7 +36,7 @@ src/page.template.html        page source
 site/index.html, data.json    the built page and its live data
 data/seed/                    stack_components.csv and dashboard_proofs.csv (the Verification tab)
 data/archive/                 incidents that have aged out of the window
-scripts/refresh.py            the daily update
+scripts/refresh.py            the twice-daily update
 scripts/classify.py           rules that group incidents and match them to components
 scripts/validate.py           data checks, run on every pull request
 docs/data-schema.md           every field in data.json
