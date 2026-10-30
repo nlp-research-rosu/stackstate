@@ -32,7 +32,8 @@ All values are strings unless noted. Use `""` for unknown, and `"unknown"` for `
 | zero_day | boolean; exploited before a fix existed |
 | component | for code flaws: the stack-map component (from `data/seed/stack_components.csv`) where the flawed code was; the Incidents tab groups by that component's layer |
 | flaw_group | key shared by incidents from the same flaw (a named campaign or the first CVE) |
-| code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these appear on the Incidents tab. |
+| code_flaw | boolean; true when the reported way in was a defect in software (rules in `scripts/classify.py`). Only these feed the code-flaw charts and totals. |
+| under_investigation | optional boolean, absent by default; true displays a non-code-flaw record as an incident highlight above the main chart caption on the Attack tab. It does not change classification or chart totals. Set manually; no automatic updates or lifecycle behavior. |
 
 **band values:** People, AI stack, Smart contracts & chains, Applications & data, Cloud & identity, Network appliances, Libraries & supply chain, Crypto & protocols, Compilers & runtimes, Kernels & hypervisors, Firmware, Hardware & ISA. The page does not show the AI stack layer: its stack rows are hidden, and incidents in it are shown under Applications & data. The page also folds the `ai` theme into Cloud & SaaS (or Government) and the `AI & agents` function into the general functions.
 
@@ -52,4 +53,4 @@ Coverage levels are editorial estimates of how much of the deployed component is
 
 ## archive
 
-Incidents older than 13 weeks move to `archive/incidents.json` (same fields) when the daily job runs.
+Incidents older than 13 weeks move to `archive/incidents.json` (same fields) when the twice-daily job runs.

@@ -1,8 +1,8 @@
-# Daily refresh
+# Twice-daily refresh
 
 A scheduled GitHub Action keeps the dashboard current.
 
-**GitHub Actions, 05:07 UTC** (`.github/workflows/daily-refresh.yml`) runs `scripts/refresh.py`, rebuilds the page and commits the result to `main`. The script:
+**GitHub Actions, 05:07 and 17:07 UTC** (`.github/workflows/daily-refresh.yml`, cron `7 5,17 * * *`) is scheduled every 12 hours, rebuilds the page and commits the result to `main`. GitHub scheduling is best effort: runs can be delayed, so exact 12-hour intervals are not guaranteed. The existing `scripts/refresh.py` script:
 
 1. reads CISA's Known Exploited Vulnerabilities catalog and the news feeds listed in `NEWS_FEEDS`;
 2. adds each KEV entry from the last 14 days that news coverage mentions, or that CISA marks as used by ransomware, as a code-flaw incident sourced to the news article;
@@ -20,7 +20,9 @@ The repository is the source of truth. To correct an entry, edit `site/data.json
 
 ## Code flaws
 
-Every new incident gets `code_flaw`: true when the reported way in was a defect in software (a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol). Phishing, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access and incidents with no stated cause get false. Only `code_flaw: true` incidents appear on the Incidents tab, but all are kept in the data.
+Every new incident gets `code_flaw`: true when the reported way in was a defect in software (a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol). Phishing, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access and incidents with no stated cause get false. Only `code_flaw: true` incidents feed the code-flaw charts and totals, but all are kept in the data.
+
+Selected non-code-flaw reports can be marked manually with `under_investigation: true` for a compact incident highlight above the main chart caption. This is display-only: the twice-daily schedule does not enable news extraction or add automatic incident updates.
 
 ## Grouping rules (first match wins)
 
