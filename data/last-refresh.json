@@ -1,5 +1,5 @@
 {
- "run_at": "2026-10-31T10:48:47+00:00",
+ "run_at": "2026-10-31T20:25:38+00:00",
  "today": "2026-10-31",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -24,9 +24,8 @@
  ],
  "errors": [],
  "added_incidents": [
-  "249 2026-10-30 Ivanti Connect Secure users (code flaw)",
-  "250 2026-10-30 Ivanti Connect Secure users (code flaw)",
-  "251 2026-10-30 Applebee's (other cause)"
+  "252 2026-10-31 Northflank (other cause)",
+  "253 2026-10-31 Chainalysis (other cause)"
  ],
  "added_proofs": [],
  "archived": 0,
