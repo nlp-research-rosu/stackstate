@@ -1,6 +1,6 @@
 {
- "run_at": "2026-10-30T21:25:44+00:00",
- "today": "2026-10-30",
+ "run_at": "2026-10-31T10:48:47+00:00",
+ "today": "2026-10-31",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -10,27 +10,23 @@
   "https://krebsonsecurity.com/feed/": 1,
   "https://techcrunch.com/category/security/feed/": 19,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 45,
-  "https://rss.arxiv.org/rss/cs.PL": 8,
-  "https://rss.arxiv.org/rss/cs.CR": 117
+  "https://rss.arxiv.org/rss/cs.LO": 0,
+  "https://rss.arxiv.org/rss/cs.PL": 0,
+  "https://rss.arxiv.org/rss/cs.CR": 0
  },
  "kev_skipped": [
-  "CVE-2026-118527",
-  "CVE-2026-111357",
   "CVE-2026-106931",
   "CVE-2026-96656",
   "CVE-2026-96655",
   "CVE-2026-96654",
   "CVE-2026-96652",
-  "CVE-2026-110936",
-  "CVE-2026-102764",
-  "CVE-2025-61624"
+  "CVE-2026-110936"
  ],
  "errors": [],
  "added_incidents": [
-  "246 2026-10-28 Linux Kernel users (code flaw)",
-  "247 2026-10-30 WordPress Core users (versions 4.7 through 7.1.3) (code flaw)",
-  "248 2026-10-28 Oracle E-Business Suite customers (code flaw)"
+  "249 2026-10-30 Ivanti Connect Secure users (code flaw)",
+  "250 2026-10-30 Ivanti Connect Secure users (code flaw)",
+  "251 2026-10-30 Applebee's (other cause)"
  ],
  "added_proofs": [],
  "archived": 0,
