@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-01T11:45:43+00:00",
+ "run_at": "2026-11-01T21:02:31+00:00",
  "today": "2026-11-01",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -23,11 +23,9 @@
   "CVE-2026-110936"
  ],
  "errors": [],
- "added_incidents": [
-  "254 2026-10-30 Copenhagen University (other cause)"
- ],
+ "added_incidents": [],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "news_items": 107,
  "llm": true
 }
