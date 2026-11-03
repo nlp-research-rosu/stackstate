@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-03T12:41:58+00:00",
+ "run_at": "2026-11-03T22:15:04+00:00",
  "today": "2026-11-03",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -8,7 +8,7 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 1,
-  "https://techcrunch.com/category/security/feed/": 16,
+  "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 43,
   "https://rss.arxiv.org/rss/cs.PL": 26,
@@ -24,13 +24,16 @@
  ],
  "errors": [],
  "added_incidents": [
-  "266 2026-11-03 Harvard University (Alumni Affairs and Development systems) (other cause)",
-  "267 2026-11-03 Node-RED users (code flaw)",
-  "268 2026-11-03 Siemens SIMATIC IoT2050 Advanced device users (code flaw)",
-  "269 2026-11-03 CryptoPayment Gateway WordPress plugin users (code flaw)"
+  "270 2026-11-03 WordPress Core users (code flaw)",
+  "271 2026-11-03 WorkOS (other cause)",
+  "272 2026-11-03 Frontline Education (code flaw)",
+  "273 2026-11-04 mSecure (mSeven Software) password manager users (other cause)",
+  "274 2026-11-03 Chainstack (other cause)",
+  "275 2026-11-03 Binance (other cause)",
+  "276 2026-11-03 cPGuard customers (OPSSHIELD) (other cause)"
  ],
  "added_proofs": [],
- "archived": 3,
- "news_items": 107,
+ "archived": 0,
+ "news_items": 111,
  "llm": true
 }
