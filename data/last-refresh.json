@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-04T12:51:52+00:00",
+ "run_at": "2026-11-04T22:30:24+00:00",
  "today": "2026-11-04",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -8,23 +8,29 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 1,
-  "https://techcrunch.com/category/security/feed/": 18,
+  "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 30,
   "https://rss.arxiv.org/rss/cs.PL": 15,
   "https://rss.arxiv.org/rss/cs.CR": 62
  },
- "kev_skipped": [],
+ "kev_skipped": [
+  "CVE-2024-27834"
+ ],
  "errors": [],
  "added_incidents": [
-  "277 2026-11-04 Trigger.dev (other cause)",
-  "278 2026-11-04 Windows users of Sogou Input Method (code flaw)",
-  "279 2026-11-03 Ukrainian organizations (law enforcement, justice entities, frontline local administrations, defense sector) (code flaw)"
+  "280 2026-11-04 Zyxel GS1900 series network switch owners (code flaw)",
+  "281 2026-11-04 DreamHost (code flaw)",
+  "282 2026-11-04 French Blood Establishment (EFS), via its refrigeration equipment provider (other cause)",
+  "283 2026-11-04 Goddess of Victory: NIKKE PC players (game developers' launcher) (other cause)",
+  "284 2026-11-04 Plerdy SEO Tracker (Ukrainian web analytics service) and iOS/Android users visiting affected sites (code flaw)",
+  "285 2026-11-04 Amadeus IT Group airline customers (Cathay Pacific, Korean Air, Asiana Airlines, Singapore Airlines, Malaysia Airlines) (other cause)",
+  "286 2026-11-04 Crédit Mutuel Arkéa (other cause)",
+  "287 2026-11-04 The Kyiv Independent (other cause)",
+  "288 2026-11-04 Beget (other cause)"
  ],
- "added_proofs": [
-  "86 Linux kernel eBPF verifier tristate number (tnum) multiplication"
- ],
- "archived": 1,
- "news_items": 109,
+ "added_proofs": [],
+ "archived": 0,
+ "news_items": 111,
  "llm": true
 }
