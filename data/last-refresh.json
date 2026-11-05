@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-05T13:00:06+00:00",
+ "run_at": "2026-11-05T22:37:54+00:00",
  "today": "2026-11-05",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -17,11 +17,16 @@
  "kev_skipped": [],
  "errors": [],
  "added_incidents": [
-  "289 2026-11-04 Apple Multiple Products users (code flaw)",
-  "290 2026-11-05 Chainalysis (other cause)"
+  "291 2026-11-05 Control Web Panel (CWP) Linux server users (other cause)",
+  "292 2026-11-05 DigiCert (other cause)",
+  "293 2026-11-05 Queens Public Library (other cause)",
+  "294 2026-11-05 iPhone and Android device users in Ukraine, the US and Europe (code flaw)",
+  "295 2026-11-05 Norad (Norwegian Agency for Development Cooperation) Grants Portal (other cause)"
  ],
- "added_proofs": [],
- "archived": 2,
+ "added_proofs": [
+  "87 Rust next-gen borrow checker (Non-Lexical Lifetimes / Polonius-style algorithm)"
+ ],
+ "archived": 0,
  "news_items": 112,
  "llm": true
 }
