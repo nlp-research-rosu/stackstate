@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-06T21:59:20+00:00",
- "today": "2026-11-06",
+ "run_at": "2026-11-07T11:36:38+00:00",
+ "today": "2026-11-07",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -10,19 +10,15 @@
   "https://krebsonsecurity.com/feed/": 2,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 15,
-  "https://rss.arxiv.org/rss/cs.PL": 5,
-  "https://rss.arxiv.org/rss/cs.CR": 58
+  "https://rss.arxiv.org/rss/cs.LO": 0,
+  "https://rss.arxiv.org/rss/cs.PL": 0,
+  "https://rss.arxiv.org/rss/cs.CR": 0
  },
- "kev_skipped": [
-  "CVE-2026-19868"
- ],
+ "kev_skipped": [],
  "errors": [],
  "added_incidents": [
-  "298 2026-11-06 QNAP NAS users running Plex Media Server (code flaw)",
-  "299 2026-11-06 OpenSSH users on Alpine Linux and other musl-based systems (SSHole) (code flaw)",
-  "300 2026-11-06 Ahold Delhaize (other cause)",
-  "301 2026-11-05 White House (Executive Office of the President network) (other cause)"
+  "302 2026-11-06 SonicWall SonicOS SSLVPN users (code flaw)",
+  "303 2026-11-07 Claude Code users (developers with public GitHub repositories) (other cause)"
  ],
  "added_proofs": [],
  "archived": 0,
