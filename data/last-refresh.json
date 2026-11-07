@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-07T11:36:38+00:00",
+ "run_at": "2026-11-07T20:44:41+00:00",
  "today": "2026-11-07",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -16,10 +16,7 @@
  },
  "kev_skipped": [],
  "errors": [],
- "added_incidents": [
-  "302 2026-11-06 SonicWall SonicOS SSLVPN users (code flaw)",
-  "303 2026-11-07 Claude Code users (developers with public GitHub repositories) (other cause)"
- ],
+ "added_incidents": [],
  "added_proofs": [],
  "archived": 0,
  "news_items": 112,
