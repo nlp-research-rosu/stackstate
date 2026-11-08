@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-08T11:48:51+00:00",
+ "run_at": "2026-11-08T21:00:32+00:00",
  "today": "2026-11-08",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -16,9 +16,11 @@
  },
  "kev_skipped": [],
  "errors": [],
- "added_incidents": [],
+ "added_incidents": [
+  "304 2026-11-08 Iris Ohyama (Iris Plaza shopping platform) (other cause)"
+ ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "news_items": 107,
  "llm": true
 }
