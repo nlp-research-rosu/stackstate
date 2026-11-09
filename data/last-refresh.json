@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-08T21:00:32+00:00",
- "today": "2026-11-08",
+ "run_at": "2026-11-09T13:43:44+00:00",
+ "today": "2026-11-09",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -8,19 +8,25 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 2,
-  "https://techcrunch.com/category/security/feed/": 15,
+  "https://techcrunch.com/category/security/feed/": 13,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 0,
-  "https://rss.arxiv.org/rss/cs.PL": 0,
-  "https://rss.arxiv.org/rss/cs.CR": 0
+  "https://rss.arxiv.org/rss/cs.LO": 14,
+  "https://rss.arxiv.org/rss/cs.PL": 9,
+  "https://rss.arxiv.org/rss/cs.CR": 57
  },
  "kev_skipped": [],
  "errors": [],
  "added_incidents": [
-  "304 2026-11-08 Iris Ohyama (Iris Plaza shopping platform) (other cause)"
+  "305 2026-11-09 Italian Foreign Minister Antonio Tajani and other senior European officials (other cause)",
+  "306 2026-11-09 Amplifon Americas (other cause)",
+  "307 2026-11-09 Frontline Education (other cause)",
+  "308 2026-11-09 Crédit Mutuel Arkéa (other cause)",
+  "309 2026-11-09 Keplr wallet users who signed in with Google or Apple (via Web3Auth) (code flaw)",
+  "310 2026-11-09 LNbits Bitcoin Lightning wallet server operators (code flaw)",
+  "311 2026-11-09 Taipei emergency dispatch services (seven districts) (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
- "news_items": 107,
+ "archived": 6,
+ "news_items": 105,
  "llm": true
 }
