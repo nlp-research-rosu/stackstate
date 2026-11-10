@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-10T14:28:42+00:00",
+ "run_at": "2026-11-10T22:14:29+00:00",
  "today": "2026-11-10",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -7,22 +7,31 @@
   "https://www.securityweek.com/feed/": 10,
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
-  "https://krebsonsecurity.com/feed/": 2,
-  "https://techcrunch.com/category/security/feed/": 14,
+  "https://krebsonsecurity.com/feed/": 3,
+  "https://techcrunch.com/category/security/feed/": 15,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 32,
   "https://rss.arxiv.org/rss/cs.PL": 22,
   "https://rss.arxiv.org/rss/cs.CR": 136
  },
- "kev_skipped": [],
- "errors": [],
- "added_incidents": [],
- "added_proofs": [
-  "89 DecDNS (Declarative DNS)"
+ "kev_skipped": [
+  "CVE-2026-111793",
+  "CVE-2026-20320",
+  "CVE-2026-111560"
  ],
+ "errors": [],
+ "added_incidents": [
+  "331 2026-11-10 Microsoft Office users (code flaw)",
+  "332 2026-11-10 Barracuda Networks Barracuda Email Security Gateway (ESG) users (code flaw)",
+  "333 2026-11-10 Nitori (other cause)",
+  "334 2026-11-10 Xen Orchestra users (XCP-ng virtualization hosts) (code flaw)",
+  "335 2026-11-11 NEAR AI (code flaw)",
+  "336 2026-11-10 AhsayCBS users (code flaw)"
+ ],
+ "added_proofs": [],
  "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 106,
+ "news_items": 108,
  "llm": true
 }
