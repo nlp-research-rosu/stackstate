@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-09T13:43:44+00:00",
- "today": "2026-11-09",
+ "run_at": "2026-11-10T00:38:01+00:00",
+ "today": "2026-11-10",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -14,19 +14,25 @@
   "https://rss.arxiv.org/rss/cs.PL": 9,
   "https://rss.arxiv.org/rss/cs.CR": 57
  },
- "kev_skipped": [],
+ "kev_skipped": [
+  "CVE-2026-102895",
+  "CVE-2026-116779",
+  "CVE-2026-123218"
+ ],
  "errors": [],
  "added_incidents": [
-  "305 2026-11-09 Italian Foreign Minister Antonio Tajani and other senior European officials (other cause)",
-  "306 2026-11-09 Amplifon Americas (other cause)",
-  "307 2026-11-09 Frontline Education (other cause)",
-  "308 2026-11-09 Crédit Mutuel Arkéa (other cause)",
-  "309 2026-11-09 Keplr wallet users who signed in with Google or Apple (via Web3Auth) (code flaw)",
-  "310 2026-11-09 LNbits Bitcoin Lightning wallet server operators (code flaw)",
-  "311 2026-11-09 Taipei emergency dispatch services (seven districts) (other cause)"
+  "312 2026-11-09 Vanderbilt University (other cause)",
+  "313 2026-11-09 SEGA (newsletter subscribers, via provider ARARA) (other cause)",
+  "314 2026-11-09 York University (other cause)",
+  "315 2026-11-09 Beget (other cause)",
+  "316 2026-11-09 Binance (other cause)",
+  "317 2026-11-09 Revolve (other cause)",
+  "318 2026-11-09 Qubole customers (Idera) (other cause)",
+  "319 2026-11-09 Ethersphere (bee-js and Swarm Desktop users) (other cause)",
+  "320 2026-11-09 Wyndham (code flaw)"
  ],
  "added_proofs": [],
- "archived": 6,
+ "archived": 2,
  "news_items": 105,
  "llm": true
 }
