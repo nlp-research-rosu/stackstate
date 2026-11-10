@@ -376,6 +376,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
     <div class="mode" role="group" aria-label="View">
       <button type="button" data-v="attacks" aria-pressed="true" title="Incidents" aria-label="Attack: incidents"><span class="sw" aria-hidden="true"></span>Attack</button>
       <button type="button" data-v="proofs" aria-pressed="false" title="How much of the world is verified" aria-label="Defense: how much of the world is verified"><span class="sw" aria-hidden="true"></span>Defense</button>
+      <button type="button" data-v="contrib" aria-pressed="false" title="Our contributions" aria-label="Our contributions"><span class="sw" aria-hidden="true"></span><span class="t-long">Our contributions</span><span class="t-short">Contributions</span></button>
     </div>
     <a class="contrib" href="https://github.com/nlp-research-rosu/stackstate/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a>
     <div class="filt" id="filt" hidden></div>
@@ -13390,7 +13391,7 @@ function openComponent(c) {
 }
 
 // ---------- view switch ----------
-const views = { attacks: $('#v-attacks'), proofs: $('#v-proofs') };
+const views = { attacks: $('#v-attacks'), proofs: $('#v-proofs'), contrib: $('#v-contrib') };
 function setView(v, scroll) {
   if (!views[v]) v = 'attacks';
   S.view = v; document.documentElement.setAttribute('data-view', v);
