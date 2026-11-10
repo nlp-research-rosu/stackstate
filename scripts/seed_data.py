@@ -3,7 +3,8 @@
 The Verification tab is edited in two CSVs, which are its source of truth:
   data/seed/stack_components.csv  one row per software component (the stack map)
   data/seed/dashboard_proofs.csv  one row per published verification effort
-The Our contributions tab is edited in one CSV, exported from our findings tracker (only publicly reported bugs are listed):
+The Our contributions tab is one CSV, which the refresh rewrites from bugpipe's /v1/dashboard when BUGPIPE_TOKEN is set
+(only publicly reported bugs are listed):
   data/seed/findings.csv          count rows (stage totals per vertical) and bug rows (the public list)
 The daily refresh (scripts/refresh.py) reloads both into site/data.json on every run.
 

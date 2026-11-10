@@ -7,8 +7,9 @@ A scheduled GitHub Action keeps the dashboard current.
 1. reads CISA's Known Exploited Vulnerabilities catalog and the news feeds listed in `NEWS_FEEDS`;
 2. adds each KEV entry from the last 14 days that news coverage mentions, or that CISA marks as used by ransomware, as a code-flaw incident sourced to the news article;
 3. if the repository secret `OPENROUTER_API_KEY` is set, asks Claude through OpenRouter to pick incidents with a named victim out of the news items, and new machine-checked verification papers out of arXiv (cs.LO, cs.PL, cs.CR), and adds those too;
-4. moves incidents older than 91 days to `data/archive/incidents.json`;
-5. writes `site/data.json` and a run log, `data/last-refresh.json`, listing what was added, skipped and any errors.
+4. if the repository secret `BUGPIPE_TOKEN` (a read-only dashboard token from `bp user mint-dashboard stackstate`) is set, rewrites `data/seed/findings.csv`, the Our contributions tab, from bugpipe's `/v1/dashboard` (`BUGPIPE_URL` overrides the server). If the fetch fails or the new rows fail `scripts/validate.py`, the old file stays and the run fails;
+5. moves incidents older than 91 days to `data/archive/incidents.json`;
+6. writes `site/data.json` and a run log, `data/last-refresh.json`, listing what was added, skipped and any errors.
 
 Without the key the job still adds KEV entries and rolls the window, but adds no breaches or verification papers, and the run fails so the gap is visible.
 

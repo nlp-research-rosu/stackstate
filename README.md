@@ -37,7 +37,7 @@ The page is a single HTML file with [d3](https://d3js.org) bundled in. It needs 
 src/page.template.html        page source
 site/index.html, data.json    the built page and its live data
 data/seed/                    stack_components.csv and dashboard_proofs.csv (the Verification tab),
-                              findings.csv (the Our contributions tab)
+                              findings.csv (the Our contributions tab, rewritten from bugpipe by the refresh)
 data/archive/                 incidents that have aged out of the window
 scripts/refresh.py            the twice-daily update
 scripts/classify.py           rules that group incidents and match them to components

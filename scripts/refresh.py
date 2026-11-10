@@ -6,8 +6,9 @@ Steps:
      marks as used by ransomware). These need no API key.
   3. If OPENROUTER_API_KEY is set, ask Claude (through OpenRouter) to pick real incidents out of the news items and
      new formal verification papers out of arXiv, and add those too.
-  4. Move incidents older than 91 days to data/archive/incidents.json.
-  5. Write site/data.json and data/last-refresh.json (what changed, for the run log).
+  4. If BUGPIPE_TOKEN is set, rewrite data/seed/findings.csv (the Our contributions tab) from bugpipe's /v1/dashboard.
+  5. Move incidents older than 91 days to data/archive/incidents.json.
+  6. Write site/data.json and data/last-refresh.json (what changed, for the run log).
 
 Usage: python3 scripts/refresh.py [--no-llm] [--today YYYY-MM-DD] [--kev-file PATH] [--dry-run]
 """
@@ -18,6 +19,7 @@ import email.utils
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -32,6 +34,8 @@ DATA = ROOT / "site" / "data.json"
 ARCHIVE = ROOT / "data" / "archive" / "incidents.json"
 REPORT = ROOT / "data" / "last-refresh.json"
 
+BUGPIPE_URL = "https://bugpipe-api-dev.up.railway.app"
+FINDINGS_COLS = ["kind", "id", "repo", "vertical", "bug_type", "title", "status", "issue_url", "fix_url", "fix_by", "stage", "n"]
 WINDOW_DAYS = 91
 KEV_LOOKBACK_DAYS = 14
 NEWS_LOOKBACK_DAYS = 10
@@ -352,6 +356,48 @@ def _lang(s):
 
 
 # ---------- shared ----------
+def findings_rows(feed):
+    """bugpipe's /v1/dashboard ({counts, bugs}) as findings.csv rows."""
+    blank = dict.fromkeys(FINDINGS_COLS, "")
+    return ([{**blank, "kind": "count", "vertical": c["vertical"], "stage": c["stage"], "n": c["n"]} for c in feed["counts"]]
+            + [{**blank, **{k: b.get(k) or "" for k in FINDINGS_COLS[1:10]}, "kind": "bug"} for b in feed["bugs"]])
+
+
+def refresh_findings(log, get=None):
+    """Rewrite findings.csv from bugpipe. The old file stays when the token is unset, the fetch fails or the new data
+    fails scripts/validate.py."""
+    token = os.environ.get("BUGPIPE_TOKEN")
+    log["bugpipe"] = bool(token)
+    if not token:
+        return
+    url = os.environ.get("BUGPIPE_URL", BUGPIPE_URL).rstrip("/") + "/v1/dashboard"
+    try:
+        if get is None:
+            req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}", "User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                feed = json.load(r)
+        else:
+            feed = get(url)
+        rows = findings_rows(feed)
+    except Exception as e:  # noqa: BLE001  any failure keeps the last good file
+        log["errors"].append(f"bugpipe {url}: {type(e).__name__}: {e}"[:300])
+        return
+    if feed.get("skipped"):
+        log["errors"].append(f"bugpipe left out findings with no known vertical: {', '.join(feed['skipped'])}")
+    f = seed_data.SEED / "findings.csv"
+    old = f.read_bytes()
+    with open(f, "w", encoding="utf-8", newline="") as out:
+        w = csv.DictWriter(out, FINDINGS_COLS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    check = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate.py")], capture_output=True, text=True)
+    if check.returncode != 0:
+        f.write_bytes(old)
+        log["errors"].append("bugpipe data failed validate.py, kept the old findings.csv: " + (check.stdout + check.stderr)[-500:])
+        return
+    log["bugpipe_bugs"] = len(feed["bugs"])
+
+
 def finish(r, **fixed):
     """Fill derived fields: component and band from the stack map, then the classify rules."""
     comp = component_for(r)
@@ -388,11 +434,13 @@ def main():
 
     today = dt.date.fromisoformat(a.today) if a.today else dt.datetime.now(dt.timezone.utc).date()
     data = json.loads(DATA.read_text())
+    log = {"run_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "today": today.isoformat(), "feeds": {}, "kev_skipped": [], "errors": [],
+           "added_incidents": [], "added_proofs": [], "archived": 0}
+    if not a.dry_run:
+        refresh_findings(log)
     # The Verification and Our contributions tabs come from the CSVs, so edits merged there show up on the next run.
     data["proofs"], data["stack"], data["contrib"] = seed_data.proofs(), seed_data.stack(), seed_data.contrib()
     STACK_BAND.update({s["component"]: s["band"] for s in data["stack"]})
-    log = {"run_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "today": today.isoformat(), "feeds": {}, "kev_skipped": [], "errors": [],
-           "added_incidents": [], "added_proofs": [], "archived": 0}
 
     news = load_feeds(NEWS_FEEDS, (today - dt.timedelta(days=NEWS_LOOKBACK_DAYS)).isoformat(), log)
     log["news_items"] = len(news)
