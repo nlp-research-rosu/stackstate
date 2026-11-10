@@ -1,82 +1,231 @@
 kind,id,repo,vertical,bug_type,title,status,issue_url,fix_url,fix_by,stage,n
 count,,,rl-training,,,,,,,scanned,35
-count,,,rl-training,,,,,,,findings,65
-count,,,rl-training,,,,,,,verified,31
+count,,,rl-training,,,,,,,findings,149
+count,,,rl-training,,,,,,,verified,50
 count,,,rl-training,,,,,,,fix_proposed,15
-count,,,rl-training,,,,,,,reported,0
-count,,,rl-training,,,,,,,fixed,0
-count,,,rl-envs,,,,,,,scanned,17
-count,,,rl-envs,,,,,,,findings,34
-count,,,rl-envs,,,,,,,verified,12
-count,,,rl-envs,,,,,,,fix_proposed,5
-count,,,rl-envs,,,,,,,reported,0
-count,,,rl-envs,,,,,,,fixed,0
-count,,,evals,,,,,,,scanned,71
-count,,,evals,,,,,,,findings,130
-count,,,evals,,,,,,,verified,55
-count,,,evals,,,,,,,fix_proposed,10
-count,,,evals,,,,,,,reported,0
-count,,,evals,,,,,,,fixed,0
-count,,,inference,,,,,,,scanned,7
-count,,,inference,,,,,,,findings,9
-count,,,inference,,,,,,,verified,4
-count,,,inference,,,,,,,fix_proposed,0
-count,,,inference,,,,,,,reported,1
-count,,,inference,,,,,,,fixed,0
-count,,,agents,,,,,,,scanned,4
-count,,,agents,,,,,,,findings,7
-count,,,agents,,,,,,,verified,4
-count,,,agents,,,,,,,fix_proposed,0
-count,,,agents,,,,,,,reported,4
-count,,,agents,,,,,,,fixed,1
-count,,,infra,,,,,,,scanned,5
-count,,,infra,,,,,,,findings,8
-count,,,infra,,,,,,,verified,7
-count,,,infra,,,,,,,fix_proposed,2
-count,,,infra,,,,,,,reported,4
-count,,,infra,,,,,,,fixed,0
+count,,,rl-training,,,,,,,reported,40
+count,,,rl-training,,,,,,,fixed,4
 count,,,rl-training,,,,,,,type_wrong-score,2
-count,,,rl-training,,,,,,,type_right-answer-marked-wrong,7
-count,,,rl-training,,,,,,,type_crash-or-hang,9
+count,,,rl-training,,,,,,,type_right-answer-marked-wrong,6
+count,,,rl-training,,,,,,,type_crash-or-hang,11
 count,,,rl-training,,,,,,,type_reward-pays-wrong-answer,34
-count,,,rl-training,,,,,,,type_silent-training-bug,13
-count,,,rl-training,,,,,,,type_other,0
-count,,,rl-envs,,,,,,,type_wrong-score,2
+count,,,rl-training,,,,,,,type_silent-training-bug,18
+count,,,rl-training,,,,,,,type_other,78
+count,,,rl-envs,,,,,,,scanned,18
+count,,,rl-envs,,,,,,,findings,51
+count,,,rl-envs,,,,,,,verified,22
+count,,,rl-envs,,,,,,,fix_proposed,6
+count,,,rl-envs,,,,,,,reported,21
+count,,,rl-envs,,,,,,,fixed,1
+count,,,rl-envs,,,,,,,type_wrong-score,3
 count,,,rl-envs,,,,,,,type_right-answer-marked-wrong,2
 count,,,rl-envs,,,,,,,type_crash-or-hang,6
-count,,,rl-envs,,,,,,,type_reward-pays-wrong-answer,22
+count,,,rl-envs,,,,,,,type_reward-pays-wrong-answer,21
 count,,,rl-envs,,,,,,,type_silent-training-bug,2
-count,,,rl-envs,,,,,,,type_other,0
-count,,,evals,,,,,,,type_wrong-score,72
-count,,,evals,,,,,,,type_right-answer-marked-wrong,8
+count,,,rl-envs,,,,,,,type_other,17
+count,,,evals,,,,,,,scanned,72
+count,,,evals,,,,,,,findings,180
+count,,,evals,,,,,,,verified,84
+count,,,evals,,,,,,,fix_proposed,11
+count,,,evals,,,,,,,reported,82
+count,,,evals,,,,,,,fixed,3
+count,,,evals,,,,,,,type_wrong-score,70
+count,,,evals,,,,,,,type_right-answer-marked-wrong,7
 count,,,evals,,,,,,,type_crash-or-hang,12
 count,,,evals,,,,,,,type_reward-pays-wrong-answer,0
 count,,,evals,,,,,,,type_silent-training-bug,0
-count,,,evals,,,,,,,type_other,38
+count,,,evals,,,,,,,type_other,91
+count,,,inference,,,,,,,scanned,7
+count,,,inference,,,,,,,findings,41
+count,,,inference,,,,,,,verified,5
+count,,,inference,,,,,,,fix_proposed,0
+count,,,inference,,,,,,,reported,3
+count,,,inference,,,,,,,fixed,0
 count,,,inference,,,,,,,type_wrong-score,2
 count,,,inference,,,,,,,type_right-answer-marked-wrong,1
 count,,,inference,,,,,,,type_crash-or-hang,3
 count,,,inference,,,,,,,type_reward-pays-wrong-answer,0
 count,,,inference,,,,,,,type_silent-training-bug,0
-count,,,inference,,,,,,,type_other,3
+count,,,inference,,,,,,,type_other,35
+count,,,agents,,,,,,,scanned,4
+count,,,agents,,,,,,,findings,12
+count,,,agents,,,,,,,verified,4
+count,,,agents,,,,,,,fix_proposed,0
+count,,,agents,,,,,,,reported,4
+count,,,agents,,,,,,,fixed,1
 count,,,agents,,,,,,,type_wrong-score,0
 count,,,agents,,,,,,,type_right-answer-marked-wrong,2
 count,,,agents,,,,,,,type_crash-or-hang,2
 count,,,agents,,,,,,,type_reward-pays-wrong-answer,0
 count,,,agents,,,,,,,type_silent-training-bug,0
-count,,,agents,,,,,,,type_other,3
+count,,,agents,,,,,,,type_other,8
+count,,,infra,,,,,,,scanned,5
+count,,,infra,,,,,,,findings,12
+count,,,infra,,,,,,,verified,8
+count,,,infra,,,,,,,fix_proposed,5
+count,,,infra,,,,,,,reported,8
+count,,,infra,,,,,,,fixed,1
 count,,,infra,,,,,,,type_wrong-score,0
 count,,,infra,,,,,,,type_right-answer-marked-wrong,0
 count,,,infra,,,,,,,type_crash-or-hang,3
 count,,,infra,,,,,,,type_reward-pays-wrong-answer,0
 count,,,infra,,,,,,,type_silent-training-bug,0
-count,,,infra,,,,,,,type_other,5
+count,,,infra,,,,,,,type_other,9
+bug,ACECODER-01,TIGER-AI-Lab/AceCoder,rl-training,reward-pays-wrong-answer,"consolidate_dataset.py computes inference pass rates over all generated tests, including the ones the oracle filter removed, so a program that passes every kept test scores below 1.0",reported,https://github.com/TIGER-AI-Lab/AceCoder/issues/11,,,,
+bug,ACECODER-03,TIGER-AI-Lab/AceCoder,rl-training,reward-pays-wrong-answer,"parse_incomplete_json truncates complete JSON at the last ``` even when it is inside a test or question string, silently dropping generated tests",reported,https://github.com/TIGER-AI-Lab/AceCoder/issues/12,,,,
+bug,AGENTGYM-01,WooooDyy/AgentGym-RL,rl-training,silent-training-bug,"GAE and REINFORCE++ ignore the episode reward: the rollout puts it on the last observation token, and the advantage code multiplies it by that token's loss mask (0)",reported,https://github.com/WooooDyy/AgentGym-RL/issues/24,,,,
+bug,ALFWORLD-01,alfworld/alfworld,rl-envs,reward-pays-wrong-answer,"THOR goal checks match object classes by objectId substring: a Pencil satisfies ""Pen"", a ButterKnife ""Knife"", a Potato ""Pot"", a ToiletPaperHanger ""Toilet""",reported,https://github.com/alfworld/alfworld/issues/134,,,,
 bug,AP-11,langchain-ai/langgraph,agents,crash-or-hang,Sync threads.stream() ignores run_start_timeout,reported,https://github.com/langchain-ai/langgraph/issues/9208,,,,
 bug,AP-12,langchain-ai/langgraph,agents,other,Sync thread stream reports a gate timeout instead of the real error when run.start fails,reported,https://github.com/langchain-ai/langgraph/issues/9209,,,,
+bug,AREAL-02,areal-project/AReaL,rl-training,crash-or-hang,"Countdown example reward gives full credit to equations that break the task rules (decimal points, `**`, `//`) and can hang on `**` chains",fixed,https://github.com/areal-project/AReaL/issues/1866,https://github.com/areal-project/AReaL/pull/1876,maintainers,,
+bug,AREAL-04,areal-project/AReaL,rl-training,reward-pays-wrong-answer,"`areal.reward.geometry3k_reward_fn` grades the last number of a `\boxed{}` reply (the format AReaL's Geometry3K dataset asks for), so `\boxed{2\sqrt{3}}` matches gold `3` and `\boxed{5\sqrt{3}}` fails gold `5\sqrt{3}`",fixed,https://github.com/areal-project/AReaL/issues/1867,https://github.com/areal-project/AReaL/pull/1868,maintainers,,
+bug,AREAL-06,areal-project/AReaL,rl-training,silent-training-bug,"With the default PPO config (`kl_ctl=0.1`, no `ref` model), the KL term is computed against all-zero log-probs and rewards every token by −0.1·logp",reported,https://github.com/areal-project/AReaL/issues/1865,,,,
+bug,ARENA-HARD-AUTO-01,lmarena/arena-hard-auto,evals,crash-or-hang,A single judge verdict outside the 10 known labels (e.g. `[[A>=B]]`) crashes the whole leaderboard with KeyError,reported,https://github.com/lmarena/arena-hard-auto/issues/103,,,,
+bug,BFCL-03,ShishirPatil/gorilla,evals,wrong-score,"live_multiple answer keys store booleans/integers for string-enum parameters, so the schema-correct call is always graded wrong",reported,https://github.com/ShishirPatil/gorilla/issues/1390,,,,
+bug,BFCL-04,ShishirPatil/gorilla,evals,wrong-score,"JSON return-format decoder truncates calls whose arguments contain a list of objects, so correct answers decode to [] and are graded wrong",reported,https://github.com/ShishirPatil/gorilla/issues/1391,,,,
+bug,BITSANDBYTES-02,bitsandbytes-foundation/bitsandbytes,rl-training,silent-training-bug,"CPU quantize_blockwise (65,536-bin LUT) does not pick the nearest code: 0.0 is stored as ±2.1e-5·absmax, so 8-bit Adam on CPU moves weights whose gradient is 0",pr-open,https://github.com/bitsandbytes-foundation/bitsandbytes/issues/2118,https://github.com/bitsandbytes-foundation/bitsandbytes/pull/2119,,,
+bug,BROWSECOMP-PLUS-01,texttron/BrowseComp-Plus,evals,wrong-score,"Queries whose judge call fails are left out of the Accuracy denominator, so the evaluation summary scores only a subset of queries",reported,https://github.com/texttron/BrowseComp-Plus/issues/29,,,,
+bug,BROWSERGYM-01,ServiceNow/BrowserGym,rl-envs,reward-pays-wrong-answer,"AssistantBench number scoring returns +inf for the answer ""-inf"" and scores above 1 for negative golds",reported,https://github.com/ServiceNow/BrowserGym/issues/420,,,,
+bug,BROWSERGYM-04,ServiceNow/BrowserGym,rl-envs,crash-or-hang,"AssistantBench dict-answer scoring crashes on ""{}"" and on lists mixing dicts with other values",pr-open,https://github.com/ServiceNow/BrowserGym/issues/418,https://github.com/ServiceNow/BrowserGym/pull/419,,,
+bug,CMMLU-01,haonan-li/CMMLU,evals,wrong-score,"Answer extractor returns the response's first character when it is an ASCII A-D, skipping the whole answer-parsing cascade",reported,https://github.com/haonan-li/CMMLU/issues/93,,,,
+bug,CODE-R1-01,ganler/code-r1,rl-training,reward-pays-wrong-answer,"Functional-task reward decides pass/fail by process exit status, so code that exits 0 before the appended asserts gets full reward",reported,https://github.com/ganler/code-r1/issues/25,,,,
+bug,CODEELO-02,QwenLM/CodeElo,evals,crash-or-hang,"main.py always crashes with ""TypeError: argument of type 'int' is not iterable"" before printing the average rating and percentile",reported,https://github.com/QwenLM/CodeElo/issues/9,,,,
+bug,CRAFTER-02,danijar/crafter,rl-envs,reward-pays-wrong-answer,A zombie killed by the player still attacks in the same step: Zombie/Skeleton.update do not return after world.remove(self),reported,https://github.com/danijar/crafter/issues/37,,,,
+bug,DEEPSPEED-01,deepspeedai/DeepSpeed,rl-training,silent-training-bug,"fp16 `hysteresis: 0` (or negative) makes DynamicLossScaler never lower the loss scale, so every overflowing step is skipped forever",pr-open,https://github.com/deepspeedai/DeepSpeed/issues/8982,https://github.com/deepspeedai/DeepSpeed/pull/8983,,,
+bug,DS1000-01,xlang-ai/DS-1000,evals,wrong-score,"Pandas problem 135 defines two test cases but runs only one, so `idxmax` answers that drop tied rows are graded correct",reported,https://github.com/xlang-ai/DS-1000/issues/25,,,,
+bug,DS1000-02,xlang-ai/DS-1000,evals,wrong-score,"Sklearn problems 821-825 accept a leftover list column and either 0/1 encoding, so the Difficult-Rewrite problem 825 accepts the unmodified answer",reported,https://github.com/xlang-ai/DS-1000/issues/26,,,,
+bug,EASYR1-01,hiyouga/EasyR1,rl-training,reward-pays-wrong-answer,"DAPO reward: normalize_final_answer keeps only the first $...$ segment, so a hedged multi-value answer is scored fully correct",reported,https://github.com/hiyouga/EasyR1/issues/11028,,,,
 bug,ETCD-01,etcd-io/etcd,infra,crash-or-hang,A Txn mixing an open-ended delete with an ignore-value put panics every member and crash-loops on replay,reported,https://github.com/etcd-io/etcd/issues/22645,,,,
-bug,ETCD-03,etcd-io/etcd,infra,crash-or-hang,Force-new-cluster recovery panics the surviving member when a crash leaves the consistent index ahead of the WAL,pr-open,https://github.com/etcd-io/etcd/issues/22646,https://github.com/etcd-io/etcd/pull/22655,maintainers,,
+bug,ETCD-03,etcd-io/etcd,infra,crash-or-hang,Force-new-cluster recovery panics the surviving member when a crash leaves the consistent index ahead of the WAL,fixed,https://github.com/etcd-io/etcd/issues/22646,https://github.com/etcd-io/etcd/pull/22655,maintainers,,
+bug,ETCD-17,etcd-io/etcd,infra,other,ETCD-17: The grpc-proxy coalesces a lagging watcher into a current broadcast and silently drops the un-forwarded gap of events,pr-open,https://github.com/etcd-io/etcd/issues/22687,https://github.com/etcd-io/etcd/pull/22702,,,
+bug,EVALCHEMY-03,mlfoundations/evalchemy,evals,wrong-score,"LiveCodeBench functional problems call whatever name precedes the first ""("" in the program, so correct solutions with a helper function or a top-level call fail",reported,https://github.com/mlfoundations/evalchemy/issues/162,,,,
+bug,EVALPLUS-01,evalplus/evalplus,evals,wrong-score,"Mixed int/float and nested float outputs skip the float tolerance, so correct solutions (e.g. Mbpp/447) fail on 1-ulp differences",reported,https://github.com/evalplus/evalplus/issues/325,,,,
+bug,EVALSCOPE-03,modelscope/evalscope,evals,wrong-score,"LiveCodeBench sandbox grader parses multi-argument call inputs with `ast.literal_eval`, so JSON `true`/`false`/`null` reach the solution as strings and correct solutions fail",fixed,https://github.com/modelscope/evalscope/issues/1993,https://github.com/modelscope/evalscope/pull/1994,us,,
 bug,FN-09,langchain-ai/langgraph,agents,other,retry_policy on a node that calls two subgraphs resumes the second into the first one's checkpoint,reported,https://github.com/langchain-ai/langgraph/issues/9253,,,,
+bug,GPQA-01,idavidrein/gpqa,evals,wrong-score,"zero_shot_chain_of_thought reuses cached prompts from another data file, seed or `--max_examples`, so answers are scored against the wrong questions",reported,https://github.com/idavidrein/gpqa/issues/42,,,,
+bug,GPQA-02,idavidrein/gpqa,evals,wrong-score,"Question index 69 is hard-coded as wrong for every data file and prompt type, but in the released diamond/main/extended files it is a short-answer question",reported,https://github.com/idavidrein/gpqa/issues/41,,,,
+bug,GPQA-03,idavidrein/gpqa,evals,wrong-score,"parse_sampled_answer grades the first ""(X)"" in the response, so ""Option (A) is ruled out ... The correct answer is C."" is scored as A",reported,https://github.com/idavidrein/gpqa/issues/40,,,,
+bug,GYMNASIUM-ROBOTICS-01,Farama-Foundation/Gymnasium-Robotics,rl-envs,reward-pays-wrong-answer,"Shadow-hand manipulate envs: rotation distance ignores that q and -q are the same orientation, so a block sitting on its goal is scored as a failure",pr-open,https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/359,https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/360,,,
+bug,HARMBENCH-01,centerforaisafety/HarmBench,evals,crash-or-hang,"Copyright (hash_check) scoring raises ValueError with datasketch 2.0, which the unpinned `datasketch` requirement now installs",reported,https://github.com/centerforaisafety/HarmBench/issues/102,,,,
+bug,HELM-02,stanford-crfm/helm,evals,other,math_equiv_chain_of_thought scores any unboxed output as correct when the gold solution's answer cannot be extracted,reported,https://github.com/stanford-crfm/helm/issues/4374,,,,
+bug,HELM-08,stanford-crfm/helm,evals,wrong-score,BBQMetric scales the ambiguous-context bias score by overall accuracy instead of ambiguous-context accuracy,pr-open,https://github.com/stanford-crfm/helm/issues/4372,https://github.com/stanford-crfm/helm/pull/4373,,,
+bug,HELMET-01,princeton-nlp/HELMET,evals,other,"infbench_choice exact_match counts empty or wrong answers as correct when the gold letter is ""A"", because normalize_answer turns ""A"" into """"",pr-open,https://github.com/princeton-nlp/HELMET/issues/48,https://github.com/princeton-nlp/HELMET/pull/49,,,
+bug,HENDRYCKS-MATH-01,hendrycks/math,evals,wrong-score,is_equiv rates distinct answers as equivalent because _strip_string deletes any short left-hand side of an equation,reported,https://github.com/hendrycks/math/issues/35,,,,
+bug,IFBENCH-02,allenai/IFBench,evals,other,"format:list checker counts the separator anywhere in the text, so any prose with two hyphens passes ""instead of bullet points use -""",reported,https://github.com/allenai/IFBench/issues/43,,,,
+bug,IFBENCH-06,allenai/IFBench,evals,other,"format:quotes treats every apostrophe as a single quote, so one contraction breaks correct 3-level nesting, and apostrophes can fake a level",reported,https://github.com/allenai/IFBench/issues/44,,,,
+bug,INFINITEBENCH-02,OpenBMB/InfiniteBench,evals,other,longbook_choice_eng / code_debug score a wrong multiple-choice answer as correct when the model negates or lists the other options and the gold letter appears last,reported,https://github.com/OpenBMB/InfiniteBench/issues/39,,,,
+bug,INFINITEBENCH-03,OpenBMB/InfiniteBench,evals,crash-or-hang,"math_find scorer crashes (uncaught ValueError) on a decimal-formatted integer answer, aborting the whole task's scoring",reported,https://github.com/OpenBMB/InfiniteBench/issues/38,,,,
+bug,KERNELBENCH-01,ScalingIntelligence/KernelBench,evals,crash-or-hang,"eval_kernel_against_ref returns None for ordinary compile errors that contain ""lock"" (e.g. `block_size`) or ""No such file or directory"", which crashes eval_from_generations.py",reported,https://github.com/ScalingIntelligence/KernelBench/issues/181,,,,
+bug,LEGALBENCH-02,HazyResearch/legalbench,evals,other,"evaluate_ssla splits company names on "","", so ""Infoblox, Inc."" requires a separate ""inc"" entity and any wrong ""…Inc"" company earns credit",reported,https://github.com/HazyResearch/legalbench/issues/58,,,,
+bug,LIGHT-R1-01,Qihoo360/Light-R1,rl-training,wrong-score,"Shipped GPQA Diamond eval set has the gold answer at option ""A"" for all 198 questions, so reported GPQA scores are invalid and a model that only ever outputs \boxed{A} scores 100%",reported,https://github.com/Qihoo360/Light-R1/issues/59,,,,
+bug,LIGHTEVAL-03,huggingface/lighteval,evals,wrong-score,"HLE `calibration_error` compares confidence in percent (0-100) with correctness in 0/1, so a perfectly calibrated model scores 70 and a maximally miscalibrated one scores 0.71",pr-open,https://github.com/huggingface/lighteval/issues/1469,https://github.com/huggingface/lighteval/pull/1470,,,
+bug,LIVEBENCH-02,LiveBench/LiveBench,evals,wrong-score,AIME grader credits wrong answers via a trailing-substring match,reported,https://github.com/LiveBench/LiveBench/issues/586,,,,
+bug,LIVEBENCH-03,LiveBench/LiveBench,evals,other,Zebra-puzzle grader gives full credit for hedging every cell (substring match),reported,https://github.com/LiveBench/LiveBench/issues/585,,,,
+bug,LIVEBENCH-05,LiveBench/LiveBench,evals,wrong-score,sudoku scorer grades the first `<solution>` block instead of the final one,pr-open,https://github.com/LiveBench/LiveBench/issues/583,https://github.com/LiveBench/LiveBench/pull/584,,,
+bug,LIVEBENCH-06,LiveBench/LiveBench,evals,other,"theory_of_mind scorer credits any answer that contains the ground truth, so listing every location scores 1",reported,https://github.com/LiveBench/LiveBench/issues/587,,,,
+bug,LIVECODEBENCH-03,LiveCodeBench/LiveCodeBench,evals,wrong-score,"stdio grading accepts a wrong output token when it parses as the same Decimal (""11"" for ""0011"", ""1e1"" for ""10"")",reported,https://github.com/LiveCodeBench/LiveCodeBench/issues/166,,,,
+bug,LIVECODEBENCH-05,LiveCodeBench/LiveCodeBench,evals,wrong-score,Correct stdio solutions that write via `from sys import stdout` are graded as wrong because their output is not captured,reported,https://github.com/LiveCodeBench/LiveCodeBench/issues/167,,,,
+bug,LIVECODEBENCH-NEMO-FORK-01,wasiahmad/livecodebench,evals,wrong-score,"The new `np.allclose` output fallback accepts wrong integer answers (123457 for 123456, any digit string within 0.001%)",reported,https://github.com/wasiahmad/livecodebench/issues/2,,,,
+bug,LIVECODEBENCH-NEMO-FORK-02,wasiahmad/livecodebench,evals,crash-or-hang,"C++ stdio grading has no time limit after the first test, and a looping program is left running as an orphan at 100% CPU",reported,https://github.com/wasiahmad/livecodebench/issues/3,,,,
+bug,LLAMA-MODELS-02,meta-llama/llama-models,inference,crash-or-hang,"`decode_assistant_message` raises KeyError / ValueError / ValidationError on ordinary replies (a JSON answer with a ""name"" key, or a pythonic call with a non-literal argument)",reported,https://github.com/meta-llama/llama-models/issues/536,,,,
+bug,LM-EVAL-02,EleutherAI/lm-evaluation-harness,evals,wrong-score,"MultiChoiceRegexFilter maps choices that normalise to the same text (""5""/""-5"", ""15""/""1.5"", ""Na""/""NA"") to the last one's letter",reported,https://github.com/EleutherAI/lm-evaluation-harness/issues/4509,,,,
+bug,LM-EVAL-06,EleutherAI/lm-evaluation-harness,evals,wrong-score,"IFEval bullet-list checker counts markdown rules (---), negative numbers and italic lines as bullet points",reported,https://github.com/EleutherAI/lm-evaluation-harness/issues/4507,,,,
+bug,LM-EVAL-08,EleutherAI/lm-evaluation-harness,evals,wrong-score,"IFEval keyword checks match substrings, so ""cat"" is found in ""category"" and ""art"" is counted in ""start""",reported,https://github.com/EleutherAI/lm-evaluation-harness/issues/4506,,,,
+bug,LM-EVAL-09,EleutherAI/lm-evaluation-harness,evals,other,IFEval highlight checker counts one ***bold-italic*** span as two highlighted sections,reported,https://github.com/EleutherAI/lm-evaluation-harness/issues/4510,,,,
+bug,LM-EVAL-11,EleutherAI/lm-evaluation-harness,evals,other,"IFEval section checker counts prose references like ""see Section 2"" as sections",reported,https://github.com/EleutherAI/lm-evaluation-harness/issues/4508,,,,
+bug,MATH-V-01,mathllm/MATH-V,evals,wrong-score,"evaluate.py scores a wrong multiple-choice option as correct when its text, evaluated as arithmetic and rounded to 2 decimals, equals the gold option's text (""5-4-3-2-1"" == ""5-2-3-1-4"", 1/300 == 1/900, 2018 == √(2018²+2))",reported,https://github.com/mathllm/MATH-V/issues/12,,,,
+bug,MATHARENA-04,eth-sri/matharena,evals,crash-or-hang,A boxed `inf` or `1e999` crashes grading with an uncaught OverflowError,acknowledged,https://github.com/eth-sri/matharena/issues/40,,,,
+bug,MATHARENA-05,eth-sri/matharena,evals,other,An earlier exact box overrides a final boxed decimal even when the decimal contradicts it,acknowledged,https://github.com/eth-sri/matharena/issues/41,,,,
+bug,MATHVISTA-01,lupantech/MathVista,evals,wrong-score,"calculate_score.py maps non-answers such as ""N/A"" or ""Cannot be determined"" to the nearest option and can score them correct, even with --ignore_empty_extractions",fixed,https://github.com/lupantech/MathVista/issues/41,https://github.com/lupantech/MathVista/pull/42,maintainers,,
+bug,MLEBENCH-01,openai/mle-bench,evals,other,"champs-scalar-coupling and predict-volcanic-eruptions-ingv-oe graders score duplicate ids again, so repeating confident rows lowers the error",reported,https://github.com/openai/mle-bench/issues/156,,,,
+bug,MLEBENCH-02,openai/mle-bench,evals,wrong-score,"jigsaw-unintended-bias grader rounds predictions to 0/1 before ROC-AUC, so a perfectly ranked submission can score 0.5",reported,https://github.com/openai/mle-bench/issues/157,,,,
+bug,MMLU-01,hendrycks/test,evals,wrong-score,"evaluate.py silently predicts ""A"" when no option-letter logprob is returned (and breaks logit ties toward A), awarding undeserved credit on A-gold questions",reported,https://github.com/hendrycks/test/issues/31,,,,
+bug,MMLU-PRO-02,TIGER-AI-Lab/MMLU-Pro,evals,wrong-score,"extract_answer and extract_again read the first letter of a word as the option letter (""The answer is Hydrogen"" -> H)",reported,https://github.com/TIGER-AI-Lab/MMLU-Pro/issues/84,,,,
+bug,MMMU-03,MMMU-Benchmark/MMMU,evals,wrong-score,"MMMU-Pro evaluate.py never seeds its random fallback, so the same results file gets a different score on every run",pr-open,https://github.com/MMMU-Benchmark/MMMU/issues/141,https://github.com/MMMU-Benchmark/MMMU/pull/142,,,
+bug,MMMU-04,MMMU-Benchmark/MMMU,evals,wrong-score,"MMMU eval_open rounds numbers to 2 decimal places, so small gold answers such as 8.00e-5 accept ""0"" or any value below 0.005",reported,https://github.com/MMMU-Benchmark/MMMU/issues/140,,,,
+bug,MMMU-05,MMMU-Benchmark/MMMU,evals,wrong-score,"MMMU-Pro evaluate.py silently skips every ""standard (10 options)"" and ""standard (4 options)"" results file",reported,https://github.com/MMMU-Benchmark/MMMU/issues/143,,,,
+bug,MS-SWIFT-01,modelscope/ms-swift,rl-training,reward-pays-wrong-answer,"`cosine` reward wraps around and `soft_overlong` drops below -1 when a completion is longer than its max length, which multi-turn rollouts now reach",fixed,https://github.com/modelscope/ms-swift/issues/10498,https://github.com/modelscope/ms-swift/pull/10500,maintainers,,
+bug,MULTIPL-E-01,nuprl/MultiPL-E,evals,other,"JavaScript tests use loose `assert.deepEqual`, so completions that return the wrong type (22 for ""22"", 0 for false, undefined for null) are graded OK",acknowledged,https://github.com/nuprl/MultiPL-E/issues/197,,,,
+bug,MULTIPL-E-02,nuprl/MultiPL-E,evals,other,"Go tests compare `fmt.Sprintf(""%v"")` strings, so a wrong `[]string` like [""Hi"", ""my name is John""] passes where five words are expected",acknowledged,https://github.com/nuprl/MultiPL-E/issues/198,,,,
+bug,NATURALCODEBENCH-02,THUDM/NaturalCodeBench,evals,crash-or-hang,"Java grading parses the verdict out of the solution's own stdout, so a correct solution that logs ""failed"" is graded as an error and one that logs ""Found 2 matches"" crashes the evaluation",reported,https://github.com/THUDM/NaturalCodeBench/issues/5,,,,
+bug,NEMO-RL-01,NVIDIA-NeMo/RL,rl-training,silent-training-bug,Rollout marks EOS-terminated responses as `truncated` when the terminal environment observation does not fit in max_seq_len,pr-open,https://github.com/NVIDIA-NeMo/RL/issues/5016,https://github.com/NVIDIA-NeMo/RL/pull/5017,,,
+bug,NEMO-SKILLS-01,NVIDIA-NeMo/Skills,evals,other,"is_correct_judgement reads the first ""Judgement:"" label instead of the judge's final verdict, so an answer that contains ""Judgement: Yes"" is graded correct",pr-open,https://github.com/NVIDIA-NeMo/Skills/issues/1542,https://github.com/NVIDIA-NeMo/Skills/pull/1543,,,
+bug,NEMO-SKILLS-04,NVIDIA-NeMo/Skills,evals,wrong-score,"SciCode: after a context-window error, later steps are written under the previous step's key, so the last sub-step is never scored and subtask accuracy is inflated",pr-open,https://github.com/NVIDIA-NeMo/Skills/issues/1544,https://github.com/NVIDIA-NeMo/Skills/pull/1545,,,
+bug,OAT-01,sail-sg/oat,rl-training,reward-pays-wrong-answer,r1_distill_qwen_math_reward_fn returns 0.0 instead of incorrect_reward when </think> is missing or repeated,reported,https://github.com/sail-sg/oat/issues/78,,,,
+bug,OLYMPIADBENCH-02,OpenBMB/OlympiadBench,evals,wrong-score,"judge.py passes the model answer as the ground-truth argument, so per-answer error tolerances follow the model's answer order (accepts wrong, rejects correct)",reported,https://github.com/OpenBMB/OlympiadBench/issues/20,,,,
+bug,OLYMPIADBENCH-03,OpenBMB/OlympiadBench,evals,other,"MathJudger's tuple/interval comparison zips components without checking their count, so (2,4,6) matches gold (2,4)",reported,https://github.com/OpenBMB/OlympiadBench/issues/21,,,,
+bug,OLYMPICARENA-01,GAIR-NLP/OlympicArena,evals,other,"evaluation.py grades with auto_judge, which ignores answer_type and accepts a response if any of nine judges accepts it (wrong-LHS equations, `0=0`, swapped multi-quantity answers, wrong interval brackets)",reported,https://github.com/GAIR-NLP/OlympicArena/issues/8,,,,
+bug,OLYMPICARENA-02,GAIR-NLP/OlympicArena,evals,other,"judge_single_numerical_value uses an absolute 1e-5 tolerance, so `0` (or a value off by orders of magnitude) is graded correct for any gold smaller than about 1e-5",reported,https://github.com/GAIR-NLP/OlympicArena/issues/9,,,,
+bug,OLYMPICARENA-03,GAIR-NLP/OlympicArena,evals,other,"judge_interval never checks how many endpoints an interval has, so `(81,144,7)` matches gold `(81,144)` (and tuple golds accept extra components through auto_judge)",reported,https://github.com/GAIR-NLP/OlympicArena/issues/10,,,,
+bug,OLYMPICARENA-06,GAIR-NLP/OlympicArena,evals,other,extract_boxed_answer grades the first \boxed{} in the response instead of the final answer,reported,https://github.com/GAIR-NLP/OlympicArena/issues/11,,,,
+bug,OMNI-MATH-02,KbsdJames/Omni-MATH,evals,wrong-score,"Judge outputs with no readable verdict are dropped from the denominator, which inflates Omni-MATH accuracy",reported,https://github.com/KbsdJames/Omni-MATH/issues/11,,,,
+bug,OMNI-MATH-05,KbsdJames/Omni-MATH,evals,wrong-score,"Difficulty breakdown reports problems rated 7.5-8 under ""difficulty_5_7"", so ""difficulty_7_10"" covers only 8-10",reported,https://github.com/KbsdJames/Omni-MATH/issues/12,,,,
+bug,OPEN-INSTRUCT-02,allenai/open-instruct,rl-training,reward-pays-wrong-answer,"IFEvalG exclude_word_harder only rejects the forbidden word when it has a space on both sides, so ""my car,"" ""Car ..."" and ""... car"" pass ""Do not include keyword car""",pr-open,https://github.com/allenai/open-instruct/issues/2151,https://github.com/allenai/open-instruct/pull/2152,,,
+bug,OPEN-INSTRUCT-04,allenai/open-instruct,rl-training,reward-pays-wrong-answer,"IFEvalG copy_span_idx asks for the span ""between (and including) index n_start and n_end"" but compares against prompt[n_start:n_end], dropping the last character",pr-open,https://github.com/allenai/open-instruct/issues/2154,https://github.com/allenai/open-instruct/pull/2155,,,
+bug,OPENCOMPASS-03,open-compass/opencompass,evals,other,"MATHEvaluator.is_equiv counts different answers as equal (x<3 vs x\le 3, 23 vs 2\cdot 3, ""5, 9"" vs 5\cdot 9, 12 vs ""1,2"")",reported,https://github.com/open-compass/opencompass/issues/2707,,,,
+bug,OPENHANDS-BENCHMARKS-02,OpenHands/benchmarks,evals,wrong-score,"SWE-bench Pro and ProgramBench reports drop instances that errored during inference from total_instances, which inflates the resolve rate",reported,https://github.com/OpenHands/benchmarks/issues/791,,,,
+bug,OPENPIPE-ART-01,OpenPipe/ART,rl-training,reward-pays-wrong-answer,"SFT trains Qwen2.5 and Llama 3.2 on JSON-string-encoded tool-call arguments (`""arguments"": ""{\""location\"": ...}""`)",reported,https://github.com/OpenPipe/ART/issues/1154,,,,
+bug,OPENRLHF-01,OpenRLHF/OpenRLHF,rl-training,crash-or-hang,Shipped GEM multi-turn agent example crashes on every rollout: `AgentInstance` has `async def __init__` but the executor now instantiates it directly,pr-open,https://github.com/OpenRLHF/OpenRLHF/issues/1386,https://github.com/OpenRLHF/OpenRLHF/pull/1387,,,
+bug,OPENRLHF-02,OpenRLHF/OpenRLHF,rl-training,reward-pays-wrong-answer,"DAPO overlong penalty uses `max_len - buffer` as threshold when `--rollout.max_new_tokens` is unset, so responses that hit their per-prompt budget get little or no penalty",reported,https://github.com/OpenRLHF/OpenRLHF/issues/1388,,,,
+bug,OPENRLHF-04,OpenRLHF/OpenRLHF,rl-training,crash-or-hang,Math reward grader hangs the rollout actor on a generated answer like `\boxed{9**9**9}` (integer power or factorial evaluated eagerly; no timeout applies),reported,https://github.com/OpenRLHF/OpenRLHF/issues/1385,,,,
+bug,OSWORLD-01,xlang-ai/OSWorld,rl-envs,wrong-score,"compare_table ""style"" rule ignores Top-N (type=""top10"") conditional formatting, so a correct Calc answer scores 0",fixed,https://github.com/xlang-ai/OSWorld/issues/671,https://github.com/xlang-ai/OSWorld/pull/674,maintainers,,
+bug,PETTINGZOO-02,Farama-Foundation/PettingZoo,rl-envs,reward-pays-wrong-answer,"go_v5 rewards a drawn game (score 0, any integer komi) as a win for white (+1) and a loss for black (-1)",reported,https://github.com/Farama-Foundation/PettingZoo/issues/1535,,,,
 bug,PS-13,langchain-ai/langgraph,agents,other,A single failed checkpoint save under async durability drops saved channel values from the thread,fixed,https://github.com/langchain-ai/langgraph/issues/9245,https://github.com/langchain-ai/langgraph/pull/9235,maintainers,,
-bug,REDIS-06,redis/redis,infra,crash-or-hang,"ARGREP limits pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",reported,https://github.com/redis/redis/issues/16084,,,,
+bug,PYCOCOEVALCAP-01,salaniz/pycocoevalcap,evals,wrong-score,PTBTokenizer silently assigns captions to the wrong image when a caption contains `\r` (or another line break besides `\n`),reported,https://github.com/salaniz/pycocoevalcap/issues/28,,,,
+bug,PYTORCH-01,pytorch/pytorch,infra,other,"CosineAnnealingWarmRestarts.step(epoch) with T_mult > 1 puts some exact restart epochs in the previous cycle (lr = eta_min instead of eta_max), because int(math.log(...)) rounds down",reported,https://github.com/pytorch/pytorch/issues/203028,,,,
+bug,QWEN-MATH-01,QwenLM/Qwen2.5-Math,evals,other,"math_equal deletes every parenthesis before comparing, so 2x+1 is graded equal to 2(x+1)",reported,https://github.com/QwenLM/Qwen2.5-Math/issues/69,,,,
+bug,QWEN-MATH-02,QwenLM/Qwen2.5-Math,evals,other,"math_equal ignores interval bracket types: (1,2) is graded equal to [1,2] and (1,2] to [1,2)",reported,https://github.com/QwenLM/Qwen2.5-Math/issues/70,,,,
+bug,QWEN-MATH-03,QwenLM/Qwen2.5-Math,evals,other,"math_equal strips every comma as a thousands separator, so the answer 12 matches the list 1,2",reported,https://github.com/QwenLM/Qwen2.5-Math/issues/71,,,,
+bug,R2E-GYM-01,R2E-Gym/R2E-Gym,rl-envs,reward-pays-wrong-answer,`_calculate_reward_r2e` gives reward 1.0 to a patch that makes pytest abort at collection when the instance has one expected test,reported,https://github.com/R2E-Gym/R2E-Gym/issues/38,,,,
+bug,RAGEN-01,mll-lab-nu/RAGEN,rl-training,silent-training-bug,`get_masks_and_scores` silently drops an assistant turn's reward on Qwen when `use_turn_scores=True` and the turn has no trailing `<|im_end|>` (e.g. truncated response),reported,https://github.com/mll-lab-nu/RAGEN/issues/168,,,,
+bug,RANX-01,AmenRa/ranx,evals,wrong-score,"Tied run scores are ordered by input order, so metrics depend on line/insertion order and differ from trec_eval",reported,https://github.com/AmenRa/ranx/issues/87,,,,
+bug,RAY-03,ray-project/ray,infra,other,Autoscaler v2 crashes every reconcile when the global max_workers cap cuts pending min_workers launches,pr-open,https://github.com/ray-project/ray/issues/67683,https://github.com/ray-project/ray/pull/67685,,,
+bug,RAY-04,ray-project/ray,infra,other,Autoscaler v2 raises KeyError in _enforce_max_workers_per_type when a running node's type was removed from the config,pr-open,https://github.com/ray-project/ray/issues/67684,https://github.com/ray-project/ray/pull/67686,,,
+bug,REASONING-GYM-03,open-thought/reasoning-gym,rl-envs,reward-pays-wrong-answer,knights_knaves `score_answer` gives a guaranteed 0.65 to a self-contradictory answer that assigns both roles to one person,reported,https://github.com/open-thought/reasoning-gym/issues/564,,,,
+bug,REASONING-GYM-04,open-thought/reasoning-gym,rl-envs,reward-pays-wrong-answer,prime_factorization `score_answer` gives >=0.5 for echoing the number from the question,reported,https://github.com/open-thought/reasoning-gym/issues/565,,,,
+bug,REASONING-GYM-10,open-thought/reasoning-gym,rl-envs,reward-pays-wrong-answer,"figlet_font `score_answer` gives full credit (1.0) to wrong answers for words of 11+ letters, e.g. only the first 10 letters",reported,https://github.com/open-thought/reasoning-gym/issues/567,,,,
+bug,REASONING-GYM-11,open-thought/reasoning-gym,rl-envs,crash-or-hang,"bf difficulty=3 generates Brainfuck programs that never halt, so `BFDataset[idx]` hangs forever (in about 94% of size-500 datasets)",reported,https://github.com/open-thought/reasoning-gym/issues/563,,,,
+bug,REASONING-GYM-12,open-thought/reasoning-gym,rl-envs,reward-pays-wrong-answer,rush_hour `score_answer` gives 1.0 to move lists with illegal moves: blocked moves are skipped and too-long moves are cut short,reported,https://github.com/open-thought/reasoning-gym/issues/568,,,,
+bug,REASONING360-05,LLM360/Reasoning360,rl-training,reward-pays-wrong-answer,"coder1 `fuzzy_equal` compares output tokens as floats, so wrong integers above 2^53 and wrong long binary strings pass stdin/stdout tests",reported,https://github.com/LLM360/Reasoning360/issues/156,,,,
+bug,REDIS-06,redis/redis,infra,crash-or-hang,"ARGREP limits pattern length but not compile cost, so a short nested pattern blocks the event loop for tens of seconds",pr-open,https://github.com/redis/redis/issues/16084,https://github.com/redis/redis/pull/16101,,,
+bug,RL-ENV-USE-01,browser-use/rl-env-use,rl-envs,crash-or-hang,"`graders.prob_of` raises `ValueError` (CPython int digit limit) on a forecast answer like `""111...1/1""` with a 4301+ digit part instead of scoring 0; it propagates through `grade_answer` and `Env.reward`",pr-open,https://github.com/browser-use/rl-env-use/issues/7,https://github.com/browser-use/rl-env-use/pull/8,,,
+bug,RLLM-01,rllm-org/rllm,rl-training,crash-or-hang,"Countdown reward gives full credit to equations that break the task rules (decimal points, `**`, `//`) and can hang on `**` chains",pr-open,https://github.com/rllm-org/rllm/issues/945,https://github.com/rllm-org/rllm/pull/946,,,
+bug,RLLM-06,rllm-org/rllm,rl-training,reward-pays-wrong-answer,"RewardCodeFn mis-converts TACO/APPS tests: list-valued expected output is cut to its first line, and string return values are re-parsed as JSON",pr-open,https://github.com/rllm-org/rllm/issues/947,https://github.com/rllm-org/rllm/pull/948,,,
+bug,RULER-01,NVIDIA/RULER,evals,wrong-score,"niah.py overwrites each sample's `index` with the answer's character offset, so resuming a run silently skips most NIAH samples",fixed,https://github.com/NVIDIA/RULER/issues/116,https://github.com/NVIDIA/RULER/pull/117,us,,
+bug,SEARCH-R1-01,PeterGriffinJin/Search-R1,rl-training,silent-training-bug,"GRPO groups are keyed by `extra_info.index`, which repeats across NQ and HotpotQA in the merged training set, so two different questions get pooled into one advantage group",reported,https://github.com/PeterGriffinJin/Search-R1/issues/197,,,,
 bug,SGLANG-05,sgl-project/sglang,inference,other,"A retracted request restarts its penalty history from zero, so its output silently changes",reported,https://github.com/sgl-project/sglang/issues/47245,,,,
-bug,VALKEY-02,valkey-io/valkey,infra,other,"A module getkeys callback runs on an I/O thread and touches main-thread state, causing a data race",reported,https://github.com/valkey-io/valkey/issues/5054,,,,
+bug,SIMPLE-EVALS-01,openai/simple-evals,evals,other,DropEval's `score` marks non-answers correct because `fuzzy_match` accepts substring containment in either direction,reported,https://github.com/openai/simple-evals/issues/133,,,,
+bug,SIMPLE-EVALS-02,openai/simple-evals,evals,wrong-score,"MGSM `parse_answer` drops minus signs and misreads locale number formats (""2,5"" credited as 25, ""1.000"" rejected as 1000)",reported,https://github.com/openai/simple-evals/issues/132,,,,
+bug,SKYRL-02,NovaSky-AI/SkyRL,rl-training,reward-pays-wrong-answer,"arctic_rl BIRD reward: the 5000-row cap in `_add_limit_to_query` is skipped whenever the text ""LIMIT "" appears anywhere in the query (subquery, comment, string literal, `credit_limit`), so the scorer fetches every row",reported,https://github.com/NovaSky-AI/SkyRL/issues/2597,,,,
+bug,SKYTHOUGHT-01,NovaSky-AI/SkyThought,rl-training,wrong-score,"LiveCodeBench functional problems call whatever name precedes the first ""("" in the program, so correct solutions with a helper, a top-level call or `class Solution` fail",reported,https://github.com/NovaSky-AI/SkyThought/issues/122,,,,
+bug,SKYTHOUGHT-03,NovaSky-AI/SkyThought,rl-training,reward-pays-wrong-answer,"GPQA-Diamond (and MMLU) score the last standalone A-D anywhere in the upper-cased response, not the `\boxed{}` letter, so the article ""a"" after a correct box is graded as answer A",reported,https://github.com/NovaSky-AI/SkyThought/issues/123,,,,
+bug,SKYTHOUGHT-04,NovaSky-AI/SkyThought,rl-training,crash-or-hang,"MathVerifyScorer and GSM8KScorer read `self.response_key` / `self.answer_key`, which are never set, so every row scores False (and `scorer(row)` raises TypeError)",reported,https://github.com/NovaSky-AI/SkyThought/issues/124,,,,
+bug,SLIME-02,THUDM/slime,rl-training,crash-or-hang,"Math reward (deepscaler / math rm_type) hangs, and blocks the rollout event loop, on answers like `\boxed{9**9**9}` or `\boxed{(10^9)!}`",reported,https://github.com/THUDM/slime/issues/2515,,,,
+bug,SQL-R1-01,DataArcTech/SQL-R1,rl-training,reward-pays-wrong-answer,"RL reward (synsql.compute_score) runs model SQL on a read-write connection, so a rollout's DROP/ALTER TABLE is committed to the shared training database and changes the reward of every later rollout on it",reported,https://github.com/DataArcTech/SQL-R1/issues/34,,,,
+bug,SQL-R1-02,DataArcTech/SQL-R1,rl-training,reward-pays-wrong-answer,"RL reward returns 'Match' (full reward) for any executable prediction when the gold SQL fails, because of `pred_passes == 3` (comparison instead of assignment)",reported,https://github.com/DataArcTech/SQL-R1/issues/35,,,,
+bug,STRONGREJECT-01,dsbowen/strong_reject,evals,wrong-score,"`harmbench` and `strongreject_finetuned` keep the last 512 tokens of a response, not the first 512, and put a literal BOS token in the middle of the classifier prompt",reported,https://github.com/dsbowen/strong_reject/issues/45,,,,
+bug,SWE-SMITH-01,SWE-bench/SWE-smith,rl-envs,reward-pays-wrong-answer,`parse_log_maven_surefire` scores a test that throws (`<<< ERROR!`) as PASSED,reported,https://github.com/SWE-bench/SWE-smith/issues/254,,,,
+bug,SWE-SMITH-04,SWE-bench/SWE-smith,rl-envs,reward-pays-wrong-answer,"`GoProfile.log_parser` keys results by bare test name, so same-named tests in different packages overwrite each other",reported,https://github.com/SWE-bench/SWE-smith/issues/255,,,,
+bug,SWEBENCH-03,SWE-bench/SWE-bench,evals,other,"parse_log_sympy grades a failing test PASSED when the code under test prints ""ok"" while it runs",reported,https://github.com/SWE-bench/SWE-bench/issues/710,,,,
+bug,SWEBENCH-04,SWE-bench/SWE-bench,evals,other,"pytest log parsers let a later ""PASSED <id>"" line override pytest's ""FAILED <id>"", and the #620 exit-code guard misses it when any other test fails or the exit status is 0",reported,https://github.com/SWE-bench/SWE-bench/issues/708,,,,
+bug,SWEBENCH-05,SWE-bench/SWE-bench,evals,wrong-score,"parse_log_pytest_v2 keeps "" - <message>"" in ERROR and XFAIL ids, so a test that errors in teardown grades as passed and an xfail test grades as failed",reported,https://github.com/SWE-bench/SWE-bench/issues/709,,,,
+bug,SWEBENCH-06,SWE-bench/SWE-bench,evals,wrong-score,"parse_log_sympy drops the last test of every test file again (""[OK]""/""[FAIL]"" suffix); the #212 fix was lost in the #285 refactor",pr-open,https://github.com/SWE-bench/SWE-bench/issues/706,https://github.com/SWE-bench/SWE-bench/pull/707,,,
+bug,SYNTHETIC-DATA-KIT-01,meta-llama/synthetic-data-kit,rl-training,reward-pays-wrong-answer,`curate` on a CoT file drops the chain-of-thought: `reasoning` comes back empty and `conversations` (used by save-as) contain only the final answer,reported,https://github.com/meta-llama/synthetic-data-kit/issues/98,,,,
+bug,SYNTHETIC-DATA-KIT-02,meta-llama/synthetic-data-kit,rl-training,reward-pays-wrong-answer,"`parse_ratings` un-escapes `\n`/`\r`/`\t` before `json.loads`: curated answers lose their newlines, and batches containing `\theta`, `\nabla` or a tab silently shrink to their first pair",reported,https://github.com/meta-llama/synthetic-data-kit/issues/99,,,,
+bug,SYNTHETIC-DATA-KIT-05,meta-llama/synthetic-data-kit,rl-training,reward-pays-wrong-answer,"`parse_qa_pairs` ""remove trailing commas"" regex rewrites text inside JSON strings (`[, ]` → `[ ]`, `[1, 2, 3,]` → `[1, 2, 3]`)",reported,https://github.com/meta-llama/synthetic-data-kit/issues/100,,,,
+bug,TAU-BENCH-03,sierra-research/tau-bench,evals,wrong-score,"Database hash treats 250 and 250.0 as different, so a correct booking paid as 250.0 gets reward 0",reported,https://github.com/sierra-research/tau-bench/issues/97,,,,
+bug,TEXTARENA-02,TextArena/TextArena,rl-envs,crash-or-hang,"Calling `reset()` a second time on the same environment raises `AssertionError: langs dict must be Dict[int, str]`",pr-open,https://github.com/TextArena/TextArena/issues/215,https://github.com/TextArena/TextArena/pull/216,,,
+bug,TEXTARENA-04,TextArena/TextArena,rl-envs,crash-or-hang,FifteenPuzzle-v0 raises `AttributeError: 'SinglePlayerState' object has no attribute 'set_winners'` when the puzzle is solved,pr-open,https://github.com/TextArena/TextArena/issues/213,https://github.com/TextArena/TextArena/pull/214,,,
+bug,THEOREMQA-01,TIGER-AI-Lab/TheoremQA,evals,wrong-score,TheoremQA scores reversed-order list answers as correct because compare_two_list sorts both lists,reported,https://github.com/TIGER-AI-Lab/TheoremQA/issues/5,,,,
+bug,TINYZERO-01,Jiayi-Pan/TinyZero,rl-training,reward-pays-wrong-answer,"Countdown reward gives full correct-answer score (1.0) to equations that break the task rules (decimal points, `**`, `//`)",reported,https://github.com/Jiayi-Pan/TinyZero/issues/126,,,,
+bug,TOKENIZERS-01,huggingface/tokenizers,inference,crash-or-hang,"ByteFallback decoder turns valid characters into U+FFFD when an invalid byte follows them in the same byte run, so `decode` loses text and `DecodeStream.step` raises ""Invalid prefix""",reported,https://github.com/huggingface/tokenizers/issues/2625,,,,
+bug,TOOLBENCH-01,OpenBMB/ToolBench,evals,wrong-score,tooleval pairwise preference mis-maps the two answers: a solved candidate loses the comparison ~50% of the time,reported,https://github.com/OpenBMB/ToolBench/issues/387,,,,
+bug,TOOLBENCH-02,THUNLP-MT/StableToolBench,evals,wrong-score,"eval_preference.py --use_pass_rate true never uses the pass-rate verdicts: the CSV is_solved cell is a stringified dict, so every comparison is re-judged by the LLM",reported,https://github.com/THUNLP-MT/StableToolBench/issues/40,,,,
+bug,UNDERSTAND-R1-ZERO-01,sail-sg/understand-r1-zero,rl-training,reward-pays-wrong-answer,"Minerva eval: trailing ""\n"" in shipped ground truth makes the grader credit \boxed{10} for scientific-notation answers",reported,https://github.com/sail-sg/understand-r1-zero/issues/41,,,,
+bug,UNSLOTH-03,unslothai/unsloth-zoo,rl-training,silent-training-bug,"`train_on_responses_only` (default `force_match=True`) misses a marker whose trailing newline BPE-merges with a message that starts with a newline: the assistant turn is not trained, or a user turn is trained",fixed,https://github.com/unslothai/unsloth-zoo/issues/2363,https://github.com/unslothai/unsloth-zoo/pull/2364,us,,
+bug,VALKEY-02,valkey-io/valkey,infra,other,"A module getkeys callback runs on an I/O thread and touches main-thread state, causing a data race",pr-open,https://github.com/valkey-io/valkey/issues/5054,https://github.com/valkey-io/valkey/pull/5078,,,
+bug,VERIFIERS-02,PrimeIntellect-ai/verifiers,rl-envs,silent-training-bug,Default `bash` harness: compaction summaries that the harness rejects and resamples (empty or tool-calling replies) come out `Branch.trainable=True`,reported,https://github.com/PrimeIntellect-ai/verifiers/issues/3038,,,,
+bug,VERIFIERS-03,PrimeIntellect-ai/verifiers,rl-envs,silent-training-bug,"ACP: when the agent deadline cancels a prompt, the agent's semantic edges are never collected, so abandoned compaction attempts in a timed-out (still scored) rollout stay `trainable=True`",reported,https://github.com/PrimeIntellect-ai/verifiers/issues/3039,,,,
+bug,VERL-TOOL-01,TIGER-AI-Lab/verl-tool,rl-training,reward-pays-wrong-answer,"ToRL math reward compares only the leading number of the answer: `\boxed{3\sqrt{3}}` scores +1 for ground truth `3\sqrt{2}`, `\boxed{4\pi}` scores +1 for `4`",reported,https://github.com/TIGER-AI-Lab/verl-tool/issues/160,,,,
+bug,VERL-TOOL-02,TIGER-AI-Lab/verl-tool,rl-training,crash-or-hang,AceCoder reward manager crashes with `AttributeError: 'AceCoderRewardManager' object has no attribute 'record_dir'` on every AceCoder-format sample,pr-open,https://github.com/TIGER-AI-Lab/verl-tool/issues/158,https://github.com/TIGER-AI-Lab/verl-tool/pull/159,,,
+bug,WEBSHOP-01,princeton-nlp/WebShop,rl-envs,reward-pays-wrong-answer,"get_option_reward gives full option credit for a different color because normalize_color maps ""dark red"", ""dark green"", ""dark denim"" (and ""light pink"", ""light purple"") to the bare word ""dark"" / ""light""",reported,https://github.com/princeton-nlp/WebShop/issues/62,,,,

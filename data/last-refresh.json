@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-10T13:22:49+00:00",
+ "run_at": "2026-11-10T14:28:42+00:00",
  "today": "2026-11-10",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -16,22 +16,13 @@
  },
  "kev_skipped": [],
  "errors": [],
- "added_incidents": [
-  "321 2026-11-09 GPUStack users (code flaw)",
-  "322 2026-11-09 SignalWire FreeSwitch users (code flaw)",
-  "323 2026-11-09 IBM Aspera Faspex users (code flaw)",
-  "324 2026-11-10 Barracuda Email Security Gateway (ESG) users (code flaw)",
-  "325 2026-11-10 Government organizations in Kazakhstan and Romania (Microsoft Exchange servers) (other cause)",
-  "326 2026-11-10 Google Chrome users (code flaw)",
-  "327 2026-11-10 Fireworks AI (other cause)",
-  "328 2026-11-10 OpenClaw users who installed malicious skills (other cause)",
-  "329 2026-11-09 WorkOS (other cause)",
-  "330 2026-11-09 South Asian organizations (Bitter PapRAT campaign) (other cause)"
- ],
+ "added_incidents": [],
  "added_proofs": [
-  "88 Keel: verified in-kernel proof checker for the eBPF Certificate Framework (BCF) / Proof-Carrying BPF"
+  "89 DecDNS (Declarative DNS)"
  ],
  "archived": 0,
+ "bugpipe": true,
+ "bugpipe_bugs": 158,
  "news_items": 106,
  "llm": true
 }
