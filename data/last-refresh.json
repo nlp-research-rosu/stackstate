@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-10T00:38:01+00:00",
+ "run_at": "2026-11-10T13:22:49+00:00",
  "today": "2026-11-10",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -8,31 +8,30 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 2,
-  "https://techcrunch.com/category/security/feed/": 13,
+  "https://techcrunch.com/category/security/feed/": 14,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 14,
-  "https://rss.arxiv.org/rss/cs.PL": 9,
-  "https://rss.arxiv.org/rss/cs.CR": 57
+  "https://rss.arxiv.org/rss/cs.LO": 32,
+  "https://rss.arxiv.org/rss/cs.PL": 22,
+  "https://rss.arxiv.org/rss/cs.CR": 136
  },
- "kev_skipped": [
-  "CVE-2026-102895",
-  "CVE-2026-116779",
-  "CVE-2026-123218"
- ],
+ "kev_skipped": [],
  "errors": [],
  "added_incidents": [
-  "312 2026-11-09 Vanderbilt University (other cause)",
-  "313 2026-11-09 SEGA (newsletter subscribers, via provider ARARA) (other cause)",
-  "314 2026-11-09 York University (other cause)",
-  "315 2026-11-09 Beget (other cause)",
-  "316 2026-11-09 Binance (other cause)",
-  "317 2026-11-09 Revolve (other cause)",
-  "318 2026-11-09 Qubole customers (Idera) (other cause)",
-  "319 2026-11-09 Ethersphere (bee-js and Swarm Desktop users) (other cause)",
-  "320 2026-11-09 Wyndham (code flaw)"
+  "321 2026-11-09 GPUStack users (code flaw)",
+  "322 2026-11-09 SignalWire FreeSwitch users (code flaw)",
+  "323 2026-11-09 IBM Aspera Faspex users (code flaw)",
+  "324 2026-11-10 Barracuda Email Security Gateway (ESG) users (code flaw)",
+  "325 2026-11-10 Government organizations in Kazakhstan and Romania (Microsoft Exchange servers) (other cause)",
+  "326 2026-11-10 Google Chrome users (code flaw)",
+  "327 2026-11-10 Fireworks AI (other cause)",
+  "328 2026-11-10 OpenClaw users who installed malicious skills (other cause)",
+  "329 2026-11-09 WorkOS (other cause)",
+  "330 2026-11-09 South Asian organizations (Bitter PapRAT campaign) (other cause)"
  ],
- "added_proofs": [],
- "archived": 2,
- "news_items": 105,
+ "added_proofs": [
+  "88 Keel: verified in-kernel proof checker for the eBPF Certificate Framework (BCF) / Proof-Carrying BPF"
+ ],
+ "archived": 0,
+ "news_items": 106,
  "llm": true
 }
