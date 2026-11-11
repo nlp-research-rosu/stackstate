@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-11-11T12:34:12Z",
+ "generated_at": "2026-11-11T23:23:52Z",
  "incidents": [
   {
    "id": "8",
@@ -12712,7 +12712,7 @@
    {
     "vertical": "rl-training",
     "stage": "findings",
-    "n": 149
+    "n": 150
    },
    {
     "vertical": "rl-training",
@@ -12742,7 +12742,7 @@
    {
     "vertical": "rl-training",
     "stage": "type_right-answer-marked-wrong",
-    "n": 6
+    "n": 7
    },
    {
     "vertical": "rl-training",
