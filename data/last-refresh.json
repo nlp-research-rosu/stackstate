@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-11T23:23:36+00:00",
- "today": "2026-11-11",
+ "run_at": "2026-11-12T13:38:11+00:00",
+ "today": "2026-11-12",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -10,19 +10,30 @@
   "https://krebsonsecurity.com/feed/": 4,
   "https://techcrunch.com/category/security/feed/": 15,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 13,
-  "https://rss.arxiv.org/rss/cs.PL": 15,
-  "https://rss.arxiv.org/rss/cs.CR": 50
+  "https://rss.arxiv.org/rss/cs.LO": 0,
+  "https://rss.arxiv.org/rss/cs.PL": 0,
+  "https://rss.arxiv.org/rss/cs.CR": 0
  },
  "kev_skipped": [
   "CVE-2026-111560"
  ],
- "errors": [
-  "Model stopped: content_filter"
+ "errors": [],
+ "added_incidents": [
+  "340 2026-11-11 Baker Tilly Advisory Group (clients and dependents) (other cause)",
+  "341 2026-11-11 Managed service providers using ConnectWise ScreenConnect and their customers (code flaw)",
+  "342 2026-11-11 Notion (Notion AI customers) (other cause)",
+  "343 2026-11-11 Maersk (other cause)",
+  "344 2026-11-12 Central Asian governments (other cause)",
+  "345 2026-11-11 ePUAP (Polish government services platform) (other cause)",
+  "346 2026-11-12 N-able N-central users (code flaw)",
+  "347 2026-11-12 GitHub repository owners (wfx-loot campaign) (other cause)",
+  "348 2026-11-12 Corporate Google account users (other cause)",
+  "349 2026-11-11 Grok-built app owners (including X and SpaceXSI staff) (other cause)",
+  "350 2026-11-10 Telecom providers, government, military and research organizations in Latin America, Asia and Europe (other cause)",
+  "351 2026-11-10 Organizations in Latin America (other cause)"
  ],
- "added_incidents": [],
  "added_proofs": [],
- "archived": 0,
+ "archived": 4,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 109,
