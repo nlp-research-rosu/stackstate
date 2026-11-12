@@ -11,9 +11,9 @@ count,,,rl-training,,,,,,,type_crash-or-hang,11
 count,,,rl-training,,,,,,,type_reward-pays-wrong-answer,34
 count,,,rl-training,,,,,,,type_silent-training-bug,18
 count,,,rl-training,,,,,,,type_other,78
-count,,,rl-envs,,,,,,,scanned,18
-count,,,rl-envs,,,,,,,findings,51
-count,,,rl-envs,,,,,,,verified,22
+count,,,rl-envs,,,,,,,scanned,19
+count,,,rl-envs,,,,,,,findings,53
+count,,,rl-envs,,,,,,,verified,23
 count,,,rl-envs,,,,,,,fix_proposed,6
 count,,,rl-envs,,,,,,,reported,21
 count,,,rl-envs,,,,,,,fixed,1
@@ -22,7 +22,7 @@ count,,,rl-envs,,,,,,,type_right-answer-marked-wrong,2
 count,,,rl-envs,,,,,,,type_crash-or-hang,6
 count,,,rl-envs,,,,,,,type_reward-pays-wrong-answer,21
 count,,,rl-envs,,,,,,,type_silent-training-bug,2
-count,,,rl-envs,,,,,,,type_other,17
+count,,,rl-envs,,,,,,,type_other,19
 count,,,evals,,,,,,,scanned,73
 count,,,evals,,,,,,,findings,182
 count,,,evals,,,,,,,verified,86

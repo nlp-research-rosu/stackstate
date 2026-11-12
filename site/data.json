@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-11-12T13:39:25Z",
+ "generated_at": "2026-11-12T22:39:51Z",
  "incidents": [
   {
    "id": "8",
@@ -9986,6 +9986,38 @@
    "zero_day": false,
    "flaw_group": "",
    "people": 0
+  },
+  {
+   "id": "352",
+   "date": "2026-11-12",
+   "victim": "Apify",
+   "sector": "Technology / cloud platform",
+   "country": "unknown",
+   "attack_type": "Unauthorized access / breach",
+   "initial_vector": "Not disclosed; Apify detected unauthorized access to its internal systems.",
+   "root_cause": "",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "Apify internal systems",
+   "cve": "unknown",
+   "threat_actor": "unknown",
+   "impact": "Internal systems accessed; Apify rotated critical internal secrets and API tokens, revoked some third-party OAuth connections and prompted 2FA resets.",
+   "records_or_loss": "Not reported",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://www.bleepingcomputer.com/news/security/apify-rotates-api-tokens-prompts-2fa-resets-after-breach/",
+   "lang": "Not disclosed",
+   "func": "Unknown",
+   "component": "",
+   "theme": "other",
+   "code_flaw": false,
+   "bug_class": "",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0
   }
  ],
  "proofs": [
@@ -13023,17 +13055,17 @@
    {
     "vertical": "rl-envs",
     "stage": "scanned",
-    "n": 18
+    "n": 19
    },
    {
     "vertical": "rl-envs",
     "stage": "findings",
-    "n": 51
+    "n": 53
    },
    {
     "vertical": "rl-envs",
     "stage": "verified",
-    "n": 22
+    "n": 23
    },
    {
     "vertical": "rl-envs",
@@ -13078,7 +13110,7 @@
    {
     "vertical": "rl-envs",
     "stage": "type_other",
-    "n": 17
+    "n": 19
    },
    {
     "vertical": "evals",
