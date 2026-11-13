@@ -64,9 +64,11 @@ function pageHarness(data) {
 }
 const readData = () => JSON.parse(fs.readFileSync(path.join(ROOT, 'site/data.json'), 'utf8'));
 
+// The box expires by date at render time, so fixtures are dated relative to now.
+const daysAgo = n => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
 // Synthetic names deliberately prevent a Binance-specific keyword rule.
 const fixture = (extra = {}) => ({
-  id: 'fixture', victim: 'Example exchange', date: '2026-10-29',
+  id: 'fixture', victim: 'Example exchange', date: daysAgo(2),
   claim_status: 'reported', impact: 'Cause and amount remain unconfirmed.',
   code_flaw: false, zero_day: false, under_investigation: true,
   band: 'Smart contracts & chains', theme: 'crypto', func: 'Unknown',
@@ -103,20 +105,50 @@ test('marked incidents have a headline highlight directly above the treemap capt
   assert.equal(nodes.get('drawer').attributes['aria-hidden'], 'false');
 });
 
-test('the optional marker is strict, never includes code flaws, and hides when empty', () => {
+test('the optional marker is strict, expires after 7 days, and hides when empty', () => {
   const data = readData();
   data.incidents = [fixture(), fixture({id: 'false', under_investigation: false}),
     fixture({id: 'string', under_investigation: 'true'}),
-    fixture({id: 'code', code_flaw: true, amount_lost_usd: '10000000'})];
+    fixture({id: 'old', date: daysAgo(9)}), fixture({id: 'edge', date: daysAgo(7)})];
   const {page, nodes} = pageHarness(data);
   assert.equal(typeof page.renderInvestigation, 'function');
   page.renderInvestigation();
-  assert.equal(descendants(nodes.get('investigation-list'), 'button').length, 1);
-  data.incidents = data.incidents.slice(1);
+  assert.equal(descendants(nodes.get('investigation-list'), 'button').length, 2, 'the 2-day and 7-day flags show, the 9-day flag does not');
+  data.incidents = data.incidents.slice(2, 4);
   page.ingest(data);
   page.renderInvestigation();
   assert.equal(nodes.get('a-investigation').hidden, true);
   assert.equal(nodes.get('investigation-list').children.length, 0);
+});
+
+test('an in_focus incident shows once with a note that fits its cause, newest first', () => {
+  const data = readData();
+  data.in_focus = 'code';
+  data.incidents = [fixture({id: 'older', date: daysAgo(4)}),
+    fixture({id: 'code', victim: 'Example cloud', attack_type: 'Exploited vulnerability', code_flaw: true, zero_day: true,
+      under_investigation: true, date: daysAgo(1), band: 'Cloud & identity', initial_vector: 'Exploited CVE'}),
+    fixture({id: 'nocause', victim: 'Example shop', attack_type: 'Data breach', initial_vector: 'Not disclosed.', under_investigation: false}),
+    fixture({id: 'claimed', victim: 'Example host', code_flaw: true, claim_status: 'claimed/unconfirmed', band: 'Cloud & identity',
+      initial_vector: 'Exploited CVE', under_investigation: false}),
+    fixture({id: 'known', victim: 'Example bank', attack_type: 'Data breach', initial_vector: 'Stolen credentials', under_investigation: false, date: daysAgo(30)})];
+  const {page, nodes} = pageHarness(data);
+  page.renderInvestigation();
+  const list = nodes.get('investigation-list');
+  assert.deepEqual(descendants(list, 'button').map(b => b.textContent), ['Example cloud: exploited vulnerability', 'Example exchange incident: what we know so far']);
+  assert.match(list.children[0].textContent, /Code flaw · Zero-day · Counted in the totals/);
+  data.in_focus = 'known';
+  page.ingest(data);
+  page.renderInvestigation();
+  assert.match(nodes.get('investigation-list').textContent, /Example bank: data breach/);
+  assert.match(nodes.get('investigation-list').textContent, /Not a code flaw · Excluded from code-flaw totals/);
+  data.in_focus = 'nocause';
+  page.ingest(data);
+  page.renderInvestigation();
+  assert.match(nodes.get('investigation-list').textContent, /Example shop incident: what we know so far.*Cause unconfirmed · Excluded from code-flaw totals/);
+  data.in_focus = 'claimed';
+  page.ingest(data);
+  page.renderInvestigation();
+  assert.match(nodes.get('investigation-list').textContent, /Example host incident: what we know so far.*Cause unconfirmed · Counted in the totals/);
 });
 
 test('investigation text is not HTML and unsafe source schemes never become links', () => {
