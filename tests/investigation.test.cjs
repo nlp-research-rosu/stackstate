@@ -126,7 +126,10 @@ test('an in_focus incident shows once with a note that fits its cause, newest fi
   data.in_focus = 'code';
   data.incidents = [fixture({id: 'older', date: daysAgo(4)}),
     fixture({id: 'code', victim: 'Example cloud', attack_type: 'Exploited vulnerability', code_flaw: true, zero_day: true,
-      under_investigation: true, date: daysAgo(1)}),
+      under_investigation: true, date: daysAgo(1), band: 'Cloud & identity', initial_vector: 'Exploited CVE'}),
+    fixture({id: 'nocause', victim: 'Example shop', attack_type: 'Data breach', initial_vector: 'Not disclosed.', under_investigation: false}),
+    fixture({id: 'claimed', victim: 'Example host', code_flaw: true, claim_status: 'claimed/unconfirmed', band: 'Cloud & identity',
+      initial_vector: 'Exploited CVE', under_investigation: false}),
     fixture({id: 'known', victim: 'Example bank', attack_type: 'Data breach', initial_vector: 'Stolen credentials', under_investigation: false, date: daysAgo(30)})];
   const {page, nodes} = pageHarness(data);
   page.renderInvestigation();
@@ -138,6 +141,14 @@ test('an in_focus incident shows once with a note that fits its cause, newest fi
   page.renderInvestigation();
   assert.match(nodes.get('investigation-list').textContent, /Example bank: data breach/);
   assert.match(nodes.get('investigation-list').textContent, /Not a code flaw · Excluded from code-flaw totals/);
+  data.in_focus = 'nocause';
+  page.ingest(data);
+  page.renderInvestigation();
+  assert.match(nodes.get('investigation-list').textContent, /Example shop incident: what we know so far.*Cause unconfirmed · Excluded from code-flaw totals/);
+  data.in_focus = 'claimed';
+  page.ingest(data);
+  page.renderInvestigation();
+  assert.match(nodes.get('investigation-list').textContent, /Example host incident: what we know so far.*Cause unconfirmed · Counted in the totals/);
 });
 
 test('investigation text is not HTML and unsafe source schemes never become links', () => {

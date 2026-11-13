@@ -265,7 +265,7 @@ For each incident, fill every field from the item text only. Do not guess number
 - zero_day is true only when the item says the flaw was exploited before a fix existed.
 - claim_status is "claimed/unconfirmed" when only the attackers claim it.
 
-Also set in_focus to the index (in the incidents you return) of the single most newsworthy incident: large public impact, such as a well-known victim, a large amount of money or number of people affected, or wide coverage. Use -1 when none of them beats the current focus.
+Also set in_focus to the index (in the incidents you return) of the single most newsworthy incident disclosed on or after {focus_since}: large public impact, such as a well-known victim, a large amount of money or number of people affected, or wide coverage. Use -1 when none of them beats the current focus.
 Current focus (victim | date | impact): {focus}
 
 Already recorded (victim | date | CVE):
@@ -310,7 +310,7 @@ def ask_claude(prompt, schema, log):
     return json.loads(choice["message"]["content"])
 
 
-def llm_incidents(news, data, since, next_id, focus, log):
+def llm_incidents(news, data, since, next_id, focus, focus_since, log):
     """Returns (added rows, the added row the model picked as most newsworthy or None)."""
     known_links = {r["source_url"] for r in data["incidents"]}
     fresh = [n for n in news if n["link"] not in known_links][:150]
@@ -319,7 +319,7 @@ def llm_incidents(news, data, since, next_id, focus, log):
     recent = sorted(data["incidents"], key=lambda r: r["date"])[-120:]
     known = "\n".join(f'{r["victim"]} | {r["date"]} | {r["cve"]}' for r in recent)
     items = json.dumps([{"i": i, "title": n["title"], "date": n["date"], "summary": n["summary"]} for i, n in enumerate(fresh)], ensure_ascii=False)
-    out = ask_claude(INCIDENT_PROMPT.format(since=since, known=known, items=items, focus=f'{focus["victim"]} | {focus["date"]} | {focus["impact"]}' if focus else "none"), INCIDENT_SCHEMA, log)
+    out = ask_claude(INCIDENT_PROMPT.format(since=since, focus_since=focus_since, known=known, items=items, focus=f'{focus["victim"]} | {focus["date"]} | {focus["impact"]}' if focus else "none"), INCIDENT_SCHEMA, log)
     added, by_index = [], {}
     for n, x in enumerate((out or {}).get("incidents", [])):
         if not 0 <= x["item"] < len(fresh) or x["date"] < since:
@@ -477,7 +477,8 @@ def main():
         data_plus = {**data, "incidents": data["incidents"] + new}
         cur = pick_focus(data.get("in_focus"), None, data["incidents"], today)
         focus = next((r for r in data["incidents"] if r["id"] == cur), None)
-        added, picked = llm_incidents(news, data_plus, (today - dt.timedelta(days=NEWS_LOOKBACK_DAYS)).isoformat(), next_id + len(new), focus, log)
+        added, picked = llm_incidents(news, data_plus, (today - dt.timedelta(days=NEWS_LOOKBACK_DAYS)).isoformat(), next_id + len(new), focus,
+                                       (today - dt.timedelta(days=FOCUS_PICK_DAYS)).isoformat(), log)
         new += added
         papers = load_feeds(ARXIV_FEEDS, (today - dt.timedelta(days=3)).isoformat(), log)
         new_proofs = llm_proofs(papers, data, today, log)

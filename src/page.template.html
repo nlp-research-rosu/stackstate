@@ -697,10 +697,14 @@ function renderInvestigation() {
   const fresh = (r) => (Date.now() - Date.parse(r.date + 'T00:00:00Z')) / 864e5 < 8;
   const rows = ALL.filter((r) => r.id === FOCUS || (r.under_investigation === true && fresh(r))).sort((a, b) => b.t - a.t);
   const card = (r) => {
-    const unknown = r.claim_status === 'claimed/unconfirmed' || (!isFlaw(r) && !r.initial_vector && !r.root_cause);
+    // the model writes an unstated cause as text ("unknown", "Not disclosed."), not as ""
+    const iv = (r.initial_vector || '').trim();
+    const noCause = !r.root_cause && (!iv || /^(unknown|undisclosed|not (disclosed|stated|reported|specified)|the item does not)\b/i.test(iv));
+    const unknown = r.claim_status === 'claimed/unconfirmed' || (!isFlaw(r) && noCause);
     const title = unknown ? `${r.victim} incident: what we know so far` : `${r.victim}: ${(r.attack_type || 'incident').toLowerCase()}`;
-    const note = unknown ? 'Cause unconfirmed · Excluded from code-flaw totals'
-      : isFlaw(r) ? `Code flaw · ${r.zero_day === true ? 'Zero-day · ' : ''}Counted in the totals` : 'Not a code flaw · Excluded from code-flaw totals';
+    const tot = INC.includes(r) ? 'Counted in the totals' : 'Excluded from code-flaw totals';
+    const note = unknown ? `Cause unconfirmed · ${tot}`
+      : isFlaw(r) ? `Code flaw · ${r.zero_day === true ? 'Zero-day · ' : ''}${tot}` : 'Not a code flaw · Excluded from code-flaw totals';
     return el('li', {},
       el('div', { class: 'spotlight-meta' }, el('span', { class: 'spotlight-label', text: 'In focus' }),
         el('span', { text: fmtDayY(r.date) }), srcLink(r.source_url)),
