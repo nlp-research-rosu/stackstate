@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-13T22:14:56+00:00",
+ "run_at": "2026-11-13T22:26:33+00:00",
  "today": "2026-11-13",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -20,14 +20,7 @@
  ],
  "errors": [],
  "added_incidents": [
-  "355 2026-11-13 Check Point Multiple Products users (code flaw)",
-  "356 2026-11-13 Trezor Safe 5 buyers via reseller CryptoBilis (other cause)",
-  "357 2026-11-13 Quantum Systems (other cause)",
-  "358 2026-11-13 City of Osaka (other cause)",
-  "359 2026-11-13 University of Texas at Arlington (other cause)",
-  "360 2026-11-13 Cryptocurrency and web3 workers and open-source maintainers (FaceStealer scheme) (other cause)",
-  "361 2026-11-10 French retail sites (about 700, refrigeration controllers) (other cause)",
-  "362 2026-11-13 Uber (other cause)"
+  "363 2026-11-11 eMudhra (code flaw)"
  ],
  "added_proofs": [],
  "archived": 0,

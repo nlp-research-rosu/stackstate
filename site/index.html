@@ -508,7 +508,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 
 <script id="pg-data" type="application/json">{
  "schema": 1,
- "generated_at": "2026-11-13T22:16:01Z",
+ "generated_at": "2026-11-13T22:27:05Z",
  "incidents": [
   {
    "id": "8",
@@ -10779,6 +10779,38 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    "theme": "ai",
    "code_flaw": false,
    "bug_class": "",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0
+  },
+  {
+   "id": "363",
+   "date": "2026-11-11",
+   "victim": "eMudhra",
+   "sector": "Certificate authority / PKI",
+   "country": "India",
+   "attack_type": "Key compromise",
+   "initial_vector": "A flaw in eMudhra's in-house Python script weakened private keys of intermediate certificate authorities, leading to the October key compromise.",
+   "root_cause": "",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "eMudhra in-house Python key-handling script",
+   "cve": "unknown",
+   "threat_actor": "unknown",
+   "impact": "8 more intermediate CAs revoked, beyond those compromised in October, even though their keys were not weakened",
+   "records_or_loss": "8 additional intermediate CAs revoked",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://thehackernews.com/2026/11/emudhra-revokes-8-more-cas-it.html",
+   "lang": "Not disclosed",
+   "func": "Money & contracts",
+   "component": "",
+   "theme": "other",
+   "code_flaw": true,
+   "bug_class": "Contract & business logic",
    "zero_day": false,
    "flaw_group": "",
    "people": 0
