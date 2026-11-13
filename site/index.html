@@ -15649,13 +15649,14 @@ const NEWS = [[/^PHP 8\.x/, 'PHP2Shell'], [/^LiteLLM proxy/, 'LiteLLM'], [/^Micr
 const CHAIN_MIN_USD = 10e6;
 let SMALL_CHAIN = [];
 let CT = { counts: [], bugs: [] };
-let ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
+let FOCUS = null, ALL = [], INC = [], PR = [], ST = [], WIN = null, gen = null, fetchedOk = false, lastCheck = null, freshIds = new Set();
 let seen = null; try { seen = new Set(JSON.parse(localStorage.getItem('pg-seen') || 'null') || []); } catch (e) { seen = null; }
 const isFlaw = (r) => r.code_flaw === true || r.code_flaw === 'true';
 const COVER = { full: 1, major: 0.6, some: 0.3, narrow: 0.1, none: 0 };
 const COVER_TXT = { full: 'fully verified', major: 'major parts verified', some: 'some parts verified', narrow: 'narrow parts verified', none: 'none published' };
 function ingest(data) {
   CT = data.contrib || CT;
+  FOCUS = data.in_focus || null;
   ALL = data.incidents; PR = data.proofs.filter((p) => p.status !== 'TESTING_ONLY'); ST = data.stack.filter((s) => s.band !== 'AI stack'); gen = data.generated_at || null;
   // No separate AI categories: fold them into the general ones.
   const funcByFlaw = new Map(ALL.filter((r) => r.func !== 'AI & agents' && r.flaw_group).map((r) => [r.flaw_group, r.func]));
@@ -15811,14 +15812,23 @@ function renderFilt() {
 
 // ================= INCIDENTS =================
 function renderInvestigation() {
-  const rows = ALL.filter((r) => r.under_investigation === true && !isFlaw(r)).sort((a, b) => b.t - a.t);
+  // The refresh picks the focus; hand-set flags expire after 7 days, checked here so they vanish without a refresh.
+  const fresh = (r) => (Date.now() - Date.parse(r.date + 'T00:00:00Z')) / 864e5 < 8;
+  const rows = ALL.filter((r) => r.id === FOCUS || (r.under_investigation === true && fresh(r))).sort((a, b) => b.t - a.t);
+  const card = (r) => {
+    const unknown = r.claim_status === 'claimed/unconfirmed' || (!isFlaw(r) && !r.initial_vector && !r.root_cause);
+    const title = unknown ? `${r.victim} incident: what we know so far` : `${r.victim}: ${(r.attack_type || 'incident').toLowerCase()}`;
+    const note = unknown ? 'Cause unconfirmed · Excluded from code-flaw totals'
+      : isFlaw(r) ? `Code flaw · ${r.zero_day === true ? 'Zero-day · ' : ''}Counted in the totals` : 'Not a code flaw · Excluded from code-flaw totals';
+    return el('li', {},
+      el('div', { class: 'spotlight-meta' }, el('span', { class: 'spotlight-label', text: 'In focus' }),
+        el('span', { text: fmtDayY(r.date) }), srcLink(r.source_url)),
+      el('h2', { class: 'spotlight-title' }, el('button', { type: 'button', text: title, onclick: () => openIncident(r) })),
+      el('p', { class: 'spotlight-summary', text: r.impact }),
+      el('p', { class: 'spotlight-note', text: note }));
+  };
   $('#a-investigation').hidden = !rows.length;
-  $('#investigation-list').replaceChildren(...rows.map((r) => el('li', {},
-    el('div', { class: 'spotlight-meta' }, el('span', { class: 'spotlight-label', text: 'In focus' }),
-      el('span', { text: fmtDayY(r.date) }), srcLink(r.source_url)),
-    el('h2', { class: 'spotlight-title' }, el('button', { type: 'button', text: `${r.victim} incident: what we know so far`, onclick: () => openIncident(r) })),
-    el('p', { class: 'spotlight-summary', text: r.impact }),
-    el('p', { class: 'spotlight-note', text: 'Cause unconfirmed · Excluded from code-flaw totals' }))));
+  $('#investigation-list').replaceChildren(...rows.map(card));
 }
 function renderHero() {
   const days = d3.utcDay.range(WIN.start, d3.utcDay.offset(WIN.end, 1));

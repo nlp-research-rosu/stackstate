@@ -159,6 +159,9 @@ for r in data["incidents"]:
     if not str(r.get("source_url", "")).startswith("https://"):
         err(w, "source_url must start with https://")
 
+if "in_focus" in data and not (isinstance(data["in_focus"], str) and data["in_focus"] in seen):
+    err("site/data.json", "in_focus must be the id string of an existing incident")
+
 if errors:
     print(f"{len(errors)} problem(s):")
     print("\n".join("  " + e for e in errors))

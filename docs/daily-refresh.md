@@ -23,7 +23,7 @@ The repository is the source of truth. To correct an entry, edit `site/data.json
 
 Every new incident gets `code_flaw`: true when the reported way in was a defect in software (a CVE or other exploited vulnerability, a zero-day, an injection, authentication bypass or memory-safety bug, or a logic bug in a smart contract or protocol). Phishing, stolen credentials, misconfiguration, malicious packages, abuse of legitimate access and incidents with no stated cause get false. Only `code_flaw: true` incidents feed the code-flaw charts and totals, but all are kept in the data.
 
-Selected non-code-flaw reports can be marked manually with `under_investigation: true` for a compact incident highlight above the main chart caption. This is display-only: the twice-daily schedule does not enable news extraction or add automatic incident updates.
+The In focus box on the Attack tab shows one incident. The refresh asks the model for the most newsworthy new incident (large public impact) and stores its id as `in_focus` in `site/data.json`. A new pick replaces the current focus only if the incident is from the last 3 days, and the focus is dropped once its incident is older than 7 days or archived; this also runs with `--no-llm`, so the focus still expires. Records marked manually with `under_investigation: true` also show in the box until they are 7 days old.
 
 ## Grouping rules (first match wins)
 

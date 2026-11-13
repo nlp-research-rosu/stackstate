@@ -4,8 +4,8 @@ Steps:
   1. Read CISA's Known Exploited Vulnerabilities (KEV) catalog and recent security news feeds.
   2. Add each new KEV entry from the last two weeks that news coverage mentions (or that CISA
      marks as used by ransomware). These need no API key.
-  3. If OPENROUTER_API_KEY is set, ask Claude (through OpenRouter) to pick real incidents out of the news items and
-     new formal verification papers out of arXiv, and add those too.
+  3. If OPENROUTER_API_KEY is set, ask Claude (through OpenRouter) to pick real incidents out of the news items
+     (and the most newsworthy one as data["in_focus"]) and new formal verification papers out of arXiv, and add those too.
   4. If BUGPIPE_TOKEN is set, rewrite data/seed/findings.csv (the Our contributions tab) from bugpipe's /v1/dashboard.
   5. Move incidents older than 91 days to data/archive/incidents.json.
   6. Write site/data.json and data/last-refresh.json (what changed, for the run log).
@@ -38,6 +38,8 @@ BUGPIPE_URL = "https://bugpipe-api-dev.up.railway.app"
 FINDINGS_COLS = ["kind", "id", "repo", "vertical", "bug_type", "title", "status", "issue_url", "fix_url", "fix_by", "stage", "n"]
 WINDOW_DAYS = 91
 KEV_LOOKBACK_DAYS = 14
+FOCUS_PICK_DAYS = 3
+FOCUS_KEEP_DAYS = 7
 NEWS_LOOKBACK_DAYS = 10
 KEV_URLS = [
     "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
@@ -219,9 +221,10 @@ INCIDENT_SCHEMA = {
                 "required": ["item", "date", "victim", "sector", "country", "attack_type", "initial_vector", "product", "cve", "threat_actor", "impact", "records_or_loss", "people", "amount_lost_usd", "code_flaw", "zero_day", "bug_class", "claim_status"],
                 "additionalProperties": False,
             },
-        }
+        },
+        "in_focus": {"type": "integer", "description": "index into incidents of the single most newsworthy one, or -1 when none beats the current focus"},
     },
-    "required": ["incidents"],
+    "required": ["incidents", "in_focus"],
     "additionalProperties": False,
 }
 
@@ -261,6 +264,9 @@ For each incident, fill every field from the item text only. Do not guess number
 - code_flaw is true when the reported way in was a defect in software: an exploited CVE or other vulnerability, a zero-day, an injection, an authentication bypass, a memory-safety bug, or a logic bug in a contract or protocol. It is false for phishing, stolen or reused credentials, misconfiguration, malicious packages, insider abuse, or no stated cause.
 - zero_day is true only when the item says the flaw was exploited before a fix existed.
 - claim_status is "claimed/unconfirmed" when only the attackers claim it.
+
+Also set in_focus to the index (in the incidents you return) of the single most newsworthy incident: large public impact, such as a well-known victim, a large amount of money or number of people affected, or wide coverage. Use -1 when none of them beats the current focus.
+Current focus (victim | date | impact): {focus}
 
 Already recorded (victim | date | CVE):
 {known}
@@ -304,25 +310,37 @@ def ask_claude(prompt, schema, log):
     return json.loads(choice["message"]["content"])
 
 
-def llm_incidents(news, data, since, next_id, log):
+def llm_incidents(news, data, since, next_id, focus, log):
+    """Returns (added rows, the added row the model picked as most newsworthy or None)."""
     known_links = {r["source_url"] for r in data["incidents"]}
     fresh = [n for n in news if n["link"] not in known_links][:150]
     if not fresh:
-        return []
+        return [], None
     recent = sorted(data["incidents"], key=lambda r: r["date"])[-120:]
     known = "\n".join(f'{r["victim"]} | {r["date"]} | {r["cve"]}' for r in recent)
     items = json.dumps([{"i": i, "title": n["title"], "date": n["date"], "summary": n["summary"]} for i, n in enumerate(fresh)], ensure_ascii=False)
-    out = ask_claude(INCIDENT_PROMPT.format(since=since, known=known, items=items), INCIDENT_SCHEMA, log)
-    added = []
-    for x in (out or {}).get("incidents", []):
+    out = ask_claude(INCIDENT_PROMPT.format(since=since, known=known, items=items, focus=f'{focus["victim"]} | {focus["date"]} | {focus["impact"]}' if focus else "none"), INCIDENT_SCHEMA, log)
+    added, by_index = [], {}
+    for n, x in enumerate((out or {}).get("incidents", [])):
         if not 0 <= x["item"] < len(fresh) or x["date"] < since:
             continue
         r = {k: "" for k in INCIDENT_KEYS}
         r.update({k: str(x[k]) for k in ("date", "victim", "sector", "country", "attack_type", "initial_vector", "product", "cve", "threat_actor", "impact", "records_or_loss", "claim_status")})
         r.update(id=str(next_id + len(added)), formally_verified="none found", source_url=fresh[x["item"]]["link"], lang="Not disclosed",
                  amount_lost_usd=str(int(x["amount_lost_usd"])) if x["amount_lost_usd"] else "")
-        added.append(finish(r, code_flaw=x["code_flaw"], zero_day=x["zero_day"], bug_class=x["bug_class"], people=x["people"]))
-    return added
+        by_index[n] = finish(r, code_flaw=x["code_flaw"], zero_day=x["zero_day"], bug_class=x["bug_class"], people=x["people"])
+        added.append(by_index[n])
+    return added, by_index.get((out or {}).get("in_focus"))
+
+
+def pick_focus(current_id, picked, incidents, today):
+    """The In focus incident id or None. A pick replaces the current focus only if it is under 3 days old; the current one expires after 7 days or when archived."""
+    by_id = {r["id"]: r for r in incidents}
+    if picked and picked["id"] in by_id and picked["date"] >= (today - dt.timedelta(days=FOCUS_PICK_DAYS)).isoformat():
+        return picked["id"]
+    if current_id in by_id and by_id[current_id]["date"] >= (today - dt.timedelta(days=FOCUS_KEEP_DAYS)).isoformat():
+        return current_id
+    return None
 
 
 def llm_proofs(papers, data, today, log):
@@ -454,10 +472,13 @@ def main():
 
     use_llm = not a.no_llm and os.environ.get("OPENROUTER_API_KEY")
     log["llm"] = bool(use_llm)
-    new_proofs = []
+    new_proofs, picked = [], None
     if use_llm:
         data_plus = {**data, "incidents": data["incidents"] + new}
-        new += llm_incidents(news, data_plus, (today - dt.timedelta(days=NEWS_LOOKBACK_DAYS)).isoformat(), next_id + len(new), log)
+        cur = pick_focus(data.get("in_focus"), None, data["incidents"], today)
+        focus = next((r for r in data["incidents"] if r["id"] == cur), None)
+        added, picked = llm_incidents(news, data_plus, (today - dt.timedelta(days=NEWS_LOOKBACK_DAYS)).isoformat(), next_id + len(new), focus, log)
+        new += added
         papers = load_feeds(ARXIV_FEEDS, (today - dt.timedelta(days=3)).isoformat(), log)
         new_proofs = llm_proofs(papers, data, today, log)
 
@@ -470,6 +491,11 @@ def main():
     cutoff = (today - dt.timedelta(days=WINDOW_DAYS - 1)).isoformat()
     old = [r for r in data["incidents"] if r["date"] < cutoff]
     data["incidents"] = [r for r in data["incidents"] if r["date"] >= cutoff]
+    focus_id = pick_focus(data.get("in_focus"), picked, data["incidents"], today)
+    data.pop("in_focus", None)
+    if focus_id:
+        data["in_focus"] = focus_id
+    log["in_focus"] = focus_id
     data["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     log["archived"] = len(old)
     log["added_incidents"] = [f'{r["id"]} {r["date"]} {r["victim"]} ({"code flaw" if r["code_flaw"] else "other cause"})' for r in new]
