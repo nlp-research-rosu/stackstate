@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-12T22:39:25+00:00",
- "today": "2026-11-12",
+ "run_at": "2026-11-13T12:56:38+00:00",
+ "today": "2026-11-13",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -8,23 +8,24 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 4,
-  "https://techcrunch.com/category/security/feed/": 18,
+  "https://techcrunch.com/category/security/feed/": 16,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 0,
-  "https://rss.arxiv.org/rss/cs.PL": 0,
-  "https://rss.arxiv.org/rss/cs.CR": 0
+  "https://rss.arxiv.org/rss/cs.LO": 29,
+  "https://rss.arxiv.org/rss/cs.PL": 15,
+  "https://rss.arxiv.org/rss/cs.CR": 104
  },
  "kev_skipped": [
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "352 2026-11-12 Apify (other cause)"
+  "353 2026-11-13 Check Point Security Gateway customers (Israeli organizations) (code flaw)",
+  "354 2026-11-13 Asian mobile network operators and their Taiwanese subscribers (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 2,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 112,
+ "news_items": 110,
  "llm": true
 }

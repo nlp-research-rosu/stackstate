@@ -508,7 +508,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
 
 <script id="pg-data" type="application/json">{
  "schema": 1,
- "generated_at": "2026-11-12T22:39:51Z",
+ "generated_at": "2026-11-13T12:57:22Z",
  "incidents": [
   {
    "id": "8",
@@ -5823,70 +5823,6 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    "people": 1367
   },
   {
-   "id": "202",
-   "date": "2026-08-14",
-   "victim": "Lennar Mortgage",
-   "sector": "mortgage lending",
-   "country": "United States",
-   "attack_type": "data breach",
-   "initial_vector": "Unauthorized party used social engineering to access company systems between May 26 and June 1, 2026.",
-   "root_cause": "",
-   "band": "Applications & data",
-   "layer": "application",
-   "product": "",
-   "cve": "unknown",
-   "threat_actor": "unknown",
-   "impact": "Names, dates of birth, SSNs, government IDs and financial account details exposed; at least nine class actions filed.",
-   "records_or_loss": "60,526 Texans (lawsuit cites 61,295 total)",
-   "amount_lost_usd": "",
-   "funds_recovered_usd": "",
-   "audited_by": "",
-   "formally_verified": "none found",
-   "claim_status": "reported",
-   "source_url": "https://www.nationalmortgagenews.com/news/lennar-mortgage-says-breaches-affected-tens-of-thousands-of-consumers",
-   "lang": "Not disclosed",
-   "func": "Unknown",
-   "component": "",
-   "theme": "other",
-   "code_flaw": false,
-   "bug_class": "",
-   "zero_day": false,
-   "flaw_group": "",
-   "people": 60526
-  },
-  {
-   "id": "203",
-   "date": "2026-08-14",
-   "victim": "V-Bank AG",
-   "sector": "banking",
-   "country": "Germany",
-   "attack_type": "third-party data breach",
-   "initial_vector": "Cyberattack on an external IT service provider that had access to an externally hosted V-Bank database.",
-   "root_cause": "",
-   "band": "Applications & data",
-   "layer": "application",
-   "product": "externally hosted database via IT service provider",
-   "cve": "unknown",
-   "threat_actor": "unknown",
-   "impact": "Forensic review confirmed account holders' names, birth dates, postal/email addresses, phone numbers and possibly account-related data were compromised; accounts and core systems not accessed.",
-   "records_or_loss": "not disclosed",
-   "amount_lost_usd": "",
-   "funds_recovered_usd": "",
-   "audited_by": "",
-   "formally_verified": "none found",
-   "claim_status": "reported",
-   "source_url": "https://www.fundresearch.de/banken/v-bank-informiert-kunden-nach-cyberangriff-ueber-datenzugriff.php",
-   "lang": "Not disclosed",
-   "func": "Unknown",
-   "component": "",
-   "theme": "fin",
-   "code_flaw": false,
-   "bug_class": "",
-   "zero_day": false,
-   "flaw_group": "",
-   "people": 0
-  },
-  {
    "id": "204",
    "date": "2026-10-10",
    "victim": "Blueberry Pediatrics (Blueberry Medical)",
@@ -10526,6 +10462,70 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    "zero_day": false,
    "flaw_group": "",
    "people": 0
+  },
+  {
+   "id": "353",
+   "date": "2026-11-13",
+   "victim": "Check Point Security Gateway customers (Israeli organizations)",
+   "sector": "Multiple (network security devices)",
+   "country": "Israel",
+   "attack_type": "Vulnerability exploitation, backdoor deployment and destructive wiping",
+   "initial_vector": "Attackers exploited the PHP2Shell vulnerabilities in unpatched Check Point Security Gateways, then a previously unreported Gaia OS local privilege escalation flaw, to gain root.",
+   "root_cause": "",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "Check Point Security Gateways (Gaia OS)",
+   "cve": "unknown",
+   "threat_actor": "Unknown",
+   "impact": "TSGA backdoor deployed on gateways and ESXi files wiped; activity began October 30, 2026",
+   "records_or_loss": "Not reported",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://thehackernews.com/2026/11/hackers-exploit-php2shell-flaws-in.html",
+   "lang": "Not disclosed",
+   "func": "Parsing & input",
+   "component": "",
+   "theme": "other",
+   "code_flaw": true,
+   "bug_class": "Injection & code execution",
+   "zero_day": true,
+   "flaw_group": "",
+   "people": 0
+  },
+  {
+   "id": "354",
+   "date": "2026-11-13",
+   "victim": "Asian mobile network operators and their Taiwanese subscribers",
+   "sector": "Telecommunications",
+   "country": "Taiwan",
+   "attack_type": "Cyber espionage / call and SMS interception",
+   "initial_vector": "Attackers used hacked equipment inside Asian mobile operators' networks; how the nodes were compromised was not stated.",
+   "root_cause": "",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "Mobile network nodes",
+   "cve": "unknown",
+   "threat_actor": "SilentAir (assessed state-level actor)",
+   "impact": "Calls and texts of selected people, mostly in Taiwan, intercepted, including SMS 2FA codes; attack sources in at least six Asian countries",
+   "records_or_loss": "Not reported",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
+   "lang": "Not disclosed",
+   "func": "Unknown",
+   "component": "",
+   "theme": "other",
+   "code_flaw": false,
+   "bug_class": "",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0
   }
  ],
  "proofs": [
@@ -13563,12 +13563,12 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    {
     "vertical": "rl-envs",
     "stage": "scanned",
-    "n": 19
+    "n": 21
    },
    {
     "vertical": "rl-envs",
     "stage": "findings",
-    "n": 53
+    "n": 56
    },
    {
     "vertical": "rl-envs",
@@ -13593,7 +13593,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    {
     "vertical": "rl-envs",
     "stage": "type_wrong-score",
-    "n": 3
+    "n": 5
    },
    {
     "vertical": "rl-envs",
@@ -13603,7 +13603,7 @@ footer.foot code { font-family: var(--f-mono); font-size: 13px; }
    {
     "vertical": "rl-envs",
     "stage": "type_crash-or-hang",
-    "n": 6
+    "n": 7
    },
    {
     "vertical": "rl-envs",
