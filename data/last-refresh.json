@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-15T12:36:22+00:00",
+ "run_at": "2026-11-15T21:36:39+00:00",
  "today": "2026-11-15",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -18,9 +18,11 @@
   "CVE-2026-111560"
  ],
  "errors": [],
- "added_incidents": [],
+ "added_incidents": [
+  "366 2026-11-15 TSMC (Taiwan Semiconductor Manufacturing Company) (other cause)"
+ ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 107,
