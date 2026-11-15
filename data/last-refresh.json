@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-14T21:15:08+00:00",
- "today": "2026-11-14",
+ "run_at": "2026-11-15T12:36:22+00:00",
+ "today": "2026-11-15",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -8,7 +8,7 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 3,
-  "https://techcrunch.com/category/security/feed/": 16,
+  "https://techcrunch.com/category/security/feed/": 14,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 0,
   "https://rss.arxiv.org/rss/cs.PL": 0,
@@ -18,15 +18,12 @@
   "CVE-2026-111560"
  ],
  "errors": [],
- "added_incidents": [
-  "364 2026-11-13 UnrealIRCd users (code flaw)",
-  "365 2026-11-14 Cursor (other cause)"
- ],
+ "added_incidents": [],
  "added_proofs": [],
- "archived": 0,
+ "archived": 1,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 109,
+ "news_items": 107,
  "llm": true,
  "in_focus": "360"
 }
