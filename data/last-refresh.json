@@ -1,31 +1,34 @@
 {
- "run_at": "2026-11-15T21:36:39+00:00",
- "today": "2026-11-15",
+ "run_at": "2026-11-16T13:28:03+00:00",
+ "today": "2026-11-16",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
   "https://www.securityweek.com/feed/": 10,
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
-  "https://krebsonsecurity.com/feed/": 3,
-  "https://techcrunch.com/category/security/feed/": 14,
+  "https://krebsonsecurity.com/feed/": 2,
+  "https://techcrunch.com/category/security/feed/": 13,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 0,
-  "https://rss.arxiv.org/rss/cs.PL": 0,
-  "https://rss.arxiv.org/rss/cs.CR": 0
+  "https://rss.arxiv.org/rss/cs.LO": 22,
+  "https://rss.arxiv.org/rss/cs.PL": 17,
+  "https://rss.arxiv.org/rss/cs.CR": 44
  },
  "kev_skipped": [
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "366 2026-11-15 TSMC (Taiwan Semiconductor Manufacturing Company) (other cause)"
+  "367 2026-11-16 Coles Group Limited (other cause)",
+  "368 2026-11-16 Copeland XWEB EVO refrigeration controller users (code flaw)",
+  "369 2026-11-16 13 organizations using GeoVision camera management software (code flaw)",
+  "370 2026-11-16 Operators of internet-exposed AI apps (LiteLLM, One API, Dify) (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 1,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 107,
+ "news_items": 105,
  "llm": true,
  "in_focus": "360"
 }
