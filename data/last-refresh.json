@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-17T14:14:15+00:00",
+ "run_at": "2026-11-17T23:47:44+00:00",
  "today": "2026-11-17",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -8,32 +8,27 @@
   "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 2,
-  "https://techcrunch.com/category/security/feed/": 15,
+  "https://techcrunch.com/category/security/feed/": 17,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 39,
   "https://rss.arxiv.org/rss/cs.PL": 34,
   "https://rss.arxiv.org/rss/cs.CR": 116
  },
  "kev_skipped": [
+  "CVE-2026-115731",
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "374 2026-11-17 Uber (drivers) (other cause)",
-  "375 2026-11-17 Optimizely (Web Experimentation customers incl. BBC, CNN, Zoom) (code flaw)",
-  "376 2026-11-17 Access Dental Management (other cause)",
-  "377 2026-11-17 Managed service providers using ConnectWise ScreenConnect (code flaw)",
-  "378 2026-11-17 N-able N-central users (code flaw)",
-  "379 2026-11-17 Government organizations in Asia and Africa (Operation ShadowCloud) (other cause)"
+  "380 2026-11-17 RIKEN Center for Computational Science (Fugaku supercomputer) (other cause)",
+  "381 2026-11-17 The Tor Project (Tor network relay operators) (other cause)",
+  "382 2026-11-16 Ipsos (other cause)"
  ],
- "added_proofs": [
-  "90 CompCert4Lean (port of CompCert 3.17)",
-  "91 DNSSEC"
- ],
+ "added_proofs": [],
  "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 107,
+ "news_items": 109,
  "llm": true,
  "in_focus": "375"
 }
