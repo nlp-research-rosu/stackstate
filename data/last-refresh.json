@@ -1,34 +1,38 @@
 {
- "run_at": "2026-11-18T13:45:05+00:00",
+ "run_at": "2026-11-18T23:19:38+00:00",
  "today": "2026-11-18",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
   "https://www.securityweek.com/feed/": 10,
-  "https://www.helpnetsecurity.com/feed/": "error: HTTP Error 301: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Permanently",
+  "https://www.helpnetsecurity.com/feed/": 10,
   "https://feeds.feedburner.com/TheHackersNews": 50,
   "https://krebsonsecurity.com/feed/": 3,
-  "https://techcrunch.com/category/security/feed/": 17,
+  "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
   "https://rss.arxiv.org/rss/cs.LO": 21,
   "https://rss.arxiv.org/rss/cs.PL": 13,
   "https://rss.arxiv.org/rss/cs.CR": 69
  },
  "kev_skipped": [
+  "CVE-2024-10441",
+  "CVE-2026-40217",
+  "CVE-2026-90817",
+  "CVE-2026-90436",
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "383 2026-11-17 Perforce Puppet Enterprise users (code flaw)",
-  "384 2026-11-18 Apache Roller users (code flaw)",
-  "385 2026-11-18 Equinor (other cause)",
-  "386 2026-11-18 Microsoft (agent-framework PyPI package users) (other cause)"
+  "387 2026-11-18 Wellington IT (IT provider to about 50 credit unions, mostly in Ireland) (other cause)",
+  "388 2026-11-18 Government organizations in the Philippines (other cause)",
+  "389 2026-11-17 Developers in AI, blockchain and logistics sectors in Europe and the US (Trigram campaign) (other cause)",
+  "390 2026-11-16 South Korean financial industry organizations and a U.S. IT company (other cause)"
  ],
  "added_proofs": [],
- "archived": 2,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 100,
+ "news_items": 113,
  "llm": true,
  "in_focus": "375"
 }
