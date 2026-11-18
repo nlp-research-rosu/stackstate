@@ -1,34 +1,34 @@
 {
- "run_at": "2026-11-17T23:47:44+00:00",
- "today": "2026-11-17",
+ "run_at": "2026-11-18T13:45:05+00:00",
+ "today": "2026-11-18",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
   "https://www.securityweek.com/feed/": 10,
-  "https://www.helpnetsecurity.com/feed/": 10,
+  "https://www.helpnetsecurity.com/feed/": "error: HTTP Error 301: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Permanently",
   "https://feeds.feedburner.com/TheHackersNews": 50,
-  "https://krebsonsecurity.com/feed/": 2,
+  "https://krebsonsecurity.com/feed/": 3,
   "https://techcrunch.com/category/security/feed/": 17,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 39,
-  "https://rss.arxiv.org/rss/cs.PL": 34,
-  "https://rss.arxiv.org/rss/cs.CR": 116
+  "https://rss.arxiv.org/rss/cs.LO": 21,
+  "https://rss.arxiv.org/rss/cs.PL": 13,
+  "https://rss.arxiv.org/rss/cs.CR": 69
  },
  "kev_skipped": [
-  "CVE-2026-115731",
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "380 2026-11-17 RIKEN Center for Computational Science (Fugaku supercomputer) (other cause)",
-  "381 2026-11-17 The Tor Project (Tor network relay operators) (other cause)",
-  "382 2026-11-16 Ipsos (other cause)"
+  "383 2026-11-17 Perforce Puppet Enterprise users (code flaw)",
+  "384 2026-11-18 Apache Roller users (code flaw)",
+  "385 2026-11-18 Equinor (other cause)",
+  "386 2026-11-18 Microsoft (agent-framework PyPI package users) (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 2,
  "bugpipe": true,
  "bugpipe_bugs": 158,
- "news_items": 109,
+ "news_items": 100,
  "llm": true,
  "in_focus": "375"
 }
