@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-18T23:19:38+00:00",
- "today": "2026-11-18",
+ "run_at": "2026-11-19T14:14:19+00:00",
+ "today": "2026-11-19",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -10,26 +10,29 @@
   "https://krebsonsecurity.com/feed/": 3,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 21,
-  "https://rss.arxiv.org/rss/cs.PL": 13,
+  "https://rss.arxiv.org/rss/cs.LO": 16,
+  "https://rss.arxiv.org/rss/cs.PL": 10,
   "https://rss.arxiv.org/rss/cs.CR": 69
  },
  "kev_skipped": [
   "CVE-2024-10441",
   "CVE-2026-40217",
   "CVE-2026-90817",
-  "CVE-2026-90436",
   "CVE-2026-111560"
  ],
  "errors": [],
  "added_incidents": [
-  "387 2026-11-18 Wellington IT (IT provider to about 50 credit unions, mostly in Ireland) (other cause)",
-  "388 2026-11-18 Government organizations in the Philippines (other cause)",
-  "389 2026-11-17 Developers in AI, blockchain and logistics sectors in Europe and the US (Trigram campaign) (other cause)",
-  "390 2026-11-16 South Korean financial industry organizations and a U.S. IT company (other cause)"
+  "391 2026-11-18 Apache Axis users (code flaw)",
+  "392 2026-11-19 NVIDIA (other cause)",
+  "393 2026-11-19 Cisco Expressway users (a Russian organization) (code flaw)",
+  "394 2026-11-19 N-able (Mail Assure and Spam Experts Hosted Cloud) (other cause)",
+  "395 2026-11-19 Synology DiskStation Manager (DSM) users (code flaw)",
+  "396 2026-11-19 Vanderbilt University REDCap users (code flaw)",
+  "397 2026-11-18 U.S.-based organizations (Google Workspace third-party compromise) (other cause)",
+  "398 2026-11-16 Russian software developer (VMware vCenter and code-signing server) (code flaw)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 3,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 113,
