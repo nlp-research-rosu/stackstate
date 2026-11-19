@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-19T14:14:19+00:00",
+ "run_at": "2026-11-19T23:28:18+00:00",
  "today": "2026-11-19",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -22,17 +22,13 @@
  ],
  "errors": [],
  "added_incidents": [
-  "391 2026-11-18 Apache Axis users (code flaw)",
-  "392 2026-11-19 NVIDIA (other cause)",
-  "393 2026-11-19 Cisco Expressway users (a Russian organization) (code flaw)",
-  "394 2026-11-19 N-able (Mail Assure and Spam Experts Hosted Cloud) (other cause)",
-  "395 2026-11-19 Synology DiskStation Manager (DSM) users (code flaw)",
-  "396 2026-11-19 Vanderbilt University REDCap users (code flaw)",
-  "397 2026-11-18 U.S.-based organizations (Google Workspace third-party compromise) (other cause)",
-  "398 2026-11-16 Russian software developer (VMware vCenter and code-signing server) (code flaw)"
+  "399 2026-11-19 SBC Medical Group (other cause)",
+  "400 2026-11-19 Transport for London (TfL) Oyster photocard customers (other cause)",
+  "401 2026-11-19 European Commission (other cause)",
+  "402 2026-11-19 VMware vCenter users (code flaw)"
  ],
  "added_proofs": [],
- "archived": 3,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 113,
