@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-19T23:28:18+00:00",
- "today": "2026-11-19",
+ "run_at": "2026-11-20T13:54:55+00:00",
+ "today": "2026-11-20",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -10,9 +10,9 @@
   "https://krebsonsecurity.com/feed/": 3,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 16,
-  "https://rss.arxiv.org/rss/cs.PL": 10,
-  "https://rss.arxiv.org/rss/cs.CR": 69
+  "https://rss.arxiv.org/rss/cs.LO": 25,
+  "https://rss.arxiv.org/rss/cs.PL": 13,
+  "https://rss.arxiv.org/rss/cs.CR": 77
  },
  "kev_skipped": [
   "CVE-2024-10441",
@@ -22,13 +22,10 @@
  ],
  "errors": [],
  "added_incidents": [
-  "399 2026-11-19 SBC Medical Group (other cause)",
-  "400 2026-11-19 Transport for London (TfL) Oyster photocard customers (other cause)",
-  "401 2026-11-19 European Commission (other cause)",
-  "402 2026-11-19 VMware vCenter users (code flaw)"
+  "403 2026-11-20 JPMorgan, Visa and Mastercard (customers, via third-party providers) (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 1,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 113,
