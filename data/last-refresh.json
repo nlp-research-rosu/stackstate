@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-20T13:54:55+00:00",
+ "run_at": "2026-11-20T23:00:50+00:00",
  "today": "2026-11-20",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -15,6 +15,7 @@
   "https://rss.arxiv.org/rss/cs.CR": 77
  },
  "kev_skipped": [
+  "CVE-2025-42884",
   "CVE-2024-10441",
   "CVE-2026-40217",
   "CVE-2026-90817",
@@ -22,10 +23,16 @@
  ],
  "errors": [],
  "added_incidents": [
-  "403 2026-11-20 JPMorgan, Visa and Mastercard (customers, via third-party providers) (other cause)"
+  "404 2026-11-20 Apache Roller users (code flaw)",
+  "405 2026-11-20 Broadcom VMware vCenter users (code flaw)",
+  "406 2026-11-20 Cisco Expressway Series users (code flaw)",
+  "407 2026-11-20 Bell Canada (other cause)",
+  "408 2026-11-20 West Virginia Legislature (other cause)",
+  "409 2026-11-20 The Container Store (Neighborhood Intelligence) (other cause)",
+  "410 2026-11-20 WhatsApp for Android and WhatsApp Business for Android users (code flaw)"
  ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 113,
