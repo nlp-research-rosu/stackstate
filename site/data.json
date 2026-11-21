@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generated_at": "2026-11-21T13:19:36Z",
+ "generated_at": "2026-11-21T22:06:35Z",
  "incidents": [
   {
    "id": "50",
@@ -11074,6 +11074,70 @@
    "zero_day": false,
    "flaw_group": "",
    "people": 0
+  },
+  {
+   "id": "413",
+   "date": "2026-11-21",
+   "victim": "Microsoft (Entra Connect Health service)",
+   "sector": "Technology",
+   "country": "United States",
+   "attack_type": "Data breach via vulnerability exploitation",
+   "initial_vector": "Attackers exploited a vulnerability in Microsoft's Entra Connect Health service to gain unauthorized access.",
+   "root_cause": "",
+   "band": "Cloud & identity",
+   "layer": "identity",
+   "product": "Microsoft Entra Connect Health",
+   "cve": "unknown",
+   "threat_actor": "unknown",
+   "impact": "Unauthorized access to customer administrator email addresses and tenant configuration information",
+   "records_or_loss": "Administrator email addresses and tenant configuration data (count not reported)",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/",
+   "lang": "Not disclosed",
+   "func": "Unknown",
+   "component": "Cloud identity providers (Entra ID, Okta, Google)",
+   "theme": "health",
+   "code_flaw": true,
+   "bug_class": "Not disclosed",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0
+  },
+  {
+   "id": "414",
+   "date": "2026-11-21",
+   "victim": "FBI (National Crime Information Center)",
+   "sector": "Government / Law enforcement",
+   "country": "United States",
+   "attack_type": "Breach",
+   "initial_vector": "Not disclosed.",
+   "root_cause": "",
+   "band": "Applications & data",
+   "layer": "application",
+   "product": "National Crime Information Center (NCIC)",
+   "cve": "unknown",
+   "threat_actor": "unknown",
+   "impact": "Reported breach of the nationwide police database used to share information between local, state and federal law enforcement; second FBI breach in two months",
+   "records_or_loss": "Not reported",
+   "amount_lost_usd": "",
+   "funds_recovered_usd": "",
+   "audited_by": "",
+   "formally_verified": "none found",
+   "claim_status": "reported",
+   "source_url": "https://www.bleepingcomputer.com/news/security/fbi-reportedly-hacked-again-this-time-targeting-nationwide-police-database/",
+   "lang": "Not disclosed",
+   "func": "Unknown",
+   "component": "",
+   "theme": "gov",
+   "code_flaw": false,
+   "bug_class": "",
+   "zero_day": false,
+   "flaw_group": "",
+   "people": 0
   }
  ],
  "proofs": [
@@ -16184,5 +16248,5 @@
    }
   ]
  },
- "in_focus": "375"
+ "in_focus": "414"
 }

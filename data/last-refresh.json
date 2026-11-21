@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-21T13:19:13+00:00",
+ "run_at": "2026-11-21T22:06:13+00:00",
  "today": "2026-11-21",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -23,14 +23,14 @@
  ],
  "errors": [],
  "added_incidents": [
-  "411 2026-11-21 University server running MONAI Label (two universities targeted) (code flaw)",
-  "412 2026-11-21 SAP NetWeaver users (code flaw)"
+  "413 2026-11-21 Microsoft (Entra Connect Health service) (code flaw)",
+  "414 2026-11-21 FBI (National Crime Information Center) (other cause)"
  ],
  "added_proofs": [],
- "archived": 2,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 113,
  "llm": true,
- "in_focus": "375"
+ "in_focus": "414"
 }
