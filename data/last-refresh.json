@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-24T03:12:59+00:00",
+ "run_at": "2026-11-24T15:39:48+00:00",
  "today": "2026-11-24",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -10,9 +10,9 @@
   "https://krebsonsecurity.com/feed/": 2,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 13,
-  "https://rss.arxiv.org/rss/cs.PL": 4,
-  "https://rss.arxiv.org/rss/cs.CR": 58
+  "https://rss.arxiv.org/rss/cs.LO": 43,
+  "https://rss.arxiv.org/rss/cs.PL": 25,
+  "https://rss.arxiv.org/rss/cs.CR": 144
  },
  "kev_skipped": [
   "CVE-2026-133968",
@@ -22,13 +22,13 @@
  ],
  "errors": [],
  "added_incidents": [
-  "425 2026-11-23 N-able MailAssure users (code flaw)",
-  "426 2026-11-23 Korea Electric Power Corporation (KEPCO) (other cause)",
-  "427 2026-11-23 LaLiga (other cause)",
-  "428 2026-11-23 GlobeTopper (other cause)"
+  "429 2026-11-24 McDonald's Japan (other cause)",
+  "430 2026-11-24 European Commission (EU Academy users) (other cause)",
+  "431 2026-11-24 Organizations running Check Point Security Management Servers (other cause)",
+  "432 2026-11-24 Peninsula Energy (other cause)"
  ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 112,
