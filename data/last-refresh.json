@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-25T01:18:23+00:00",
+ "run_at": "2026-11-25T15:24:45+00:00",
  "today": "2026-11-25",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -10,29 +10,30 @@
   "https://krebsonsecurity.com/feed/": 2,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 43,
-  "https://rss.arxiv.org/rss/cs.PL": 25,
-  "https://rss.arxiv.org/rss/cs.CR": 144
+  "https://rss.arxiv.org/rss/cs.LO": 18,
+  "https://rss.arxiv.org/rss/cs.PL": 16,
+  "https://rss.arxiv.org/rss/cs.CR": 96
  },
  "kev_skipped": [
-  "CVE-2026-132224",
-  "CVE-2026-132165",
+  "CVE-2026-103406",
   "CVE-2026-133968",
   "CVE-2026-40217",
   "CVE-2026-90817"
  ],
  "errors": [],
  "added_incidents": [
-  "433 2026-11-24 Turnitin (other cause)",
-  "434 2026-11-24 Radware (other cause)",
-  "435 2026-11-24 State of Colorado (myColorado app) (other cause)",
-  "436 2026-11-24 Carnegie Endowment for International Peace (donors, via Soapbox Engage) (other cause)",
-  "437 2026-11-24 CIA (Central Intelligence Agency) (other cause)",
-  "438 2026-11-24 Telecommunications companies, airlines and critical infrastructure in Cyprus (other cause)",
-  "439 2026-11-24 Oil and chemical shipping tankers (dozens of vessels) (other cause)"
+  "440 2026-11-24 Optimizely Web Experimentation users (code flaw)",
+  "441 2026-11-24 Drupal Core users (code flaw)",
+  "442 2026-11-25 University Hospital of Guadeloupe (other cause)",
+  "443 2026-11-25 U.S. Treasury Financial Crimes Enforcement Network (FinCEN) (other cause)",
+  "444 2026-11-25 Palo Alto Networks PAN-OS firewall users (code flaw)",
+  "445 2026-11-25 GeoServer users (code flaw)",
+  "446 2026-11-25 Hex.pm (code flaw)",
+  "447 2026-11-25 WP Connect (other cause)",
+  "448 2026-11-25 Todoist (other cause)"
  ],
  "added_proofs": [],
- "archived": 1,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 112,
