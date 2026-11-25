@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-24T15:39:48+00:00",
- "today": "2026-11-24",
+ "run_at": "2026-11-25T01:18:23+00:00",
+ "today": "2026-11-25",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -15,20 +15,24 @@
   "https://rss.arxiv.org/rss/cs.CR": 144
  },
  "kev_skipped": [
+  "CVE-2026-132224",
+  "CVE-2026-132165",
   "CVE-2026-133968",
   "CVE-2026-40217",
-  "CVE-2026-90817",
-  "CVE-2026-111560"
+  "CVE-2026-90817"
  ],
  "errors": [],
  "added_incidents": [
-  "429 2026-11-24 McDonald's Japan (other cause)",
-  "430 2026-11-24 European Commission (EU Academy users) (other cause)",
-  "431 2026-11-24 Organizations running Check Point Security Management Servers (other cause)",
-  "432 2026-11-24 Peninsula Energy (other cause)"
+  "433 2026-11-24 Turnitin (other cause)",
+  "434 2026-11-24 Radware (other cause)",
+  "435 2026-11-24 State of Colorado (myColorado app) (other cause)",
+  "436 2026-11-24 Carnegie Endowment for International Peace (donors, via Soapbox Engage) (other cause)",
+  "437 2026-11-24 CIA (Central Intelligence Agency) (other cause)",
+  "438 2026-11-24 Telecommunications companies, airlines and critical infrastructure in Cyprus (other cause)",
+  "439 2026-11-24 Oil and chemical shipping tankers (dozens of vessels) (other cause)"
  ],
  "added_proofs": [],
- "archived": 0,
+ "archived": 1,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 112,
