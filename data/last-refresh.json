@@ -1,6 +1,6 @@
 {
- "run_at": "2026-11-26T14:53:58+00:00",
- "today": "2026-11-26",
+ "run_at": "2026-11-27T00:58:23+00:00",
+ "today": "2026-11-27",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
   "https://therecord.media/feed": 5,
@@ -25,18 +25,13 @@
  ],
  "errors": [],
  "added_incidents": [
-  "451 2026-11-25 Hewlett Packard Enterprise (HPE) Juniper Session Smart Conductor and Session Smart Router users (code flaw)",
-  "452 2026-11-25 Mitel MiCollab users (code flaw)",
-  "453 2026-11-25 Mitel MiCollab users (code flaw)",
-  "454 2026-11-25 Mitel MiCollab users (code flaw)",
-  "455 2026-11-25 Mitel MiCollab users (code flaw)",
-  "456 2026-11-25 Mitel MiCollab users (code flaw)",
-  "457 2026-11-26 Drupal Core users (code flaw)"
+  "458 2026-11-26 Corporate Google and Okta account users (GoodGuys phishing campaign) (other cause)",
+  "459 2026-11-26 GitHub repository owners (PolinRider campaign) (other cause)",
+  "460 2026-11-26 Windows .NET developers (fake job assessment NuGet packages) (other cause)",
+  "461 2026-11-25 Financial services, healthcare and legal services organizations in the U.S., U.K. and Australia (other cause)"
  ],
- "added_proofs": [
-  "92 Automated symbolic analysis of low-entropy-key protocols (WPA2-PSK, Bluetooth Low Energy, Bluetooth Classic)"
- ],
- "archived": 0,
+ "added_proofs": [],
+ "archived": 4,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 112,
