@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-27T00:58:23+00:00",
+ "run_at": "2026-11-27T14:51:29+00:00",
  "today": "2026-11-27",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -10,9 +10,9 @@
   "https://krebsonsecurity.com/feed/": 2,
   "https://techcrunch.com/category/security/feed/": 20,
   "https://rekt.news/rss.xml": "error: HTTP Error 500: Internal Server Error",
-  "https://rss.arxiv.org/rss/cs.LO": 17,
-  "https://rss.arxiv.org/rss/cs.PL": 11,
-  "https://rss.arxiv.org/rss/cs.CR": 72
+  "https://rss.arxiv.org/rss/cs.LO": 0,
+  "https://rss.arxiv.org/rss/cs.PL": 0,
+  "https://rss.arxiv.org/rss/cs.CR": 0
  },
  "kev_skipped": [
   "CVE-2026-133469",
@@ -25,16 +25,19 @@
  ],
  "errors": [],
  "added_incidents": [
-  "458 2026-11-26 Corporate Google and Okta account users (GoodGuys phishing campaign) (other cause)",
-  "459 2026-11-26 GitHub repository owners (PolinRider campaign) (other cause)",
-  "460 2026-11-26 Windows .NET developers (fake job assessment NuGet packages) (other cause)",
-  "461 2026-11-25 Financial services, healthcare and legal services organizations in the U.S., U.K. and Australia (other cause)"
+  "462 2026-11-27 SAP (other cause)",
+  "463 2026-11-27 Japan's education ministry (government procurement system) (other cause)",
+  "464 2026-11-27 Agence France-Presse (AFP) (other cause)",
+  "465 2026-11-27 UK Department for Work and Pensions (DWP) (other cause)",
+  "466 2026-11-27 USDA (payment systems) (other cause)",
+  "467 2026-11-27 Flight Centre Travel Group (Flight Centre, Travel Associates, Cruiseabout customers) (other cause)",
+  "468 2026-11-27 SoftwareOK (Q-Dir and DesktopOK users) (other cause)"
  ],
  "added_proofs": [],
- "archived": 4,
+ "archived": 0,
  "bugpipe": true,
  "bugpipe_bugs": 158,
  "news_items": 112,
  "llm": true,
- "in_focus": "414"
+ "in_focus": "462"
 }
