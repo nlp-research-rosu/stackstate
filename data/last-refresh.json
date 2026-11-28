@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-28T00:25:07+00:00",
+ "run_at": "2026-11-28T13:59:34+00:00",
  "today": "2026-11-28",
  "feeds": {
   "https://www.bleepingcomputer.com/feed/": 15,
@@ -25,11 +25,7 @@
  ],
  "errors": [],
  "added_incidents": [
-  "469 2026-11-27 pCloud (pCloud Pass password manager users) (other cause)",
-  "470 2026-11-27 Boston Scientific (other cause)",
-  "471 2026-11-27 US Air Force (Cloud One platform) (other cause)",
-  "472 2026-11-27 Southeast Asian military, government and legislative organizations (WeaveLotus campaign) (other cause)",
-  "473 2026-11-27 Swiss organizations including critical infrastructure operators (other cause)"
+  "474 2026-11-26 Gmail users (Remus infostealer victims) (other cause)"
  ],
  "added_proofs": [],
  "archived": 0,
